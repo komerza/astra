@@ -43,7 +43,7 @@ export function ProductActions({ product, onPriceChange }: ProductActionsProps) 
 
   const [selectedVariant, setSelectedVariant] = useState(variants[0])
   const [quantity, setQuantity] = useState(1)
-  const { dispatch } = useCart()
+  const { dispatch, addItem } = useCart()
   const { addNotification } = useNotifications()
 
   const handleVariantChange = (variant: ProductVariant) => {
@@ -57,20 +57,8 @@ export function ProductActions({ product, onPriceChange }: ProductActionsProps) 
   }
 
   const handleAddToCart = () => {
-    dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        id: product.id,
-        name: product.name,
-        price: selectedVariant.price,
-        variant: selectedVariant.name,
-        image: product.image,
-        game: product.game,
-        quantity,
-      },
-    })
+    addItem(product.id, selectedVariant.id, quantity)
 
-    // Show notification
     addNotification({
       type: "success",
       title: "Added to Cart!",
@@ -81,9 +69,20 @@ export function ProductActions({ product, onPriceChange }: ProductActionsProps) 
     dispatch({ type: "OPEN_CART" })
   }
 
-  const handleBuyNow = () => {
-    handleAddToCart()
-    // Here you would typically redirect to checkout
+  const handleBuyNow = async () => {
+    addItem(product.id, selectedVariant.id, quantity)
+    const email = window.prompt("Enter your email address for checkout") || ""
+    if (!email) return
+    try {
+      await globalThis.komerza.checkout({ emailAddress: email, couponCode: "" })
+    } catch {
+      addNotification({
+        type: "error",
+        title: "Checkout failed",
+        message: "Unable to start checkout",
+        duration: 3000,
+      })
+    }
   }
 
   return (

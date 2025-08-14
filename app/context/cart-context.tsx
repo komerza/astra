@@ -1,28 +1,20 @@
 "use client"
 
-import type React from "react"
-import { createContext, useContext, useReducer, type ReactNode } from "react"
+import { createContext, useContext, useEffect, useReducer, type ReactNode } from "react"
 
-interface CartItem {
-  id: string
-  name: string
-  price: number
+interface BasketItem {
+  productId: string
+  variantId: string
   quantity: number
-  variant: string
-  image: string
-  game: string
 }
 
 interface CartState {
-  items: CartItem[]
+  items: BasketItem[]
   isOpen: boolean
 }
 
 type CartAction =
-  | { type: "ADD_ITEM"; payload: Omit<CartItem, "quantity"> & { quantity?: number } }
-  | { type: "REMOVE_ITEM"; payload: string }
-  | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
-  | { type: "CLEAR_CART" }
+  | { type: "SET_ITEMS"; payload: BasketItem[] }
   | { type: "TOGGLE_CART" }
   | { type: "OPEN_CART" }
   | { type: "CLOSE_CART" }
@@ -30,81 +22,64 @@ type CartAction =
 const CartContext = createContext<{
   state: CartState
   dispatch: React.Dispatch<CartAction>
+  addItem: (productId: string, variantId: string, quantity: number) => void
+  removeItem: (productId: string, variantId: string) => void
+  clearCart: () => void
 } | null>(null)
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
-    case "ADD_ITEM": {
-      const existingItem = state.items.find(
-        (item) => item.id === action.payload.id && item.variant === action.payload.variant,
-      )
-
-      if (existingItem) {
-        return {
-          ...state,
-          items: state.items.map((item) =>
-            item.id === action.payload.id && item.variant === action.payload.variant
-              ? { ...item, quantity: item.quantity + (action.payload.quantity || 1) }
-              : item,
-          ),
-        }
-      }
-
-      return {
-        ...state,
-        items: [...state.items, { ...action.payload, quantity: action.payload.quantity || 1 }],
-      }
-    }
-    case "REMOVE_ITEM":
-      return {
-        ...state,
-        items: state.items.filter((item) => item.id !== action.payload),
-      }
-    case "UPDATE_QUANTITY":
-      return {
-        ...state,
-        items: state.items
-          .map((item) => (item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item))
-          .filter((item) => item.quantity > 0),
-      }
-    case "CLEAR_CART":
-      return {
-        ...state,
-        items: [],
-      }
+    case "SET_ITEMS":
+      return { ...state, items: action.payload }
     case "TOGGLE_CART":
-      return {
-        ...state,
-        isOpen: !state.isOpen,
-      }
+      return { ...state, isOpen: !state.isOpen }
     case "OPEN_CART":
-      return {
-        ...state,
-        isOpen: true,
-      }
+      return { ...state, isOpen: true }
     case "CLOSE_CART":
-      return {
-        ...state,
-        isOpen: false,
-      }
+      return { ...state, isOpen: false }
     default:
       return state
   }
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, {
-    items: [],
-    isOpen: false,
-  })
+  const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false })
 
-  return <CartContext.Provider value={{ state, dispatch }}>{children}</CartContext.Provider>
+  const refreshItems = () => {
+    const items = globalThis.komerza.getBasket()
+    dispatch({ type: "SET_ITEMS", payload: items })
+  }
+
+  useEffect(() => {
+    refreshItems()
+  }, [])
+
+  const addItem = (productId: string, variantId: string, quantity: number) => {
+    globalThis.komerza.addToBasket({ productId, variantId, quantity })
+    refreshItems()
+  }
+
+  const removeItem = (productId: string, variantId: string) => {
+    globalThis.komerza.removeFromBasket({ productId, variantId })
+    refreshItems()
+  }
+
+  const clearCart = () => {
+    globalThis.komerza.clearBasket()
+    refreshItems()
+  }
+
+  return (
+    <CartContext.Provider value={{ state, dispatch, addItem, removeItem, clearCart }}>
+      {children}
+    </CartContext.Provider>
+  )
 }
 
 export function useCart() {
-  const context = useContext(CartContext)
-  if (!context) {
+  const ctx = useContext(CartContext)
+  if (!ctx) {
     throw new Error("useCart must be used within a CartProvider")
   }
-  return context
+  return ctx
 }

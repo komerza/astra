@@ -15,6 +15,12 @@ The Komerza Builder clones this project, updates it with the user’s branding, 
 
 ---
 
+## Komerza Commerce Script
+
+This template loads the [Komerza Commerce Script](https://cdn.komerza.com/komerza.min.js) in the global layout and initializes it with a store ID. All product listing, cart, and checkout interactions are handled through `globalThis.komerza` methods.
+
+---
+
 ## Building for Production
 
 To build the static files:
