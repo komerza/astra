@@ -1,0 +1,23 @@
+Komerza Template License (Source-Available)
+Copyright © 2025 Komerza UAB. All rights reserved.
+
+This repository contains a source-available template for the Komerza Builder
+platform. It is made publicly accessible solely for automated cloning by the
+Komerza Builder and for reference purposes.
+
+You are NOT granted permission to:
+- Use, copy, modify, or redistribute this code outside of the Komerza Builder
+  platform.
+- Deploy this template or any derivative work without a valid Komerza Builder
+  license.
+- Remove or alter copyright notices or proprietary attributions.
+
+You ARE permitted to:
+- View and inspect the code.
+- Use a generated and customized version of this template if you are an
+  authorized Komerza Builder customer under a valid license agreement.
+
+By accessing this repository, you agree to be bound by these terms.
+Unauthorized use may result in legal action.
+
+For licensing inquiries, contact: legal@komerza.com
