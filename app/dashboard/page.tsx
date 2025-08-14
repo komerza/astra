@@ -16,6 +16,11 @@ export default function DashboardPage() {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    const signedIn = globalThis.komerza.isSignedIn()
+    if (!signedIn) {
+      window.location.href = "/login"
+      return
+    }
     setIsClient(true)
   }, [])
 

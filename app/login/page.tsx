@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -10,6 +11,12 @@ export default function LoginPage() {
   const [code, setCode] = useState("")
   const [step, setStep] = useState<"email" | "code">("email")
   const [message, setMessage] = useState("")
+
+  useEffect(() => {
+    if (globalThis.komerza.isSignedIn()) {
+      window.location.href = "/dashboard"
+    }
+  }, [])
 
   const sendCode = async () => {
     const res = await globalThis.komerza.login({ emailAddress: email })
@@ -24,19 +31,23 @@ export default function LoginPage() {
   const verify = async () => {
     const res = await globalThis.komerza.verifyLogin({ emailAddress: email, code })
     if (res.success) {
-      setMessage("Logged in!")
+      window.location.href = "/dashboard"
     } else {
       setMessage(res.message || "Invalid code")
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-theme-primary p-4">
-      <Card className="w-full max-w-sm bg-theme-secondary border-theme">
-        <CardHeader>
-          <CardTitle className="text-theme-primary">Login</CardTitle>
+    <div className="min-h-screen flex items-center justify-center bg-theme-primary relative overflow-hidden p-4">
+      <div className="absolute inset-0 opacity-20">
+        <Image src="/hero-new.webp" alt="Background" fill className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-theme-primary/50 to-theme-primary" />
+      </div>
+      <Card className="w-full max-w-md bg-theme-secondary border-theme relative z-10 shadow-xl">
+        <CardHeader className="text-center">
+          <CardTitle className="text-theme-primary text-2xl">Sign In</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           {step === "email" ? (
             <>
               <Input
@@ -55,7 +66,7 @@ export default function LoginPage() {
               <Input
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                placeholder="Enter code"
+                placeholder="Enter verification code"
                 className="bg-theme-primary border-theme text-theme-primary"
               />
               <Button onClick={verify} className="w-full bg-[#3B82F6] text-white hover:bg-[#2563EB]">
@@ -63,7 +74,7 @@ export default function LoginPage() {
               </Button>
             </>
           )}
-          {message && <p className="text-theme-secondary text-sm">{message}</p>}
+          {message && <p className="text-theme-secondary text-sm text-center">{message}</p>}
         </CardContent>
       </Card>
     </div>

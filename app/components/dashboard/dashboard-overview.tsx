@@ -1,12 +1,20 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Package, Download, CreditCard, Calendar, DollarSign, Receipt } from "lucide-react"
 
 export function DashboardOverview() {
+  const [storeName, setStoreName] = useState("Store")
   const customerEmail = "john.doe@example.com"
+  useEffect(() => {
+    ;(async () => {
+      const res = await globalThis.komerza.getStore()
+      if (res.success && res.data) setStoreName(res.data.name)
+    })()
+  }, [])
   const accountBalance = "€47.50"
 
   const recentOrders = [
@@ -60,7 +68,7 @@ export function DashboardOverview() {
         <div className="lg:col-span-2 bg-gradient-to-r from-[#3B82F6]/20 to-[#1d4ed8]/20 border border-[#3B82F6]/30 rounded-2xl p-6">
           <div className="flex items-center justify-between h-full">
             <div>
-              <h2 className="text-2xl font-bold text-theme-primary mb-2">Welcome back! 👋</h2>
+              <h2 className="text-2xl font-bold text-theme-primary mb-2">Welcome to {storeName}! 👋</h2>
               <p className="text-theme-secondary">{customerEmail}</p>
               <p className="text-theme-secondary text-sm mt-1">Manage your digital products and orders</p>
             </div>
