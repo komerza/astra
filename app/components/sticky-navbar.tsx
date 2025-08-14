@@ -10,9 +10,8 @@ import { MobileNav } from "./mobile-nav"
 
 export function StickyNavbar() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isCartOpen, setIsCartOpen] = useState(false)
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
-  const { items } = useCart()
+  const { state, dispatch } = useCart()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,17 +79,17 @@ export function StickyNavbar() {
             {/* Cart Button */}
             <div className="relative">
               <button
-                onClick={() => setIsCartOpen(!isCartOpen)}
+                onClick={() => dispatch({ type: "TOGGLE_CART" })}
                 className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-8 w-8 rounded-md px-2 relative"
               >
                 <ShoppingCart size={18} />
-                {items.length > 0 && (
+                {state.items.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-[#3B82F6] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {items.length}
+                    {state.items.length}
                   </span>
                 )}
               </button>
-              <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+              <CartDropdown />
             </div>
 
             {/* Dashboard Button - Desktop */}

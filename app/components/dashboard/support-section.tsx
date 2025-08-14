@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,43 +12,40 @@ export function SupportSection() {
   const [activeTab, setActiveTab] = useState("tickets")
   const [newTicketSubject, setNewTicketSubject] = useState("")
   const [newTicketMessage, setNewTicketMessage] = useState("")
+  const [tickets, setTickets] = useState<any[]>([])
 
-  const tickets = [
-    {
-      id: "#1247",
-      subject: "Product download issue",
-      status: "Open",
-      created: "2 hours ago",
-      lastReply: "1 hour ago",
-      statusColor: "text-red-500",
-      statusBg: "bg-red-500/10",
-    },
-    {
-      id: "#1246",
-      subject: "License key activation problem",
-      status: "Waiting",
-      created: "1 day ago",
-      lastReply: "5 hours ago",
-      statusColor: "text-yellow-500",
-      statusBg: "bg-yellow-500/10",
-    },
-    {
-      id: "#1245",
-      subject: "Payment confirmation",
-      status: "Resolved",
-      created: "3 days ago",
-      lastReply: "2 days ago",
-      statusColor: "text-green-500",
-      statusBg: "bg-green-500/10",
-    },
-  ]
+  useEffect(() => {
+    async function load() {
+      const res = await globalThis.komerza.getTickets()
+      if (res.success && res.data) {
+        setTickets(res.data)
+      }
+    }
+    load()
+  }, [])
 
-  const handleCreateTicket = () => {
+  const handleCreateTicket = async () => {
     if (newTicketSubject && newTicketMessage) {
-      // Handle ticket creation
-      console.log("Creating ticket:", { subject: newTicketSubject, message: newTicketMessage })
-      setNewTicketSubject("")
-      setNewTicketMessage("")
+      const res = await globalThis.komerza.createTicket({ subject: newTicketSubject, message: newTicketMessage })
+      if (res.success) {
+        setNewTicketSubject("")
+        setNewTicketMessage("")
+        const all = await globalThis.komerza.getTickets()
+        if (all.success && all.data) setTickets(all.data)
+      }
+    }
+  }
+
+  const getStatusStyles = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "open":
+        return { color: "text-green-500", bg: "bg-green-500/10" }
+      case "waiting":
+        return { color: "text-yellow-500", bg: "bg-yellow-500/10" }
+      case "closed":
+        return { color: "text-red-500", bg: "bg-red-500/10" }
+      default:
+        return { color: "text-gray-500", bg: "bg-gray-500/10" }
     }
   }
 
@@ -88,8 +85,11 @@ export function SupportSection() {
 
           {/* Tickets List */}
           <div className="space-y-4">
-            {tickets.map((ticket) => (
-              <Card
+            {tickets.map((ticket) => {
+              const styles = getStatusStyles(ticket.status)
+              const lastEntry = ticket.entries[ticket.entries.length - 1]
+              return (
+                <Card
                 key={ticket.id}
                 className="bg-theme-secondary border-theme hover:border-[#3B82F6]/30 transition-all duration-300"
               >
@@ -98,14 +98,12 @@ export function SupportSection() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-theme-primary font-medium">{ticket.subject}</h3>
-                        <Badge className={`${ticket.statusColor} ${ticket.statusBg} border-0`}>
-                          {ticket.status}
-                        </Badge>
+                        <Badge className={`${styles.color} ${styles.bg} border-0`}>{ticket.status}</Badge>
                       </div>
                       <div className="flex items-center gap-4 text-sm text-theme-secondary">
                         <span>Ticket {ticket.id}</span>
-                        <span>Created {ticket.created}</span>
-                        <span>Last reply {ticket.lastReply}</span>
+                        <span>Created {new Date(ticket.createdAt).toLocaleDateString()}</span>
+                        {lastEntry && <span>Last reply {new Date(lastEntry.createdAt).toLocaleDateString()}</span>}
                       </div>
                     </div>
                     <Button variant="outline" className="border-theme text-theme-primary hover:bg-theme-tertiary">
@@ -114,7 +112,7 @@ export function SupportSection() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )})}
           </div>
 
           {/* Empty State */}

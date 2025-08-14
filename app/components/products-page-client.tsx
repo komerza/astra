@@ -11,6 +11,7 @@ import Image from "next/image"
 
 interface Product {
   id: string
+  slug: string
   name: string
   game: string
   category: string
@@ -38,13 +39,8 @@ interface PriceRange {
   max: number
 }
 
-interface ProductsPageClientProps {
-  products: Product[]
-  categories: Category[]
-  priceRanges: PriceRange[]
-}
-
-export function ProductsPageClient({ products, categories, priceRanges }: ProductsPageClientProps) {
+export function ProductsPageClient() {
+  const [products, setProducts] = useState<Product[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedPriceRange, setSelectedPriceRange] = useState("all")
@@ -53,6 +49,42 @@ export function ProductsPageClient({ products, categories, priceRanges }: Produc
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const productsPerPage = 6
+  useEffect(() => {
+    async function load() {
+      const res = await globalThis.komerza.getStore()
+      if (res.success && res.data) {
+        const mapped: Product[] = res.data.products.map((p: any) => ({
+          id: p.id,
+          slug: p.slug ?? p.id,
+          name: p.name,
+          game: "",
+          category: "",
+          basePrice: p.variants[0]?.cost || 0,
+          maxPrice: p.variants[0]?.cost || 0,
+          rating: p.rating || 0,
+          reviews: 0,
+          image: p.imageNames[0] ? `https://cdn.komerza.com/${p.imageNames[0]}` : "/product-placeholder.png",
+          description: p.description,
+          features: [],
+          status: "In Stock",
+          popular: p.order < 3,
+        }))
+        setProducts(mapped)
+      }
+    }
+    load()
+  }, [])
+
+  const categories: Category[] = [
+    { id: "all", name: "All", count: products.length },
+  ]
+
+  const priceRanges: PriceRange[] = [
+    { id: "all", name: "All", min: 0, max: Infinity },
+    { id: "low", name: "Under €10", min: 0, max: 10 },
+    { id: "mid", name: "€10 - €20", min: 10, max: 20 },
+    { id: "high", name: "Over €20", min: 20, max: Infinity },
+  ]
 
   // Helper function to get game abbreviation
   const getGameAbbreviation = (game: string) => {
@@ -192,7 +224,7 @@ export function ProductsPageClient({ products, categories, priceRanges }: Produc
             }
           >
             {currentProducts.map((product) => (
-              <Link key={product.id} href={`/products/${product.id}`}>
+              <Link key={product.id} href={`/products/${product.slug}`}>
                 {viewMode === "grid" ? (
                   // Grid View - Using EXACT same cards from home page
                   <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
