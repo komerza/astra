@@ -8,7 +8,7 @@ import { CartDropdown } from "./cart-dropdown"
 export function CartButton() {
   const { state, dispatch } = useCart()
 
-  const itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0)
+  const itemCount = globalThis.komerza.getBasketItemCount()
 
   return (
     <div className="relative">
