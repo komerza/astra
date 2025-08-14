@@ -6,6 +6,7 @@ import { MobileNav } from "@/app/components/mobile-nav"
 import { SearchButton } from "@/app/components/search-button"
 import { ThemeToggle } from "@/app/components/theme-toggle"
 import { ProductPageClient } from "@/app/components/product-page-client"
+import { productSlugs } from "@/lib/product-slugs"
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   return (
@@ -54,6 +55,6 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 }
 
 export function generateStaticParams() {
-  return []
+  return productSlugs.map((slug) => ({ slug }))
 }
 

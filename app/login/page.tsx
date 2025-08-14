@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [code, setCode] = useState("")
   const [step, setStep] = useState<"email" | "code">("email")
   const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (globalThis.komerza.isSignedIn()) {
@@ -19,32 +20,39 @@ export default function LoginPage() {
   }, [])
 
   const sendCode = async () => {
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setMessage("Enter a valid email address")
+      return
+    }
+    setLoading(true)
     const res = await globalThis.komerza.login({ emailAddress: email })
+    setLoading(false)
     if (res.success) {
       setStep("code")
       setMessage("Verification code sent. Check your email.")
     } else {
-      setMessage(res.message || "Failed to send code")
+      const invalid = res.invalidFields?.map((f: any) => f.reason).join(", ")
+      setMessage(res.message || invalid || "Failed to send code")
     }
   }
 
   const verify = async () => {
+    setLoading(true)
     const res = await globalThis.komerza.verifyLogin({ emailAddress: email, code })
+    setLoading(false)
     if (res.success) {
       window.location.href = "/dashboard"
     } else {
-      setMessage(res.message || "Invalid code")
+      const invalid = res.invalidFields?.map((f: any) => f.reason).join(", ")
+      setMessage(res.message || invalid || "Invalid code")
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-theme-primary relative overflow-hidden p-4">
-      <div className="absolute inset-0 opacity-20">
-        <Image src="/hero-new.webp" alt="Background" fill className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-theme-primary/50 to-theme-primary" />
-      </div>
-      <Card className="w-full max-w-md bg-theme-secondary border-theme relative z-10 shadow-xl">
-        <CardHeader className="text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-theme-primary to-theme-secondary p-4">
+      <Card className="w-full max-w-md bg-theme-secondary border-theme shadow-xl">
+        <CardHeader className="text-center space-y-2">
+          <Image src="/kimera-logo.svg" alt="Komerza" width={120} height={48} className="mx-auto" />
           <CardTitle className="text-theme-primary text-2xl">Sign In</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -57,8 +65,8 @@ export default function LoginPage() {
                 placeholder="you@example.com"
                 className="bg-theme-primary border-theme text-theme-primary"
               />
-              <Button onClick={sendCode} className="w-full bg-[#3B82F6] text-white hover:bg-[#2563EB]">
-                Send Code
+              <Button onClick={sendCode} disabled={loading} className="w-full bg-[#3B82F6] text-white hover:bg-[#2563EB]">
+                {loading ? "Sending..." : "Send Code"}
               </Button>
             </>
           ) : (
@@ -69,12 +77,12 @@ export default function LoginPage() {
                 placeholder="Enter verification code"
                 className="bg-theme-primary border-theme text-theme-primary"
               />
-              <Button onClick={verify} className="w-full bg-[#3B82F6] text-white hover:bg-[#2563EB]">
-                Verify
+              <Button onClick={verify} disabled={loading} className="w-full bg-[#3B82F6] text-white hover:bg-[#2563EB]">
+                {loading ? "Verifying..." : "Verify"}
               </Button>
             </>
           )}
-          {message && <p className="text-theme-secondary text-sm text-center">{message}</p>}
+          {message && <p className="text-red-500 text-sm text-center">{message}</p>}
         </CardContent>
       </Card>
     </div>

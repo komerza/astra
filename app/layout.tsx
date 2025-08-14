@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { CartProvider } from "./context/cart-context"
+import { KOMERZA_STORE_ID } from "@/lib/komerza"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +28,7 @@ export default function RootLayout({
         <script src="https://cdn.komerza.com/komerza.min.js"></script>
         <script
           dangerouslySetInnerHTML={{
-            __html: 'globalThis.komerza.init("STORE_ID");',
+            __html: `globalThis.komerza.init("${KOMERZA_STORE_ID}");`,
           }}
         />
       </head>
