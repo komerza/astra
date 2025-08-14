@@ -1,11 +1,6 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
-import { Search, Filter, Star, ShoppingCart, Grid, List, Package } from "lucide-react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { CustomDropdown } from "./custom-dropdown"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -26,13 +21,13 @@ interface Product {
   popular: boolean
 }
 
-interface Category {
+interface Variant {
   id: string
   name: string
-  count: number
+  cost: number
 }
 
-interface PriceRange {
+interface ProductReference {
   id: string
   name: string
   min: number
@@ -110,82 +105,19 @@ export function ProductsPageClient() {
     }
   }
 
-  // Filter and sort products
-  const filteredProducts = useMemo(() => {
-    const filtered = products.filter((product) => {
-      // Search filter
-      const matchesSearch =
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.game.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
-
-      // Category filter
-      const matchesCategory =
-        selectedCategory === "all" || product.game.toLowerCase().replace(/\s+/g, "-") === selectedCategory
-
-      // Price filter
-      const selectedRange = priceRanges.find((range) => range.id === selectedPriceRange)
-      const matchesPrice =
-        !selectedRange || (product.basePrice >= selectedRange.min && product.basePrice <= selectedRange.max)
-
-      return matchesSearch && matchesCategory && matchesPrice
-    })
-
-    // Sort products
-    switch (sortBy) {
-      case "popular":
-        filtered.sort((a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0) || b.reviews - a.reviews)
-        break
-      case "price-low":
-        filtered.sort((a, b) => a.basePrice - b.basePrice)
-        break
-      case "price-high":
-        filtered.sort((a, b) => b.basePrice - a.basePrice)
-        break
-      case "rating":
-        filtered.sort((a, b) => b.rating - a.rating)
-        break
-      case "name":
-        filtered.sort((a, b) => a.name.localeCompare(b.name))
-        break
-      default:
-        break
-    }
-
-    return filtered
-  }, [products, searchQuery, selectedCategory, selectedPriceRange, sortBy, priceRanges])
-
-  // Pagination calculations
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
-  const startIndex = (currentPage - 1) * productsPerPage
-  const endIndex = startIndex + productsPerPage
-  const currentProducts = filteredProducts.slice(startIndex, endIndex)
-
-  // Reset to page 1 when filters change
   useEffect(() => {
-    setCurrentPage(1)
-  }, [searchQuery, selectedCategory, selectedPriceRange, sortBy])
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "In Stock":
-        return "text-green-500 bg-green-500/10 border-green-500/30"
-      case "Updating":
-        return "text-yellow-500 bg-yellow-500/10 border-yellow-500/30"
-      case "Out of Stock":
-        return "text-red-500 bg-red-500/10 border-red-500/30"
-      default:
-        return "text-gray-500 bg-gray-500/10 border-gray-500/30"
+    async function load() {
+      const res = await globalThis.komerza.getStore()
+      if (res.success && res.data) {
+        setProducts(res.data.products)
+      }
     }
-  }
+    load()
+  }, [])
 
-  const sortOptions = [
-    { id: "popular", name: "Most Popular" },
-    { id: "price-low", name: "Price: Low to High" },
-    { id: "price-high", name: "Price: High to Low" },
-    { id: "rating", name: "Highest Rated" },
-    { id: "name", name: "Name: A to Z" },
-  ]
+  if (products.length === 0) {
+    return <p className="text-theme-secondary">No products available.</p>
+  }
 
   return (
     <div className="flex gap-6">
@@ -533,12 +465,15 @@ export function ProductsPageClient() {
                 }}
                 className="w-full bg-transparent text-[#3B82F6] hover:bg-[#3B82F6]/10 h-8 px-3 text-sm border border-[#3B82F6]/30"
               >
-                Clear All Filters
+                Add to Cart
               </Button>
             )}
           </div>
+          <Link href={`/products/${p.slug}`} className="text-sm text-theme-secondary underline mt-2">
+            View Details
+          </Link>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

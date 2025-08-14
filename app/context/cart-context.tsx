@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useReducer, type ReactNode } from
 
 interface BasketItem {
   productId: string
-  variantId?: string
+  variantId: string
   quantity: number
 }
 

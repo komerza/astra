@@ -71,4 +71,3 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 export function generateStaticParams() {
   return productSlugs.map((slug) => ({ slug }))
 }
-
