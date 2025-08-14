@@ -469,11 +469,8 @@ export function ProductsPageClient() {
               </Button>
             )}
           </div>
-          <Link href={`/products/${p.slug}`} className="text-sm text-theme-secondary underline mt-2">
-            View Details
-          </Link>
         </div>
-      ))}
+    </div>
     </div>
   );
 }
