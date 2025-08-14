@@ -27,9 +27,32 @@ export function ProductPageClient({ slug }: { slug: string }) {
 
   useEffect(() => {
     async function load() {
-      const res = await globalThis.komerza.getProduct({ idOrSlug: slug })
-      if (res.success && res.data) {
-        setProduct(res.data)
+      const api: any = globalThis.komerza;
+      if (!api) return;
+
+      try {
+        if (typeof api.getProduct === "function") {
+          const res = await api.getProduct({ idOrSlug: slug });
+          if (res?.success && res.data) {
+            setProduct(res.data);
+            return;
+          }
+        }
+        // Fallback: fetch full store and locate product by id or slug
+        if (typeof api.getStore === "function") {
+          const store = await api.getStore();
+          if (store?.success && store.data?.products) {
+            const found = store.data.products.find(
+              (p: any) => p.id === slug || p.slug === slug
+            );
+            if (found) {
+              setProduct(found);
+            }
+          }
+        }
+      } catch (e) {
+        // swallow errors; component will show loading state or could show error UI
+        console.warn("Failed to load product", e);
       }
     }
     load()

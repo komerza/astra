@@ -16,13 +16,18 @@ export default function DashboardPage() {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    const signedIn = globalThis.komerza.isSignedIn()
+    if (!signedIn) {
+      window.location.href = "/login"
+      return
+    }
     setIsClient(true)
   }, [])
 
   const renderSection = () => {
     switch (activeSection) {
       case "overview":
-        return <DashboardOverview />
+        return <DashboardOverview onSectionChange={setActiveSection} />;
       case "orders":
         return <OrdersSection />
       case "affiliates":
@@ -32,7 +37,7 @@ export default function DashboardPage() {
       case "settings":
         return <SettingsSection />
       default:
-        return <DashboardOverview />
+        return <DashboardOverview onSectionChange={setActiveSection} />;
     }
   }
 

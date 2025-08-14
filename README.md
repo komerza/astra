@@ -17,7 +17,7 @@ The Komerza Builder clones this project, updates it with the user’s branding, 
 
 ## Komerza Commerce Script
 
-This template loads the [Komerza Commerce Script](https://cdn.komerza.com/komerza.min.js) in the global layout and initializes it with a store ID. All product listing, cart, and checkout interactions are handled through `globalThis.komerza` methods.
+This template loads the [Komerza Commerce Script](https://cdn.komerza.com/komerza.min.js) in the global layout and initializes it with a store ID. Product detail pages are rendered through a single query-based page at `/product?slug=PRODUCT_ID` to remain compatible with fully static export (`output: 'export'`) without needing to enumerate dynamic params. All product listing, cart, and checkout interactions are handled through `globalThis.komerza` methods.
 
 ---
 

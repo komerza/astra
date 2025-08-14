@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import { SmilePlus, ShoppingCart } from "lucide-react";
 import { ParticleRiver } from "./components/particle-river";
+import { LandingProductsClient } from "./components/landing-products-client";
 import { StickyHeader } from "./components/sticky-header"
 
 export default function LandingPage() {
@@ -171,138 +172,12 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className="container mx-auto mt-6 sm:mt-8 px-4 sm:px-6">
-          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-            {/* Product 1 */}
-            <Link href="/products/premium-code-editor">
-              <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
-                <div className="relative w-full aspect-video cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6]/20 to-[#1d4ed8]/20"></div>
-                  <Image
-                    alt="Premium Code Editor product"
-                    fill
-                    className="object-cover duration-200 group-hover:scale-105"
-                    src="/product-placeholder.png"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <Badge className="bg-[#3B82F6] text-white border-0 text-xs">Best Seller</Badge>
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col gap-2 p-2">
-                  <h3 className="flex flex-wrap items-center gap-1 text-lg sm:text-xl font-semibold text-theme-primary">
-                    Premium Code Editor
-                    <span className="ml-1 rounded-md border border-theme bg-theme-secondary px-2 py-0.5 text-xs shadow-md">
-                      Software
-                    </span>
-                  </h3>
-                  <p className="text-theme-secondary text-sm line-clamp-2 mb-2">
-                    Advanced code editor with AI assistance, syntax highlighting, and debugging tools for professional developers.
-                  </p>
-                  <div className="mt-2 flex w-full flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4">
-                    <Button className="w-full h-10 sm:h-12 rounded-full border border-theme bg-theme-secondary shadow-lg text-theme-primary font-normal text-sm sm:text-base px-4 hover:bg-gray-200 dark:hover:bg-white/15 transition-all duration-300">
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      <span>Buy Now</span>
-                    </Button>
-                    <div className="flex flex-col items-center sm:items-end">
-                      <span className="text-center sm:text-end text-xs text-theme-secondary">Starting at</span>
-                      <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
-                        <span className="mr-0.5 text-lg sm:text-xl">€</span>29.99
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Product 2 */}
-            <Link href="/products/ui-template-pack">
-              <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
-                <div className="relative w-full aspect-video cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20"></div>
-                  <Image
-                    alt="UI Template Pack product"
-                    fill
-                    className="object-cover duration-200 group-hover:scale-105"
-                    src="/product-placeholder.png"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <Badge className="bg-green-500 text-white border-0 text-xs">Popular</Badge>
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col gap-2 p-2">
-                  <h3 className="flex flex-wrap items-center gap-1 text-lg sm:text-xl font-semibold text-theme-primary">
-                    UI Template Pack
-                    <span className="ml-1 rounded-md border border-theme bg-theme-secondary px-2 py-0.5 text-xs shadow-md">
-                      Templates
-                    </span>
-                  </h3>
-                  <p className="text-theme-secondary text-sm line-clamp-2 mb-2">
-                    Professional UI components and templates for modern web applications. Includes React, Vue, and HTML versions.
-                  </p>
-                  <div className="mt-2 flex w-full flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4">
-                    <Button className="w-full h-10 sm:h-12 rounded-full border border-theme bg-theme-secondary shadow-lg text-theme-primary font-normal text-sm sm:text-base px-4 hover:bg-gray-200 dark:hover:bg-white/15 transition-all duration-300">
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      <span>Buy Now</span>
-                    </Button>
-                    <div className="flex flex-col items-center sm:items-end">
-                      <span className="text-center sm:text-end text-xs text-theme-secondary">Starting at</span>
-                      <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
-                        <span className="mr-0.5 text-lg sm:text-xl">€</span>19.99
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Product 3 */}
-            <Link href="/products/business-suite-pro" className="sm:col-span-2 lg:col-span-1">
-              <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
-                <div className="relative w-full aspect-video cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-violet-500/20"></div>
-                  <Image
-                    alt="Business Suite Pro product"
-                    fill
-                    className="object-cover duration-200 group-hover:scale-105"
-                    src="/product-placeholder.png"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <Badge className="bg-purple-500 text-white border-0 text-xs">Premium</Badge>
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col gap-2 p-2">
-                  <h3 className="flex flex-wrap items-center gap-1 text-lg sm:text-xl font-semibold text-theme-primary">
-                    Business Suite Pro
-                    <span className="ml-1 rounded-md border border-theme bg-theme-secondary px-2 py-0.5 text-xs shadow-md">
-                      Bundle
-                    </span>
-                  </h3>
-                  <p className="text-theme-secondary text-sm line-clamp-2 mb-2">
-                    Complete business software bundle with CRM, analytics, project management, and automation tools.
-                  </p>
-                  <div className="mt-2 flex w-full flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4">
-                    <Button className="w-full h-10 sm:h-12 rounded-full border border-theme bg-theme-secondary shadow-lg text-theme-primary font-normal text-sm sm:text-base px-4 hover:bg-gray-200 dark:hover:bg-white/15 transition-all duration-300">
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      <span>Buy Now</span>
-                    </Button>
-                    <div className="flex flex-col items-center sm:items-end">
-                      <span className="text-center sm:text-end text-xs text-theme-secondary">Starting at</span>
-                      <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
-                        <span className="mr-0.5 text-lg sm:text-xl">€</span>49.99
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
+          {/* Products Grid */}
+          <div className="container mx-auto mt-6 sm:mt-8 px-4 sm:px-6">
+            <LandingProductsClient />
           </div>
-        </div>
 
-        {/* View All Button */}
+          {/* View All Button */}
         <div className="mt-6 sm:mt-8 flex items-center justify-center px-4">
           <Link href="/products">
             <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 font-normal max-w-xs">

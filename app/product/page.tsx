@@ -1,14 +1,28 @@
-import Link from "next/link"
-import { Home, Package, Activity } from "lucide-react"
-import Image from "next/image"
-import { CartButton } from "@/app/components/cart-button"
-import { MobileNav } from "@/app/components/mobile-nav"
-import { SearchButton } from "@/app/components/search-button"
-import { ThemeToggle } from "@/app/components/theme-toggle"
-import { ProductPageClient } from "@/app/components/product-page-client"
-import { productSlugs } from "@/lib/product-slugs"
+import Link from "next/link";
+import { Home, Package, Activity } from "lucide-react";
+import Image from "next/image";
+import { CartButton } from "@/app/components/cart-button";
+import { MobileNav } from "@/app/components/mobile-nav";
+import { SearchButton } from "@/app/components/search-button";
+import { ThemeToggle } from "@/app/components/theme-toggle";
+import { ProductPageClient } from "@/app/components/product-page-client";
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
+export default function ProductQueryPage({
+  searchParams,
+}: {
+  searchParams: { slug?: string };
+}) {
+  const slug = searchParams.slug || "";
+  if (!slug) {
+    return (
+      <div className="min-h-screen bg-theme-primary flex flex-col items-center justify-center text-theme-primary">
+        <p className="mb-4">Missing product slug.</p>
+        <Link href="/products" className="underline">
+          Back to products
+        </Link>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-theme-primary relative overflow-hidden">
       <header className="h-16 flex items-center justify-between container mx-auto top-0 absolute inset-x-0 z-50 px-4 sm:px-6">
@@ -62,12 +76,8 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         </div>
       </header>
       <main className="container mx-auto pt-24 px-4 sm:px-6">
-        <ProductPageClient slug={params.slug} />
+        <ProductPageClient slug={slug} />
       </main>
     </div>
   );
-}
-
-export function generateStaticParams() {
-  return productSlugs.map((slug) => ({ slug }))
 }
