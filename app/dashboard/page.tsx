@@ -27,7 +27,7 @@ export default function DashboardPage() {
   const renderSection = () => {
     switch (activeSection) {
       case "overview":
-        return <DashboardOverview />
+        return <DashboardOverview onSectionChange={setActiveSection} />;
       case "orders":
         return <OrdersSection />
       case "affiliates":
@@ -37,7 +37,7 @@ export default function DashboardPage() {
       case "settings":
         return <SettingsSection />
       default:
-        return <DashboardOverview />
+        return <DashboardOverview onSectionChange={setActiveSection} />;
     }
   }
 

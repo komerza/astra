@@ -20,12 +20,17 @@ type CartAction =
   | { type: "CLOSE_CART" }
 
 const CartContext = createContext<{
-  state: CartState
-  dispatch: React.Dispatch<CartAction>
-  addItem: (productId: string, variantId: string, quantity: number) => void
-  removeItem: (productId: string, variantId: string) => void
-  clearCart: () => void
-} | null>(null)
+  state: CartState;
+  dispatch: React.Dispatch<CartAction>;
+  addItem: (productId: string, variantId: string, quantity: number) => void;
+  removeItem: (productId: string, variantId: string) => void;
+  updateQuantity: (
+    productId: string,
+    variantId: string,
+    quantity: number
+  ) => void;
+  clearCart: () => void;
+} | null>(null);
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -55,14 +60,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const addItem = (productId: string, variantId: string, quantity: number) => {
-    globalThis.komerza.addToBasket({ productId, variantId, quantity })
+    globalThis.komerza.addToBasket(productId, variantId, quantity);
     refreshItems()
   }
 
   const removeItem = (productId: string, variantId: string) => {
-    globalThis.komerza.removeFromBasket({ productId, variantId })
-    refreshItems()
-  }
+    globalThis.komerza.removeFromBasket(productId, variantId);
+    refreshItems();
+  };
+
+  const updateQuantity = (
+    productId: string,
+    variantId: string,
+    quantity: number
+  ) => {
+    // Remove the item first, then add it back with the new quantity
+    globalThis.komerza.removeFromBasket(productId, variantId);
+    if (quantity > 0) {
+      globalThis.komerza.addToBasket(productId, variantId, quantity);
+    }
+    refreshItems();
+  };
 
   const clearCart = () => {
     globalThis.komerza.clearBasket()
@@ -70,10 +88,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <CartContext.Provider value={{ state, dispatch, addItem, removeItem, clearCart }}>
+    <CartContext.Provider
+      value={{
+        state,
+        dispatch,
+        addItem,
+        removeItem,
+        updateQuantity,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
-  )
+  );
 }
 
 export function useCart() {

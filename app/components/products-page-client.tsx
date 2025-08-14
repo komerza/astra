@@ -205,7 +205,9 @@ export function ProductsPageClient() {
         {/* Results Summary */}
         <div className="flex items-center justify-between">
           <p className="text-theme-secondary text-sm">
-            Showing {startIndex + 1}-{Math.min(endIndex, filteredProducts.length)} of {filteredProducts.length} products
+            Showing {startIndex + 1}-
+            {Math.min(endIndex, filteredProducts.length)} of{" "}
+            {filteredProducts.length} products
           </p>
           {totalPages > 1 && (
             <p className="text-theme-secondary text-sm">
@@ -224,7 +226,10 @@ export function ProductsPageClient() {
             }
           >
             {currentProducts.map((product) => (
-              <Link key={product.id} href={`/products/${product.slug}`}>
+              <Link
+                key={product.id}
+                href={`/product?slug=${encodeURIComponent(product.slug)}`}
+              >
                 {viewMode === "grid" ? (
                   // Grid View - Using EXACT same cards from home page
                   <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
@@ -238,11 +243,19 @@ export function ProductsPageClient() {
                       />
                       {product.popular && (
                         <div className="absolute top-2 left-2">
-                          <Badge className="bg-[#3B82F6] text-white border-0 text-xs">Popular</Badge>
+                          <Badge className="bg-[#3B82F6] text-white border-0 text-xs">
+                            Popular
+                          </Badge>
                         </div>
                       )}
                       <div className="absolute top-2 right-2">
-                        <Badge className={`border-0 text-xs ${getStatusColor(product.status)}`}>{product.status}</Badge>
+                        <Badge
+                          className={`border-0 text-xs ${getStatusColor(
+                            product.status
+                          )}`}
+                        >
+                          {product.status}
+                        </Badge>
                       </div>
                     </div>
                     <div className="flex flex-1 flex-col gap-2 p-2">
@@ -258,7 +271,9 @@ export function ProductsPageClient() {
                           <span>Buy Now</span>
                         </Button>
                         <div className="flex flex-col items-center sm:items-end">
-                          <span className="text-center sm:text-end text-xs text-theme-secondary">Starting at</span>
+                          <span className="text-center sm:text-end text-xs text-theme-secondary">
+                            Starting at
+                          </span>
                           <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
                             <span className="mr-0.5 text-lg sm:text-xl">€</span>
                             {product.basePrice.toFixed(2)}
@@ -282,14 +297,28 @@ export function ProductsPageClient() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-semibold text-theme-primary truncate">{product.name}</h3>
+                          <h3 className="text-lg font-semibold text-theme-primary truncate">
+                            {product.name}
+                          </h3>
                           <Badge className="bg-theme-tertiary text-theme-secondary border-0 text-xs">
                             {getGameAbbreviation(product.game)}
                           </Badge>
-                          {product.popular && <Badge className="bg-[#3B82F6] text-white border-0 text-xs">Popular</Badge>}
-                          <Badge className={`border-0 text-xs ${getStatusColor(product.status)}`}>{product.status}</Badge>
+                          {product.popular && (
+                            <Badge className="bg-[#3B82F6] text-white border-0 text-xs">
+                              Popular
+                            </Badge>
+                          )}
+                          <Badge
+                            className={`border-0 text-xs ${getStatusColor(
+                              product.status
+                            )}`}
+                          >
+                            {product.status}
+                          </Badge>
                         </div>
-                        <p className="text-theme-secondary text-sm mb-2">{product.description}</p>
+                        <p className="text-theme-secondary text-sm mb-2">
+                          {product.description}
+                        </p>
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1">
                             <div className="flex items-center">
@@ -297,15 +326,23 @@ export function ProductsPageClient() {
                                 <Star
                                   key={i}
                                   className={`w-3 h-3 ${
-                                    i < Math.floor(product.rating) ? "text-[#3B82F6] fill-[#3B82F6]" : "text-gray-600"
+                                    i < Math.floor(product.rating)
+                                      ? "text-[#3B82F6] fill-[#3B82F6]"
+                                      : "text-gray-600"
                                   }`}
                                 />
                               ))}
                             </div>
-                            <span className="text-theme-primary text-sm">{product.rating}</span>
-                            <span className="text-theme-secondary text-xs">({product.reviews})</span>
+                            <span className="text-theme-primary text-sm">
+                              {product.rating}
+                            </span>
+                            <span className="text-theme-secondary text-xs">
+                              ({product.reviews})
+                            </span>
                           </div>
-                          <div className="text-lg font-bold text-[#3B82F6]">€{product.basePrice.toFixed(2)}</div>
+                          <div className="text-lg font-bold text-[#3B82F6]">
+                            €{product.basePrice.toFixed(2)}
+                          </div>
                         </div>
                       </div>
                       <Button className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-4 text-sm flex-shrink-0">
@@ -332,23 +369,27 @@ export function ProductsPageClient() {
             </Button>
 
             <div className="flex items-center gap-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <Button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`h-8 w-8 p-0 text-sm ${
-                    currentPage === page
-                      ? "bg-[#3B82F6] text-white"
-                      : "bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary"
-                  }`}
-                >
-                  {page}
-                </Button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <Button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`h-8 w-8 p-0 text-sm ${
+                      currentPage === page
+                        ? "bg-[#3B82F6] text-white"
+                        : "bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary"
+                    }`}
+                  >
+                    {page}
+                  </Button>
+                )
+              )}
             </div>
 
             <Button
-              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              onClick={() =>
+                setCurrentPage(Math.min(totalPages, currentPage + 1))
+              }
               disabled={currentPage === totalPages}
               className="bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary h-8 w-8 p-0"
             >
@@ -362,14 +403,18 @@ export function ProductsPageClient() {
           <div className="text-center py-12">
             <div className="bg-theme-secondary border border-theme rounded-2xl p-8 max-w-md mx-auto">
               <Package className="w-12 h-12 text-theme-secondary mx-auto mb-4" />
-              <h3 className="text-theme-primary text-lg font-medium mb-2">No products found</h3>
-              <p className="text-theme-secondary text-sm mb-4">Try adjusting your search or filter criteria</p>
+              <h3 className="text-theme-primary text-lg font-medium mb-2">
+                No products found
+              </h3>
+              <p className="text-theme-secondary text-sm mb-4">
+                Try adjusting your search or filter criteria
+              </p>
               <Button
                 onClick={() => {
-                  setSearchQuery("")
-                  setSelectedCategory("all")
-                  setSelectedPriceRange("all")
-                  setCurrentPage(1)
+                  setSearchQuery("");
+                  setSelectedCategory("all");
+                  setSelectedPriceRange("all");
+                  setCurrentPage(1);
                 }}
                 className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-4 text-sm"
               >
@@ -381,10 +426,16 @@ export function ProductsPageClient() {
       </div>
 
       {/* Right Sidebar - Search and Filters */}
-      <div className={`w-80 space-y-6 ${showFilters ? "block" : "hidden lg:block"}`}>
+      <div
+        className={`w-80 space-y-6 ${
+          showFilters ? "block" : "hidden lg:block"
+        }`}
+      >
         {/* Search Box */}
         <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
-          <h3 className="text-theme-primary font-medium mb-4">Search Products</h3>
+          <h3 className="text-theme-primary font-medium mb-4">
+            Search Products
+          </h3>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-secondary w-4 h-4" />
             <input
@@ -432,7 +483,9 @@ export function ProductsPageClient() {
           <div className="space-y-4">
             {/* Category Filter */}
             <div>
-              <label className="block text-theme-primary text-sm font-medium mb-2">Category</label>
+              <label className="block text-theme-primary text-sm font-medium mb-2">
+                Category
+              </label>
               <CustomDropdown
                 options={categories}
                 value={selectedCategory}
@@ -443,7 +496,9 @@ export function ProductsPageClient() {
 
             {/* Price Filter */}
             <div>
-              <label className="block text-theme-primary text-sm font-medium mb-2">Price Range</label>
+              <label className="block text-theme-primary text-sm font-medium mb-2">
+                Price Range
+              </label>
               <CustomDropdown
                 options={priceRanges}
                 value={selectedPriceRange}
@@ -454,18 +509,27 @@ export function ProductsPageClient() {
 
             {/* Sort Filter */}
             <div>
-              <label className="block text-theme-primary text-sm font-medium mb-2">Sort By</label>
-              <CustomDropdown options={sortOptions} value={sortBy} onChange={setSortBy} placeholder="Sort by" />
+              <label className="block text-theme-primary text-sm font-medium mb-2">
+                Sort By
+              </label>
+              <CustomDropdown
+                options={sortOptions}
+                value={sortBy}
+                onChange={setSortBy}
+                placeholder="Sort by"
+              />
             </div>
 
             {/* Clear Filters */}
-            {(searchQuery || selectedCategory !== "all" || selectedPriceRange !== "all") && (
+            {(searchQuery ||
+              selectedCategory !== "all" ||
+              selectedPriceRange !== "all") && (
               <Button
                 onClick={() => {
-                  setSearchQuery("")
-                  setSelectedCategory("all")
-                  setSelectedPriceRange("all")
-                  setCurrentPage(1)
+                  setSearchQuery("");
+                  setSelectedCategory("all");
+                  setSelectedPriceRange("all");
+                  setCurrentPage(1);
                 }}
                 className="w-full bg-transparent text-[#3B82F6] hover:bg-[#3B82F6]/10 h-8 px-3 text-sm border border-[#3B82F6]/30"
               >
@@ -476,5 +540,5 @@ export function ProductsPageClient() {
         </div>
       </div>
     </div>
-  )
+  );
 }

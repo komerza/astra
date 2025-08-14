@@ -182,7 +182,13 @@ export default function StatusPage() {
       <header className="h-16 flex items-center justify-between container mx-auto top-0 absolute inset-x-0 z-50 px-4 sm:px-6">
         <div className="flex items-center space-x-8">
           <Link href="/">
-            <Image src="/kimera-logo.svg" alt="Komerza" width={138} height={55} className="h-8 sm:h-9 w-auto" />
+            <Image
+              src="/kimera-logo.svg"
+              alt="Komerza"
+              width={138}
+              height={55}
+              className="h-8 sm:h-9 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -192,37 +198,47 @@ export default function StatusPage() {
               className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
             >
               <Home className="w-[18px] h-[18px]" />
-              <span className="text-sm font-normal tracking-20-smaller">Home</span>
+              <span className="text-sm font-normal tracking-20-smaller">
+                Home
+              </span>
             </Link>
             <Link
               href="/#products"
               className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
             >
               <Package className="w-[18px] h-[18px]" />
-              <span className="text-sm font-normal tracking-20-smaller">Products</span>
+              <span className="text-sm font-normal tracking-20-smaller">
+                Products
+              </span>
             </Link>
             <Link
               href="/status"
               className="text-[#3B82F6] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-[#3B82F6]/10 px-2.5 py-1.5 transition-colors duration-300"
             >
               <Activity className="w-[18px] h-[18px]" />
-              <span className="text-sm font-normal tracking-20-smaller">Status</span>
+              <span className="text-sm font-normal tracking-20-smaller">
+                Status
+              </span>
             </Link>
             <Link
               href="#"
               className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
             >
               <HelpCircle className="w-[18px] h-[18px]" />
-              <span className="text-sm font-normal tracking-20-smaller">Support</span>
+              <span className="text-sm font-normal tracking-20-smaller">
+                Support
+              </span>
             </Link>
           </div>
         </div>
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-2">
-          <ThemeToggle />
-          <SearchButton />
-          <CartButton />
+          <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
+            <SearchButton />
+            <CartButton />
+          </div>
           <Link href="/dashboard">
             <Button className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-4 py-2 rounded-md flex items-center gap-2 text-sm tracking-20-smaller transition-all duration-300 font-normal">
               <LayoutDashboard className="w-[18px] h-[18px]" />
@@ -259,9 +275,12 @@ export default function StatusPage() {
                 </div>
               </div>
             </div>
-            <h1 className="text-3xl sm:text-4xl heading-semibold text-theme-primary mb-4">Product Status Dashboard</h1>
+            <h1 className="text-3xl sm:text-4xl heading-semibold text-theme-primary mb-4">
+              Product Status Dashboard
+            </h1>
             <p className="text-theme-secondary text-sm sm:text-base max-w-2xl mx-auto">
-              Real-time status monitoring for all our products. Check current operational status and system health.
+              Real-time status monitoring for all our products. Check current
+              operational status and system health.
             </p>
           </div>
 
@@ -269,15 +288,21 @@ export default function StatusPage() {
           <div className="flex flex-wrap items-center justify-center gap-4 mb-8 sm:mb-12">
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/30">
               <Shield className="w-4 h-4 text-green-500" />
-              <span className="text-green-500 text-sm font-medium">Available ({undetectedCount})</span>
+              <span className="text-green-500 text-sm font-medium">
+                Available ({undetectedCount})
+              </span>
             </div>
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/30">
               <RefreshCw className="w-4 h-4 text-blue-500" />
-              <span className="text-blue-500 text-sm font-medium">Updating ({updatingCount})</span>
+              <span className="text-blue-500 text-sm font-medium">
+                Updating ({updatingCount})
+              </span>
             </div>
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/30">
               <AlertTriangle className="w-4 h-4 text-red-500" />
-              <span className="text-red-500 text-sm font-medium">Limited ({riskyCount})</span>
+              <span className="text-red-500 text-sm font-medium">
+                Limited ({riskyCount})
+              </span>
             </div>
           </div>
 
@@ -301,7 +326,9 @@ export default function StatusPage() {
           {/* Products List */}
           <div className="space-y-6 max-w-5xl mx-auto">
             {Object.entries(productStatusesByGame)
-              .filter(([game]) => activeCategory === "All" || activeCategory === game)
+              .filter(
+                ([game]) => activeCategory === "All" || activeCategory === game
+              )
               .map(([game, products]) => (
                 <div key={game} className="space-y-4">
                   {/* Game Section Header */}
@@ -315,8 +342,8 @@ export default function StatusPage() {
                   {/* Products in this game */}
                   <div className="space-y-3">
                     {products.map((product) => {
-                      const statusInfo = getStatusInfo(product.status)
-                      const StatusIcon = statusInfo.icon
+                      const statusInfo = getStatusInfo(product.status);
+                      const StatusIcon = statusInfo.icon;
 
                       return (
                         <div
@@ -338,16 +365,28 @@ export default function StatusPage() {
                               {/* Status Details */}
                               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-theme-secondary">
                                 <div className="flex items-center justify-between sm:justify-start">
-                                  <span className="text-theme-tertiary">Status Since:</span>
-                                  <span className="text-theme-primary ml-2">{product.undetectedSince}</span>
+                                  <span className="text-theme-tertiary">
+                                    Status Since:
+                                  </span>
+                                  <span className="text-theme-primary ml-2">
+                                    {product.undetectedSince}
+                                  </span>
                                 </div>
                                 <div className="flex items-center justify-between sm:justify-start">
-                                  <span className="text-theme-tertiary">Last Updated:</span>
-                                  <span className="text-theme-primary ml-2">{product.lastUpdated}</span>
+                                  <span className="text-theme-tertiary">
+                                    Last Updated:
+                                  </span>
+                                  <span className="text-theme-primary ml-2">
+                                    {product.lastUpdated}
+                                  </span>
                                 </div>
                                 <div className="flex items-center justify-between sm:justify-start">
-                                  <span className="text-theme-tertiary">Version:</span>
-                                  <span className="text-theme-primary ml-2">{product.version}</span>
+                                  <span className="text-theme-tertiary">
+                                    Version:
+                                  </span>
+                                  <span className="text-theme-primary ml-2">
+                                    {product.version}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -359,18 +398,30 @@ export default function StatusPage() {
                                 className={`px-3 py-2 rounded-lg ${statusInfo.bgColor} border ${statusInfo.borderColor} flex items-center gap-2`}
                               >
                                 <StatusIcon
-                                  className={`w-4 h-4 ${statusInfo.color} ${product.status === "updating" ? "animate-spin" : ""}`}
+                                  className={`w-4 h-4 ${statusInfo.color} ${
+                                    product.status === "updating"
+                                      ? "animate-spin"
+                                      : ""
+                                  }`}
                                 />
-                                <span className={`text-sm font-medium ${statusInfo.color} hidden sm:inline`}>
+                                <span
+                                  className={`text-sm font-medium ${statusInfo.color} hidden sm:inline`}
+                                >
                                   {statusInfo.label}
                                 </span>
                               </div>
 
                               {/* Purchase Button */}
-                              <Link href={`/products/${product.id}`}>
+                              <Link
+                                href={`/product?slug=${encodeURIComponent(
+                                  product.id
+                                )}`}
+                              >
                                 <Button className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 px-4 py-2 rounded-md flex items-center gap-2 text-sm tracking-20-smaller transition-all duration-300 font-normal whitespace-nowrap">
                                   <ShoppingCart className="w-4 h-4" />
-                                  <span className="hidden sm:inline">Purchase Now</span>
+                                  <span className="hidden sm:inline">
+                                    Purchase Now
+                                  </span>
                                   <span className="sm:hidden">Buy</span>
                                 </Button>
                               </Link>
@@ -380,17 +431,25 @@ export default function StatusPage() {
                           {/* Mobile Status Info */}
                           <div className="sm:hidden mt-3 pt-3 border-t border-theme">
                             <div className="flex items-center justify-between text-xs">
-                              <span className="text-theme-tertiary">Status:</span>
+                              <span className="text-theme-tertiary">
+                                Status:
+                              </span>
                               <div className="flex items-center gap-2">
                                 <StatusIcon
-                                  className={`w-3 h-3 ${statusInfo.color} ${product.status === "updating" ? "animate-spin" : ""}`}
+                                  className={`w-3 h-3 ${statusInfo.color} ${
+                                    product.status === "updating"
+                                      ? "animate-spin"
+                                      : ""
+                                  }`}
                                 />
-                                <span className={statusInfo.color}>{statusInfo.description}</span>
+                                <span className={statusInfo.color}>
+                                  {statusInfo.description}
+                                </span>
                               </div>
                             </div>
                           </div>
                         </div>
-                      )
+                      );
                     })}
                   </div>
                 </div>
@@ -398,11 +457,16 @@ export default function StatusPage() {
           </div>
 
           {/* Empty State */}
-          {Object.entries(productStatusesByGame).filter(([game]) => activeCategory === "All" || activeCategory === game)
-            .length === 0 && (
+          {Object.entries(productStatusesByGame).filter(
+            ([game]) => activeCategory === "All" || activeCategory === game
+          ).length === 0 && (
             <div className="text-center py-12">
-              <div className="text-theme-secondary text-lg mb-2">No products found</div>
-              <div className="text-theme-tertiary text-sm">Try selecting a different category</div>
+              <div className="text-theme-secondary text-lg mb-2">
+                No products found
+              </div>
+              <div className="text-theme-tertiary text-sm">
+                Try selecting a different category
+              </div>
             </div>
           )}
 
@@ -413,7 +477,9 @@ export default function StatusPage() {
                 <RefreshCw className="w-4 h-4" />
                 <span>Status page last updated: Just now</span>
               </div>
-              <p className="text-xs text-theme-tertiary mt-2">This page refreshes automatically every 30 seconds</p>
+              <p className="text-xs text-theme-tertiary mt-2">
+                This page refreshes automatically every 30 seconds
+              </p>
             </div>
           </div>
         </div>
@@ -424,7 +490,13 @@ export default function StatusPage() {
         <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <Image src="/kimera-logo.svg" alt="Komerza" width={120} height={48} className="h-6 sm:h-8 w-auto" />
+              <Image
+                src="/kimera-logo.svg"
+                alt="Komerza"
+                width={120}
+                height={48}
+                className="h-6 sm:h-8 w-auto"
+              />
             </div>
 
             <div className="flex items-center space-x-4 sm:space-x-6 mb-4 md:mb-0">
@@ -457,5 +529,5 @@ export default function StatusPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

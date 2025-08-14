@@ -23,12 +23,33 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} dark`}>
       <head>
         <script src="https://cdn.komerza.com/komerza.min.js"></script>
         <script
           dangerouslySetInnerHTML={{
-            __html: `globalThis.komerza.init("${KOMERZA_STORE_ID}");`,
+            __html: `
+              function initKomerza() {
+                if (typeof globalThis.komerza !== 'undefined') {
+                  console.log('Initializing Komerza with store ID: ${KOMERZA_STORE_ID}');
+                  globalThis.komerza.init("${KOMERZA_STORE_ID}");
+                  console.log('Komerza initialized successfully');
+                } else {
+                  console.error('Komerza API not available');
+                  setTimeout(initKomerza, 100); // Retry after 100ms
+                }
+              }
+              // Force dark mode on document ready
+              document.documentElement.classList.add('dark');
+              document.documentElement.classList.remove('light');
+              localStorage.setItem('theme', 'dark');
+              
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initKomerza);
+              } else {
+                initKomerza();
+              }
+            `,
           }}
         />
       </head>
@@ -36,5 +57,5 @@ export default function RootLayout({
         <CartProvider>{children}</CartProvider>
       </body>
     </html>
-  )
+  );
 }
