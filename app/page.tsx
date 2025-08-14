@@ -1,14 +1,10 @@
 import Link from "next/link"
-import { ArrowUpRight, Home, Package, HelpCircle, LayoutDashboard, Activity } from "lucide-react"
+import { ArrowUpRight, Package, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
-import { SmilePlus, ShoppingCart } from "lucide-react"
-import { CartButton } from "./components/cart-button"
-import { SearchButton } from "./components/search-button"
-import { ParticleRiver } from "./components/particle-river"
-import { MobileNav } from "./components/mobile-nav"
-import { ThemeToggle } from "./components/theme-toggle"
+import { SmilePlus, ShoppingCart } from "lucide-react";
+import { ParticleRiver } from "./components/particle-river";
 import { StickyHeader } from "./components/sticky-header"
 
 export default function LandingPage() {
