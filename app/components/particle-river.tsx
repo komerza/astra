@@ -16,7 +16,7 @@ interface Particle {
 
 export function ParticleRiver() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number>(0);
   const particlesRef = useRef<Particle[]>([])
 
   useEffect(() => {
