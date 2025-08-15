@@ -379,54 +379,6 @@
     overflow: hidden;
   }
 
-  /* Custom Scrollbar Utilities */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-  }
-
-  .scrollbar-none {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Premium scrollbar for special areas */
-  .scrollbar-premium::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-
-  .scrollbar-premium::-webkit-scrollbar-track {
-    background: var(--color-gray-100);
-    border-radius: 5px;
-  }
-
-  .scrollbar-premium::-webkit-scrollbar-thumb {
-    background: linear-gradient(45deg, var(--color-primary-400), var(--color-primary-500));
-    border-radius: 5px;
-    border: 1px solid var(--color-primary-200);
-  }
-
-  .scrollbar-premium::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(45deg, var(--color-primary-500), var(--color-primary-600));
-  }
-
-  .dark .scrollbar-premium::-webkit-scrollbar-track {
-    background: var(--color-gray-800);
-  }
-
-  .dark .scrollbar-premium::-webkit-scrollbar-thumb {
-    background: linear-gradient(45deg, var(--color-primary-600), var(--color-primary-500));
-    border: 1px solid var(--color-primary-800);
-  }
-
-  .dark .scrollbar-premium::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(45deg, var(--color-primary-500), var(--color-primary-400));
-  }
-
   /* Header blur effect */
   .header-blur {
     backdrop-filter: blur(20px);

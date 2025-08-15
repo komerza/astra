@@ -4,8 +4,7 @@ import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
+import { Label } from "@/components/ui/label";
 import { Users, Link as LinkIcon, DollarSign, Percent, ArrowRight, Copy, Edit, CheckCircle } from "lucide-react"
 
 export function AffiliatesSection() {
