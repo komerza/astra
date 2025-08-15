@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Package,
   Search,
@@ -13,6 +14,9 @@ import {
   ChevronRight,
   Calendar,
   CreditCard,
+  Star,
+  MessageSquare,
+  X,
 } from "lucide-react";
 
 // Type definitions from Komerza API
@@ -166,16 +170,6 @@ export function OrdersSection() {
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="flex items-center justify-center mb-6">
-        <div className="bg-[#3B82F6]/10 text-xs flex flex-row items-center gap-2 pl-3 sm:pl-4 pr-6 sm:pr-8 py-1 rounded-full shadow-sm border border-[#3B82F6]/50 relative">
-          <span className="text-theme-primary">Order Management</span>
-          <div className="absolute grid place-items-center top-1/2 -translate-y-1/2 right-[2px] text-white w-4 h-4 sm:w-5 sm:h-5 bg-[#3B82F6] rounded-full">
-            <Package className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-          </div>
-        </div>
-      </div>
-
       {/* Search */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
@@ -422,6 +416,225 @@ export function OrdersSection() {
   );
 }
 
+// Review Modal Component
+function ReviewModal({
+  isOpen,
+  onClose,
+  product,
+  onSubmit,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  product: { id: string; name: string };
+  onSubmit: (rating: number, reason: string) => Promise<boolean>;
+}) {
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [reason, setReason] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  const handleSubmit = async () => {
+    if (rating === 0 || !reason.trim()) return;
+
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const success = await onSubmit(rating, reason.trim());
+      if (success) {
+        setSubmitStatus({
+          type: "success",
+          message: "Review submitted successfully!",
+        });
+        // Auto close after 2 seconds
+        setTimeout(() => {
+          setRating(0);
+          setHoverRating(0);
+          setReason("");
+          setSubmitStatus({ type: null, message: "" });
+          onClose();
+        }, 2000);
+      }
+    } catch (error: any) {
+      setSubmitStatus({
+        type: "error",
+        message: error.message || "Failed to submit review. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <div className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-theme-primary border border-theme rounded-2xl shadow-2xl z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-semibold text-theme-primary">
+                Leave a Review
+              </h2>
+              <p className="text-theme-secondary text-sm mt-1">
+                Rate your experience with this product
+              </p>
+            </div>
+            <Button
+              onClick={onClose}
+              variant="ghost"
+              className="text-theme-secondary hover:text-red-500 hover:bg-red-500/20 h-8 w-8 p-0 rounded-md"
+              disabled={isSubmitting}
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+
+          {/* Status Message */}
+          {submitStatus.type && (
+            <div
+              className={`p-4 rounded-lg mb-6 border ${
+                submitStatus.type === "success"
+                  ? "bg-green-500/10 border-green-500/20 text-green-600"
+                  : "bg-red-500/10 border-red-500/20 text-red-600"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                {submitStatus.type === "success" ? (
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                ) : (
+                  <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                    <X className="w-3 h-3 text-white" />
+                  </div>
+                )}
+                <p className="font-medium">{submitStatus.message}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Product Info */}
+          <div className="bg-theme-secondary p-4 rounded-lg mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-[#3B82F6]/10 rounded-lg flex items-center justify-center">
+                <Package className="w-5 h-5 text-[#3B82F6]" />
+              </div>
+              <div>
+                <h3 className="font-medium text-theme-primary">
+                  {product.name}
+                </h3>
+                <p className="text-theme-secondary text-sm">Product Review</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Rating Stars */}
+          <div className="mb-6">
+            <label className="block text-theme-primary font-medium mb-3">
+              Rating *
+            </label>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  className="p-1 rounded-md transition-colors hover:bg-theme-secondary"
+                  disabled={isSubmitting || submitStatus.type === "success"}
+                >
+                  <Star
+                    className={`w-6 h-6 transition-colors ${
+                      star <= (hoverRating || rating)
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-theme-secondary"
+                    }`}
+                  />
+                </button>
+              ))}
+              {rating > 0 && (
+                <span className="ml-2 text-theme-secondary text-sm">
+                  {rating} out of 5 stars
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Review Text */}
+          <div className="mb-6">
+            <label className="block text-theme-primary font-medium mb-2">
+              Review *
+            </label>
+            <Textarea
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Share your experience with this product..."
+              className="bg-theme-secondary border-theme text-theme-primary placeholder:text-theme-secondary resize-none h-32"
+              maxLength={500}
+              disabled={isSubmitting || submitStatus.type === "success"}
+            />
+            <p className="text-theme-secondary text-xs mt-2">
+              {reason.length}/500 characters
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={onClose}
+              variant="ghost"
+              className="flex-1 text-theme-secondary hover:text-theme-primary hover:bg-theme-secondary h-10"
+              disabled={isSubmitting}
+            >
+              {submitStatus.type === "success" ? "Close" : "Cancel"}
+            </Button>
+            {submitStatus.type !== "success" && (
+              <Button
+                onClick={handleSubmit}
+                disabled={rating === 0 || !reason.trim() || isSubmitting}
+                className="flex-1 bg-[#3B82F6] hover:bg-[#2563EB] text-white h-10 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Submitting...
+                  </div>
+                ) : (
+                  "Submit Review"
+                )}
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 // Order Detail View Component
 function OrderDetailView({
   order,
@@ -430,6 +643,16 @@ function OrderDetailView({
   order: Order;
   onBack: () => void;
 }) {
+  const [reviewModal, setReviewModal] = useState<{
+    isOpen: boolean;
+    product?: LineItem;
+  }>({
+    isOpen: false,
+  });
+  const [reviewedProducts, setReviewedProducts] = useState<Set<string>>(
+    new Set()
+  );
+
   const formatCurrency = (amount: number, currencyCode: string) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -453,6 +676,51 @@ function OrderDetailView({
       default:
         return "text-gray-600 bg-gray-500/10 border-gray-500/20";
     }
+  };
+
+  const handleSubmitReview = async (
+    rating: number,
+    reason: string
+  ): Promise<boolean> => {
+    if (!reviewModal.product) return false;
+
+    try {
+      const response = await globalThis.komerza.createReview(
+        reviewModal.product.productId,
+        rating,
+        reason
+      );
+
+      if (response.success) {
+        // Add product to reviewed set
+        setReviewedProducts(
+          (prev) => new Set([...prev, reviewModal.product!.productId])
+        );
+        return true;
+      } else {
+        // Throw error with the message from API
+        throw new Error(response.message || "Failed to submit review");
+      }
+    } catch (error: any) {
+      // Re-throw with proper error message
+      throw new Error(
+        error.message || "Network error occurred while submitting review"
+      );
+    }
+  };
+
+  const canReview = (item: LineItem) => {
+    // Allow reviews if order is completed/delivered and not already reviewed
+    const isOrderComplete =
+      order.status.toLowerCase() === "completed" ||
+      order.status.toLowerCase() === "delivered" ||
+      order.status.toLowerCase() === "active";
+    const notReviewed = !reviewedProducts.has(item.productId);
+    return isOrderComplete && notReviewed;
+  };
+
+  const hasReviewed = (item: LineItem) => {
+    return reviewedProducts.has(item.productId);
   };
 
   return (
@@ -536,26 +804,57 @@ function OrderDetailView({
               key={item.id}
               className="flex items-center justify-between p-4 bg-theme-primary rounded-lg"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-1">
                 <div className="w-12 h-12 bg-[#3B82F6]/10 rounded-lg flex items-center justify-center">
                   <Package className="w-6 h-6 text-[#3B82F6]" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h4 className="text-theme-primary font-medium">
                     {item.productName}
                   </h4>
                   <p className="text-theme-secondary text-sm tracking-20-smaller">
                     {item.variantName} × {item.quantity}
                   </p>
+                  {hasReviewed(item) && (
+                    <div className="flex items-center gap-1 mt-1">
+                      <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                      <span className="text-green-600 text-xs font-medium">
+                        Reviewed
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-theme-primary font-medium">
-                  {formatCurrency(item.amount, order.currencyCode)}
-                </p>
-                <p className="text-theme-secondary text-xs tracking-20-smaller">
-                  per item
-                </p>
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <p className="text-theme-primary font-medium">
+                    {formatCurrency(item.amount, order.currencyCode)}
+                  </p>
+                  <p className="text-theme-secondary text-xs tracking-20-smaller">
+                    per item
+                  </p>
+                </div>
+                {canReview(item) ? (
+                  <Button
+                    onClick={() =>
+                      setReviewModal({ isOpen: true, product: item })
+                    }
+                    variant="ghost"
+                    className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 h-8 px-3 text-xs"
+                  >
+                    <Star className="w-4 h-4 mr-1" />
+                    Review
+                  </Button>
+                ) : hasReviewed(item) ? (
+                  <Button
+                    variant="ghost"
+                    className="text-green-600 hover:text-green-700 hover:bg-green-500/10 h-8 px-3 text-xs cursor-default"
+                    disabled
+                  >
+                    <Star className="w-4 h-4 mr-1 fill-green-600" />
+                    Reviewed
+                  </Button>
+                ) : null}
               </div>
             </div>
           ))}
@@ -615,6 +914,21 @@ function OrderDetailView({
           </CardContent>
         </Card>
       )}
+
+      {/* Review Modal */}
+      <ReviewModal
+        isOpen={reviewModal.isOpen}
+        onClose={() => setReviewModal({ isOpen: false })}
+        product={
+          reviewModal.product
+            ? {
+                id: reviewModal.product.productId,
+                name: reviewModal.product.productName,
+              }
+            : { id: "", name: "" }
+        }
+        onSubmit={handleSubmitReview}
+      />
     </div>
   );
 }

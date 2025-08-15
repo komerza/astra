@@ -16,6 +16,7 @@ import {
   Grid,
   List,
   ChevronDown,
+  X
 } from "lucide-react";
 
 // Define missing interfaces
@@ -491,116 +492,158 @@ export function ProductsPageClient() {
       </div>
 
       {/* Right Sidebar - Search and Filters */}
+      {/* Mobile: Overlay panel, Desktop: Sidebar */}
       <div
-        className={`w-80 space-y-6 ${
-          showFilters ? "block" : "hidden lg:block"
-        }`}
+        className={`
+        ${
+          showFilters
+            ? "lg:relative lg:w-80 fixed inset-0 z-50 lg:z-auto bg-black/50 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none"
+            : "hidden lg:block lg:w-80"
+        }
+      `}
       >
-        {/* Search Box */}
-        <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
-          <h3 className="text-theme-primary font-medium mb-4">
-            Search Products
-          </h3>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-secondary w-4 h-4" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products..."
-              className="w-full pl-10 pr-3 py-2 bg-theme-primary border border-theme rounded-lg text-theme-primary placeholder:text-theme-secondary h-10 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/20 focus:border-[#3B82F6]/50 transition-colors duration-200"
-            />
-          </div>
-        </div>
+        {/* Mobile backdrop - only visible on mobile when filters are shown */}
+        {showFilters && (
+          <div
+            className="absolute inset-0 lg:hidden"
+            onClick={() => setShowFilters(false)}
+          />
+        )}
 
-        {/* View Options */}
-        <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
-          <h3 className="text-theme-primary font-medium mb-4">View Options</h3>
-          <div className="flex gap-2">
-            <Button
-              onClick={() => setViewMode("grid")}
-              className={`flex-1 h-10 p-0 ${
-                viewMode === "grid"
-                  ? "bg-[#3B82F6] text-white"
-                  : "bg-transparent border border-theme text-theme-primary hover:bg-theme-tertiary"
-              }`}
-            >
-              <Grid className="w-4 h-4 mr-2" />
-              Grid
-            </Button>
-            <Button
-              onClick={() => setViewMode("list")}
-              className={`flex-1 h-10 p-0 ${
-                viewMode === "list"
-                  ? "bg-[#3B82F6] text-white"
-                  : "bg-transparent border border-theme text-theme-primary hover:bg-theme-tertiary"
-              }`}
-            >
-              <List className="w-4 h-4 mr-2" />
-              List
-            </Button>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
-          <h3 className="text-theme-primary font-medium mb-4">Filters</h3>
-          <div className="space-y-4">
-            {/* Category Filter */}
-            <div>
-              <label className="block text-theme-primary text-sm font-medium mb-2">
-                Category
-              </label>
-              <CustomDropdown
-                options={categories}
-                value={selectedCategory}
-                onChange={setSelectedCategory}
-                placeholder="Select category"
-              />
-            </div>
-
-            {/* Price Filter */}
-            <div>
-              <label className="block text-theme-primary text-sm font-medium mb-2">
-                Price Range
-              </label>
-              <CustomDropdown
-                options={priceRanges}
-                value={selectedPriceRange}
-                onChange={setSelectedPriceRange}
-                placeholder="Select price range"
-              />
-            </div>
-
-            {/* Sort Filter */}
-            <div>
-              <label className="block text-theme-primary text-sm font-medium mb-2">
-                Sort By
-              </label>
-              <CustomDropdown
-                options={sortOptions}
-                value={sortBy}
-                onChange={setSortBy}
-                placeholder="Sort by"
-              />
-            </div>
-
-            {/* Clear Filters */}
-            {(searchQuery ||
-              selectedCategory !== "all" ||
-              selectedPriceRange !== "all") && (
+        {/* Filter panel */}
+        <div
+          className={`
+          lg:space-y-6 
+          ${
+            showFilters
+              ? "absolute right-0 top-0 h-full w-80 bg-theme-primary border-l border-theme shadow-2xl p-4 space-y-6 overflow-y-auto lg:relative lg:w-auto lg:h-auto lg:bg-transparent lg:border-0 lg:shadow-none lg:p-0"
+              : "space-y-6"
+          }
+        `}
+        >
+          {/* Close button - only on mobile */}
+          {showFilters && (
+            <div className="flex items-center justify-between lg:hidden mb-4">
+              <h2 className="text-theme-primary text-lg font-semibold">
+                Filters
+              </h2>
               <Button
-                onClick={() => {
-                  setSearchQuery("");
-                  setSelectedCategory("all");
-                  setSelectedPriceRange("all");
-                  setCurrentPage(1);
-                }}
-                className="w-full bg-transparent text-[#3B82F6] hover:bg-[#3B82F6]/10 h-8 px-3 text-sm border border-[#3B82F6]/30"
+                onClick={() => setShowFilters(false)}
+                className="bg-transparent hover:bg-theme-secondary text-theme-primary h-8 w-8 p-0 rounded-md"
               >
-                Clear All Filters
+                <X className="w-4 h-4" />
               </Button>
-            )}
+            </div>
+          )}
+
+          {/* Search Box */}
+          <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
+            <h3 className="text-theme-primary font-medium mb-4">
+              Search Products
+            </h3>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-secondary w-4 h-4" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products..."
+                className="w-full pl-10 pr-3 py-2 bg-theme-primary border border-theme rounded-lg text-theme-primary placeholder:text-theme-secondary h-10 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/20 focus:border-[#3B82F6]/50 transition-colors duration-200"
+              />
+            </div>
+          </div>
+
+          {/* View Options */}
+          <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
+            <h3 className="text-theme-primary font-medium mb-4">
+              View Options
+            </h3>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setViewMode("grid")}
+                className={`flex-1 h-10 p-0 ${
+                  viewMode === "grid"
+                    ? "bg-[#3B82F6] text-white"
+                    : "bg-transparent border border-theme text-theme-primary hover:bg-theme-tertiary"
+                }`}
+              >
+                <Grid className="w-4 h-4 mr-2" />
+                Grid
+              </Button>
+              <Button
+                onClick={() => setViewMode("list")}
+                className={`flex-1 h-10 p-0 ${
+                  viewMode === "list"
+                    ? "bg-[#3B82F6] text-white"
+                    : "bg-transparent border border-theme text-theme-primary hover:bg-theme-tertiary"
+                }`}
+              >
+                <List className="w-4 h-4 mr-2" />
+                List
+              </Button>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
+            <h3 className="text-theme-primary font-medium mb-4">Filters</h3>
+            <div className="space-y-4">
+              {/* Category Filter */}
+              <div>
+                <label className="block text-theme-primary text-sm font-medium mb-2">
+                  Category
+                </label>
+                <CustomDropdown
+                  options={categories}
+                  value={selectedCategory}
+                  onChange={setSelectedCategory}
+                  placeholder="Select category"
+                />
+              </div>
+
+              {/* Price Filter */}
+              <div>
+                <label className="block text-theme-primary text-sm font-medium mb-2">
+                  Price Range
+                </label>
+                <CustomDropdown
+                  options={priceRanges}
+                  value={selectedPriceRange}
+                  onChange={setSelectedPriceRange}
+                  placeholder="Select price range"
+                />
+              </div>
+
+              {/* Sort Filter */}
+              <div>
+                <label className="block text-theme-primary text-sm font-medium mb-2">
+                  Sort By
+                </label>
+                <CustomDropdown
+                  options={sortOptions}
+                  value={sortBy}
+                  onChange={setSortBy}
+                  placeholder="Sort by"
+                />
+              </div>
+
+              {/* Clear Filters */}
+              {(searchQuery ||
+                selectedCategory !== "all" ||
+                selectedPriceRange !== "all") && (
+                <Button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("all");
+                    setSelectedPriceRange("all");
+                    setCurrentPage(1);
+                  }}
+                  className="w-full bg-transparent text-[#3B82F6] hover:bg-[#3B82F6]/10 h-8 px-3 text-sm border border-[#3B82F6]/30"
+                >
+                  Clear All Filters
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>

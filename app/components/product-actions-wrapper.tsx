@@ -44,7 +44,7 @@ export function ProductActionsWrapper({ product }: ProductActionsWrapperProps) {
   const [currentPrice, setCurrentPrice] = useState(variants[0].price)
 
   // Default values for optional properties
-  const rating = product.rating || 4.5
+  const rating = product.rating || 0;
   const reviews = product.reviews || 0
   const category = product.category || "Standard"
 
