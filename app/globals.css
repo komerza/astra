@@ -87,7 +87,6 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --font-inter: var(--font-inter);
     --letter-spacing-20-smaller: -0.02em;
   }
 
@@ -154,8 +153,8 @@
   }
   body {
     @apply bg-background text-foreground transition-colors duration-300;
-    font-family: "Inter Variable", "Inter Placeholder", var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
-      Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
   }
 
   /* Custom Scrollbars - Global */
@@ -244,7 +243,7 @@
     letter-spacing: var(--letter-spacing-20-smaller);
   }
   .heading-semibold {
-    font-family: "Inter Variable", "Inter Placeholder", var(--font-inter), sans-serif;
+    font-family: "Inter", sans-serif;
     font-weight: 640;
     letter-spacing: -0.04em;
   }

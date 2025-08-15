@@ -1,81 +1,18 @@
-import Link from "next/link";
-import { Home, Package, Activity } from "lucide-react";
-import Image from "next/image";
-import { CartButton } from "@/app/components/cart-button";
-import { MobileNav } from "@/app/components/mobile-nav";
-import { SearchButton } from "@/app/components/search-button";
-import { ProductPageClient } from "@/app/components/product-page-client";
+"use client"
 
-export default function ProductQueryPage({
-  searchParams,
-}: {
-  searchParams: { slug?: string };
-}) {
-  const slug = searchParams.slug || "";
-  if (!slug) {
-    return (
-      <div className="min-h-screen bg-theme-primary flex flex-col items-center justify-center text-theme-primary">
-        <p className="mb-4">Missing product slug.</p>
-        <Link href="/products" className="underline">
-          Back to products
-        </Link>
-      </div>
-    );
-  }
-  return (
-    <div className="min-h-screen bg-theme-primary relative overflow-hidden">
-      <header className="h-16 flex items-center justify-between container mx-auto top-0 absolute inset-x-0 z-50 px-4 sm:px-6">
-        <div className="flex items-center space-x-8">
-          <Link href="/">
-            <Image
-              src="/kimera-logo.svg"
-              alt="Komerza"
-              width={138}
-              height={55}
-              className="h-8 sm:h-9 w-auto"
-            />
-          </Link>
-          <div className="items-center gap-4 hidden md:flex">
-            <Link
-              href="/"
-              className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
-            >
-              <Home className="w-[18px] h-[18px]" />
-              <span className="text-sm font-normal tracking-20-smaller">
-                Home
-              </span>
-            </Link>
-            <Link
-              href="/products"
-              className="text-[#3B82F6] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-[#3B82F6]/10 px-2.5 py-1.5 transition-colors duration-300"
-            >
-              <Package className="w-[18px] h-[18px]" />
-              <span className="text-sm font-normal tracking-20-smaller">
-                Products
-              </span>
-            </Link>
-            <Link
-              href="/status"
-              className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
-            >
-              <Activity className="w-[18px] h-[18px]" />
-              <span className="text-sm font-normal tracking-20-smaller">
-                Status
-              </span>
-            </Link>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <SearchButton />
-          <div className="hidden md:flex items-center gap-4">
-            <CartButton />
-          </div>
-          <MobileNav />
-        </div>
-      </header>
-      <main className="container mx-auto pt-24 px-4 sm:px-6">
-        <ProductPageClient slug={slug} />
-      </main>
-    </div>
-  );
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+
+export default function ProductRedirectPage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const slug = params.get("slug")
+    if (slug) {
+      router.replace(`/products/${encodeURIComponent(slug)}`)
+    }
+  }, [router])
+
+  return null
 }
