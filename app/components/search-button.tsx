@@ -88,7 +88,9 @@ export function SearchButton() {
           setFilteredProducts(mapped.filter((p) => p.popular).slice(0, 3));
         }
       } catch (error) {
-        console.error("Failed to load products:", error);
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Failed to load products:", error);
+        }
       } finally {
         setLoading(false);
       }

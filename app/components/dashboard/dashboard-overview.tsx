@@ -83,7 +83,9 @@ export function DashboardOverview({ onSectionChange }: DashboardOverviewProps) {
           setOrders(ordersRes.data);
         }
       } catch (error) {
-        console.error("Failed to fetch dashboard data:", error);
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Failed to fetch dashboard data:", error);
+        }
       } finally {
         setLoading(false);
       }

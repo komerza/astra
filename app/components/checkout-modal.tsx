@@ -47,12 +47,10 @@ export function CheckoutModal({
       return;
     }
 
-    console.log("Starting checkout process...");
     setIsCheckingOut(true);
 
     try {
       // Wait for komerza API to be available
-      console.log("Waiting for Komerza API...");
       const isReady = await waitForKomerza();
 
       if (!isReady) {
@@ -60,14 +58,6 @@ export function CheckoutModal({
           "Komerza API failed to load. Please refresh the page and try again."
         );
       }
-
-      console.log("globalThis.komerza:", globalThis.komerza);
-      console.log("Available methods:", Object.keys(globalThis.komerza));
-
-      console.log("Calling komerza.checkout with:", {
-        emailAddress: email.trim(),
-        couponCode: couponCode?.trim(),
-      });
 
       if (!couponCode) {
         couponCode = undefined;
@@ -78,8 +68,6 @@ export function CheckoutModal({
         couponCode?.trim()
       );
 
-      console.log("Checkout result:", result);
-
       addNotification({
         type: "success",
         title: "Checkout Started!",
@@ -89,7 +77,9 @@ export function CheckoutModal({
       onClose();
       setEmail("");
     } catch (error) {
-      console.error("Checkout error:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Checkout error:", error);
+      }
       addNotification({
         type: "error",
         title: "Checkout Failed",
