@@ -4,7 +4,6 @@ import Image from "next/image";
 import { CartButton } from "@/app/components/cart-button";
 import { MobileNav } from "@/app/components/mobile-nav";
 import { SearchButton } from "@/app/components/search-button";
-import { ThemeToggle } from "@/app/components/theme-toggle";
 import { ProductPageClient } from "@/app/components/product-page-client";
 
 export default function ProductQueryPage({
@@ -70,7 +69,6 @@ export default function ProductQueryPage({
           <SearchButton />
           <div className="hidden md:flex items-center gap-4">
             <CartButton />
-            <ThemeToggle />
           </div>
           <MobileNav />
         </div>

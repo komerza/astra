@@ -23,14 +23,18 @@ export function LandingProductsClient() {
     async function load() {
       const res = await globalThis.komerza.getStore()
       if (res.success && res.data) {
-        const mapped: Product[] = res.data.products.slice(0, 3).map((p: any) => ({
-          id: p.id,
-          slug: p.slug ?? p.id,
-          name: p.name,
-          description: p.description,
-          price: p.variants[0]?.cost || 0,
-          image: p.imageNames[0] ? `https://cdn.komerza.com/${p.imageNames[0]}` : "/product-placeholder.png",
-        }))
+        const mapped: Product[] = res.data.products
+          .slice(0, 3)
+          .map((p: any) => ({
+            id: p.id,
+            slug: p.slug ?? p.id,
+            name: p.name,
+            description: p.description,
+            price: p.variants[0]?.cost || 0,
+            image: p.imageNames[0]
+              ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
+              : "/product-placeholder.png",
+          }));
         setProducts(mapped)
       }
     }

@@ -3,120 +3,253 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Filter,
+  Star,
+  ShoppingCart,
+  ChevronLeft,
+  ChevronRight,
+  Package,
+  Search,
+  Grid,
+  List,
+  ChevronDown,
+} from "lucide-react";
+
+// Define missing interfaces
+interface Category {
+  id: string;
+  name: string;
+  count: number;
+}
+
+interface PriceRange {
+  id: string;
+  name: string;
+  min: number;
+  max: number;
+}
 
 interface Product {
-  id: string
-  slug: string
-  name: string
-  game: string
-  category: string
-  basePrice: number
-  maxPrice: number
-  rating: number
-  reviews: number
-  image: string
-  description: string
-  features: string[]
-  status: string
-  popular: boolean
+  id: string;
+  slug: string;
+  name: string;
+  game: string;
+  category: string;
+  basePrice: number;
+  maxPrice: number;
+  rating: number;
+  reviews: number;
+  image: string;
+  description: string;
+  features: string[];
+  status: string;
+  popular: boolean;
 }
 
-interface Variant {
-  id: string
-  name: string
-  cost: number
+interface SortOption {
+  id: string;
+  name: string;
 }
 
-interface ProductReference {
-  id: string
-  name: string
-  min: number
-  max: number
+// Custom Dropdown Component
+function CustomDropdown({
+  options,
+  value,
+  onChange,
+  placeholder,
+}: {
+  options: (Category | PriceRange | SortOption)[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedOption = options.find((option) => option.id === value);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between px-3 py-2 bg-theme-primary border border-theme rounded-lg text-theme-primary text-sm h-10 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/20 focus:border-[#3B82F6]/50 transition-colors duration-200"
+      >
+        <span>{selectedOption ? selectedOption.name : placeholder}</span>
+        <ChevronDown
+          className={`w-4 h-4 text-theme-secondary transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 mt-1 bg-theme-primary border border-theme rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+          {options.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => {
+                onChange(option.id);
+                setIsOpen(false);
+              }}
+              className="w-full text-left px-3 py-2 text-theme-primary text-sm hover:bg-theme-secondary transition-colors"
+            >
+              {option.name}
+              {"count" in option && ` (${option.count})`}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Helper function to get status color
+function getStatusColor(status: string) {
+  switch (status.toLowerCase()) {
+    case "in stock":
+      return "bg-green-500 text-white";
+    case "out of stock":
+      return "bg-red-500 text-white";
+    case "pre-order":
+      return "bg-yellow-500 text-black";
+    default:
+      return "bg-gray-500 text-white";
+  }
 }
 
 export function ProductsPageClient() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [selectedPriceRange, setSelectedPriceRange] = useState("all")
-  const [sortBy, setSortBy] = useState("popular")
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
-  const [showFilters, setShowFilters] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const productsPerPage = 6
+  const [products, setProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedPriceRange, setSelectedPriceRange] = useState("all");
+  const [sortBy, setSortBy] = useState("popular");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [showFilters, setShowFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6;
+
   useEffect(() => {
     async function load() {
-      const res = await globalThis.komerza.getStore()
+      const res = await globalThis.komerza.getStore();
       if (res.success && res.data) {
         const mapped: Product[] = res.data.products.map((p: any) => ({
           id: p.id,
           slug: p.slug ?? p.id,
           name: p.name,
-          game: "",
-          category: "",
+          game: "Software",
+          category: "software",
           basePrice: p.variants[0]?.cost || 0,
           maxPrice: p.variants[0]?.cost || 0,
-          rating: p.rating || 0,
-          reviews: 0,
-          image: p.imageNames[0] ? `https://cdn.komerza.com/${p.imageNames[0]}` : "/product-placeholder.png",
-          description: p.description,
+          rating: p.rating || 4.5,
+          reviews: Math.floor(Math.random() * 100) + 10,
+          image: p.imageNames[0]
+            ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
+            : "/product-placeholder.png",
+          description: p.description || "High-quality software solution",
           features: [],
           status: "In Stock",
-          popular: p.order < 3,
-        }))
-        setProducts(mapped)
+          popular: p.isBestSeller,
+        }));
+        setProducts(mapped);
       }
     }
-    load()
-  }, [])
+    load();
+  }, []);
 
   const categories: Category[] = [
     { id: "all", name: "All", count: products.length },
-  ]
+    {
+      id: "software",
+      name: "Software",
+      count: products.filter((p) => p.category === "software").length,
+    },
+  ];
 
   const priceRanges: PriceRange[] = [
     { id: "all", name: "All", min: 0, max: Infinity },
     { id: "low", name: "Under €10", min: 0, max: 10 },
     { id: "mid", name: "€10 - €20", min: 10, max: 20 },
     { id: "high", name: "Over €20", min: 20, max: Infinity },
-  ]
+  ];
+
+  const sortOptions: SortOption[] = [
+    { id: "popular", name: "Most Popular" },
+    { id: "price-low", name: "Price: Low to High" },
+    { id: "price-high", name: "Price: High to Low" },
+    { id: "rating", name: "Highest Rated" },
+    { id: "name", name: "Name: A to Z" },
+  ];
+
+  // Filter and sort products
+  const filteredProducts = products
+    .filter((product) => {
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesCategory =
+        selectedCategory === "all" || product.category === selectedCategory;
+
+      const selectedRange = priceRanges.find(
+        (range) => range.id === selectedPriceRange
+      );
+      const matchesPrice =
+        !selectedRange ||
+        selectedRange.id === "all" ||
+        (product.basePrice >= selectedRange.min &&
+          product.basePrice <= selectedRange.max);
+
+      return matchesSearch && matchesCategory && matchesPrice;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "price-low":
+          return a.basePrice - b.basePrice;
+        case "price-high":
+          return b.basePrice - a.basePrice;
+        case "rating":
+          return b.rating - a.rating;
+        case "name":
+          return a.name.localeCompare(b.name);
+        case "popular":
+        default:
+          return (b.popular ? 1 : 0) - (a.popular ? 1 : 0);
+      }
+    });
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
   // Helper function to get game abbreviation
   const getGameAbbreviation = (game: string) => {
     switch (game) {
       case "Software Development":
-        return "DEV"
+        return "DEV";
       case "Web Design":
-        return "WEB"
+        return "WEB";
       case "Business Software":
-        return "BIZ"
+        return "BIZ";
       case "Data Analytics":
-        return "DATA"
+        return "DATA";
       case "Mobile Development":
-        return "MOBILE"
+        return "MOBILE";
       case "E-commerce":
-        return "SHOP"
+        return "SHOP";
       case "Website Building":
-        return "SITE"
+        return "SITE";
       case "Design Software":
-        return "DESIGN"
+        return "DESIGN";
       default:
-        return game
+        return "SW";
     }
-  }
-
-  useEffect(() => {
-    async function load() {
-      const res = await globalThis.komerza.getStore()
-      if (res.success && res.data) {
-        setProducts(res.data.products)
-      }
-    }
-    load()
-  }, [])
+  };
 
   if (products.length === 0) {
-    return <p className="text-theme-secondary">No products available.</p>
+    return <p className="text-theme-secondary">Loading products...</p>;
   }
 
   return (
@@ -465,12 +598,12 @@ export function ProductsPageClient() {
                 }}
                 className="w-full bg-transparent text-[#3B82F6] hover:bg-[#3B82F6]/10 h-8 px-3 text-sm border border-[#3B82F6]/30"
               >
-                Add to Cart
+                Clear All Filters
               </Button>
             )}
           </div>
         </div>
-    </div>
+      </div>
     </div>
   );
 }

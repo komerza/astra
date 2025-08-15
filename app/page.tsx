@@ -1,12 +1,11 @@
 import Link from "next/link"
 import { ArrowUpRight, Package, HelpCircle } from "lucide-react";
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button";
 import Image from "next/image"
-import { SmilePlus, ShoppingCart } from "lucide-react";
+import { SmilePlus } from "lucide-react";
 import { ParticleRiver } from "./components/particle-river";
 import { LandingProductsClient } from "./components/landing-products-client";
-import { StickyHeader } from "./components/sticky-header"
+import { StickyHeader } from "./components/sticky-header";
 
 export default function LandingPage() {
   return (
@@ -21,13 +20,24 @@ export default function LandingPage() {
       <main className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16">
         {/* Hero Background Image */}
         <div className="absolute inset-0 z-0">
-          <Image src="/hero-new.webp" alt="Hero Background" fill className="object-cover opacity-25" priority />
+          <Image
+            src="/hero-new.webp"
+            alt="Hero Background"
+            fill
+            className="object-cover opacity-25"
+            priority
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-theme-primary/20 via-theme-primary/60 to-theme-primary"></div>
         </div>
 
         {/* Grid Background Overlay */}
         <div className="absolute inset-0 z-1">
-          <Image src="/grid-background.png" alt="Grid Background" fill className="object-cover opacity-5" />
+          <Image
+            src="/grid-background.png"
+            alt="Grid Background"
+            fill
+            className="object-cover opacity-5"
+          />
         </div>
 
         {/* Particle River Effect */}
@@ -145,7 +155,10 @@ export default function LandingPage() {
       </main>
 
       {/* Products Section */}
-      <section id="products" className="relative flex w-full flex-col gap-4 py-12 sm:py-16">
+      <section
+        id="products"
+        className="relative flex w-full flex-col gap-4 py-12 sm:py-16"
+      >
         {/* Background effects */}
         <div className="pointer-events-none absolute -left-[20%] top-0 z-10 h-64 w-64 sm:h-96 sm:w-96 animate-pulse rounded-full bg-gradient-to-br from-transparent via-transparent to-[#3B82F6] blur-[100px] duration-5000"></div>
         <div className="pointer-events-none absolute -right-[20%] bottom-0 z-40 h-64 w-[400px] sm:h-96 sm:w-[700px] -rotate-45 animate-pulse rounded-full bg-gradient-to-br from-rose-500/20 via-transparent to-[#3B82F6]/30 blur-[100px] duration-5000"></div>
@@ -172,12 +185,12 @@ export default function LandingPage() {
           </div>
         </div>
 
-          {/* Products Grid */}
-          <div className="container mx-auto mt-6 sm:mt-8 px-4 sm:px-6">
-            <LandingProductsClient />
-          </div>
+        {/* Products Grid */}
+        <div className="container mx-auto mt-6 sm:mt-8 px-4 sm:px-6">
+          <LandingProductsClient />
+        </div>
 
-          {/* View All Button */}
+        {/* View All Button */}
         <div className="mt-6 sm:mt-8 flex items-center justify-center px-4">
           <Link href="/products">
             <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 font-normal max-w-xs">
@@ -203,8 +216,12 @@ export default function LandingPage() {
 
           {/* Title */}
           <div className="text-center mb-4">
-            <h2 className="text-2xl sm:text-3xl heading-semibold text-theme-primary">Frequently Asked Questions</h2>
-            <p className="text-xs text-theme-secondary mt-2">Get answers to common questions</p>
+            <h2 className="text-2xl sm:text-3xl heading-semibold text-theme-primary">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xs text-theme-secondary mt-2">
+              Get answers to common questions
+            </p>
           </div>
 
           {/* Divider */}
@@ -218,8 +235,8 @@ export default function LandingPage() {
                   What hardware do you support?
                 </h3>
                 <p className="text-sm text-theme-secondary">
-                  This varies depending on the cheat you are using. Please refer to the product page for more
-                  information.
+                  This varies depending on the software you are using. Please
+                  refer to the product page for more information.
                 </p>
               </div>
               <div>
@@ -227,8 +244,8 @@ export default function LandingPage() {
                   What payment methods do you support?
                 </h3>
                 <p className="text-sm text-theme-secondary">
-                  We accept cryptocurrency and all major credit cards. Card payments are processed securely through
-                  Stripe.
+                  We accept cryptocurrency and all major credit cards. Card
+                  payments are processed securely through Stripe.
                 </p>
               </div>
             </div>
@@ -238,8 +255,8 @@ export default function LandingPage() {
                   What operating systems do you support?
                 </h3>
                 <p className="text-sm text-theme-secondary">
-                  This varies depending on the cheat you are using. Please refer to the product page for more
-                  information.
+                  This varies depending on the software you are using. Please
+                  refer to the product page for more information.
                 </p>
               </div>
               <div>
@@ -247,7 +264,8 @@ export default function LandingPage() {
                   My question isn't listed here, what do I do?
                 </h3>
                 <p className="text-sm text-theme-secondary">
-                  If you require further support, you can contact us on our Discord server.
+                  If you require further support, you can contact us in the
+                  "Support" section.
                 </p>
               </div>
             </div>
@@ -260,7 +278,13 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <Image src="/kimera-logo.svg" alt="Komerza" width={120} height={48} className="h-6 sm:h-8 w-auto" />
+              <Image
+                src="/kimera-logo.svg"
+                alt="Komerza"
+                width={120}
+                height={48}
+                className="h-6 sm:h-8 w-auto"
+              />
             </div>
 
             <div className="flex items-center space-x-4 sm:space-x-6 mb-4 md:mb-0">
@@ -287,11 +311,11 @@ export default function LandingPage() {
 
           <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-theme">
             <p className="text-center text-xs text-theme-secondary tracking-20-smaller">
-              © 2025 Komerza. All rights reserved.
+              © 2025 Komerza UAB. All rights reserved.
             </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

@@ -12,10 +12,11 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "LandFree - Transform Your Ideas Into Reality",
-  description: "Expert web development services for stunning online experiences.",
-  generator: 'v0.dev'
-}
+  title: "Komerza Astra - Start your commerce journey",
+  description:
+    "Expert web development services for stunning online experiences.",
+  generator: "komerza",
+};
 
 export default function RootLayout({
   children,

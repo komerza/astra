@@ -64,8 +64,10 @@ export function ProductPageClient({ slug }: { slug: string }) {
 
   const images =
     product.imageNames.length > 0
-      ? product.imageNames.map((name) => `https://cdn.komerza.com/${name}`)
-      : ["/product-placeholder.png"]
+      ? product.imageNames.map(
+          (name) => `https://user-generated-content.komerza.com/${name}`
+        )
+      : ["/product-placeholder.png"];
 
   const actionProduct = {
     id: product.id,
