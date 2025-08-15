@@ -4,8 +4,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, Plus, Minus, CreditCard } from "lucide-react"
 import { useCart } from "@/app/context/cart-context"
-import { useNotifications } from "./notification-system"
 import { CheckoutModal } from "./checkout-modal";
+import { toast } from "sonner"
 
 interface ProductVariant {
   id: string
@@ -46,7 +46,6 @@ export function ProductActions({ product, onPriceChange }: ProductActionsProps) 
   const [quantity, setQuantity] = useState(1)
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const { dispatch, addItem } = useCart()
-  const { addNotification } = useNotifications()
 
   const handleVariantChange = (variant: ProductVariant) => {
     setSelectedVariant(variant)
@@ -61,11 +60,8 @@ export function ProductActions({ product, onPriceChange }: ProductActionsProps) 
   const handleAddToCart = () => {
     addItem(product.id, selectedVariant.id, quantity)
 
-    addNotification({
-      type: "success",
-      title: "Added to Cart!",
-      message: `${product.name} (${selectedVariant.name}) added to cart`,
-      duration: 3000,
+    toast.success("Added to Cart!", {
+      description: `${product.name} (${selectedVariant.name}) added to cart`,
     })
 
     dispatch({ type: "OPEN_CART" })
