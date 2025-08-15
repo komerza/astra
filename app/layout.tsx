@@ -12,10 +12,11 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "LandFree - Transform Your Ideas Into Reality",
-  description: "Expert web development services for stunning online experiences.",
-  generator: 'v0.dev'
-}
+  title: "Komerza Astra - Start your commerce journey",
+  description:
+    "Expert web development services for stunning online experiences.",
+  generator: "komerza",
+};
 
 export default function RootLayout({
   children,
@@ -31,19 +32,15 @@ export default function RootLayout({
             __html: `
               function initKomerza() {
                 if (typeof globalThis.komerza !== 'undefined') {
-                  console.log('Initializing Komerza with store ID: ${KOMERZA_STORE_ID}');
                   globalThis.komerza.init("${KOMERZA_STORE_ID}");
-                  console.log('Komerza initialized successfully');
                 } else {
-                  console.error('Komerza API not available');
-                  setTimeout(initKomerza, 100); // Retry after 100ms
+                  setTimeout(initKomerza, 100);
                 }
               }
-              // Force dark mode on document ready
               document.documentElement.classList.add('dark');
               document.documentElement.classList.remove('light');
               localStorage.setItem('theme', 'dark');
-              
+
               if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', initKomerza);
               } else {

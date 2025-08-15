@@ -18,8 +18,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { CartButton } from "@/app/components/cart-button"
 import { MobileNav } from "@/app/components/mobile-nav"
-import { SearchButton } from "@/app/components/search-button"
-import { ThemeToggle } from "@/app/components/theme-toggle"
+import { SearchButton } from "@/app/components/search-button";
 
 // Status data for products organized by game
 const productStatusesByGame = {
@@ -235,7 +234,6 @@ export default function StatusPage() {
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-2">
           <div className="hidden md:flex items-center gap-4">
-            <ThemeToggle />
             <SearchButton />
             <CartButton />
           </div>
@@ -357,9 +355,6 @@ export default function StatusPage() {
                                 <h4 className="text-lg sm:text-xl heading-semibold text-theme-primary truncate">
                                   {product.name}
                                 </h4>
-                                <span className="rounded-md border border-theme bg-theme-secondary px-2 py-1 text-xs shadow-md text-theme-primary flex-shrink-0">
-                                  {product.game}
-                                </span>
                               </div>
 
                               {/* Status Details */}

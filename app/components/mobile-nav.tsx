@@ -4,8 +4,7 @@ import { useState } from "react"
 import { Menu, X, Home, Package, HelpCircle, LayoutDashboard, Activity } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { CartButton } from "./cart-button"
-import { ThemeToggle } from "./theme-toggle"
+import { CartButton } from "./cart-button";
 
 interface MobileNavProps {
   isOpen?: boolean;
@@ -35,7 +34,6 @@ export function MobileNav({
       {/* Mobile Menu Button - only show if we're managing our own state */}
       {externalIsOpen === undefined && (
         <div className="md:hidden flex items-center gap-1">
-          <ThemeToggle />
           <CartButton />
           <Button
             onClick={toggleMenu}
