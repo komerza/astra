@@ -44,7 +44,7 @@ export function LandingProductsClient() {
   return (
     <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
       {products.map((p) => (
-        <Link key={p.id} href={`/product?slug=${encodeURIComponent(p.slug)}`}>
+        <Link key={p.id} href={`/products/${encodeURIComponent(p.slug)}`}>
           <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
             <div className="relative w-full aspect-video cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl">
               <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6]/20 to-[#1d4ed8]/20"></div>

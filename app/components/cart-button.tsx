@@ -6,9 +6,12 @@ import { ShoppingCart } from "lucide-react"
 import { CartDropdown } from "./cart-dropdown"
 
 export function CartButton() {
-  const { state, dispatch } = useCart()
+  const { dispatch } = useCart()
 
-  const itemCount = globalThis.komerza.getBasketItemCount()
+  const itemCount =
+    typeof window !== "undefined"
+      ? globalThis.komerza?.getBasketItemCount?.() ?? 0
+      : 0
 
   return (
     <div className="relative">

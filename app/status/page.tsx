@@ -408,7 +408,7 @@ export default function StatusPage() {
 
                               {/* Purchase Button */}
                               <Link
-                                href={`/product?slug=${encodeURIComponent(
+                                href={`/products/${encodeURIComponent(
                                   product.id
                                 )}`}
                               >
