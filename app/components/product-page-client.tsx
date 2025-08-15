@@ -1,124 +1,46 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
+import useSWR from "swr"
+import useSWRInfinite from "swr/infinite"
 import { ProductImageGallery } from "@/app/components/product-image-gallery"
 import { ProductActionsWrapper } from "@/app/components/product-actions-wrapper"
 import { ProductDescriptionTabs } from "@/app/components/product-description-tabs"
-
-interface Variant {
-  id: string
-  name: string
-  cost: number
-  description?: string
-}
-
-interface ProductReference {
-  id: string;
-  name: string;
-  description: string;
-  imageNames: string[];
-  variants: Variant[];
-}
-
-interface Review {
-  id: string;
-  rating: number;
-  reason: string;
-  productId?: string;
-  reply?: string;
-  dateCreated: string;
-}
-
-interface PaginatedApiResponse<T> {
-  success: boolean;
-  message?: string;
-  data?: T[];
-  pages: number;
-}
+import {
+  fetchProduct,
+  fetchProductReviews,
+  ProductReference,
+  Review,
+  PaginatedApiResponse,
+} from "@/lib/komerza-fetchers"
 
 export function ProductPageClient({ slug }: { slug: string }) {
-  const [product, setProduct] = useState<ProductReference | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [reviewsLoading, setReviewsLoading] = useState(false);
-  const [reviewsPage, setReviewsPage] = useState(1);
-  const [totalReviewPages, setTotalReviewPages] = useState(0);
+  const { data: product } = useSWR<ProductReference | null>(
+    slug ? ["product", slug] : null,
+    () => fetchProduct(slug)
+  )
 
-  useEffect(() => {
-    async function load() {
-      const api: any = globalThis.komerza;
-      if (!api) return;
+  const {
+    data: reviewsData,
+    size: reviewsPage,
+    setSize,
+    isValidating: reviewsLoading,
+  } = useSWRInfinite<PaginatedApiResponse<Review>>(
+    product ? (index) => ["product-reviews", product.id, index + 1] : null,
+    ([, id, page]) => fetchProductReviews(id as string, page as number)
+  )
 
-      try {
-        if (typeof api.getProduct === "function") {
-          const res = await api.getProduct({ idOrSlug: slug });
-          if (res?.success && res.data) {
-            setProduct(res.data);
-            // Load reviews for this product
-            loadReviews(res.data.id, 1);
-            return;
-          }
-        }
-        // Fallback: fetch full store and locate product by id or slug
-        if (typeof api.getStore === "function") {
-          const store = await api.getStore();
-          if (store?.success && store.data?.products) {
-            const found = store.data.products.find(
-              (p: any) => p.id === slug || p.slug === slug
-            );
-            if (found) {
-              setProduct(found);
-              // Load reviews for this product
-              loadReviews(found.id, 1);
-            }
-          }
-        }
-      } catch (e) {
-        console.warn("Failed to load product", e);
-      }
-    }
-    load();
-  }, [slug]);
-
-  const loadReviews = async (productId: string, page: number = 1) => {
-    const api: any = globalThis.komerza;
-    if (!api || typeof api.getProductReviews !== "function") return;
-
-    try {
-      setReviewsLoading(true);
-      const response: PaginatedApiResponse<Review> =
-        await api.getProductReviews(productId, page);
-
-      console.log("Reviews response:", response); // Debug log
-
-      if (response.success && response.data) {
-        console.log("Raw review data:", response.data); // Debug log
-
-        if (page === 1) {
-          setReviews(response.data);
-        } else {
-          // Append to existing reviews for pagination
-          setReviews((prev) => [...prev, ...response.data!]);
-        }
-        setTotalReviewPages(response.pages);
-        setReviewsPage(page);
-      } else {
-        console.warn("Failed to load reviews:", response.message);
-        setReviews([]);
-      }
-    } catch (error) {
-      console.error("Error loading reviews:", error);
-      setReviews([]);
-    } finally {
-      setReviewsLoading(false);
-    }
-  };
+  const reviews = reviewsData
+    ? reviewsData.flatMap((p) => p.data ?? [])
+    : []
+  const totalReviewPages = reviewsData?.[0]?.pages ?? 0
+  const loadingMoreReviews = reviewsLoading && reviewsPage > 1
 
   const loadMoreReviews = () => {
     if (product && reviewsPage < totalReviewPages && !reviewsLoading) {
-      loadReviews(product.id, reviewsPage + 1);
+      setSize(reviewsPage + 1)
     }
-  };
+  }
 
   // Calculate review statistics with proper validation
   const calculateReviewStats = (reviewsList: Review[]) => {
@@ -260,7 +182,7 @@ export function ProductPageClient({ slug }: { slug: string }) {
       ratingBreakdown: reviewStats.ratingBreakdown,
       recentReviews: formattedReviews,
       hasMoreReviews: reviewsPage < totalReviewPages,
-      loadingMoreReviews: reviewsLoading,
+      loadingMoreReviews,
       onLoadMore: loadMoreReviews,
     },
   };
