@@ -27,7 +27,7 @@ export default function ProductsPage() {
             >
               <Home className="w-[18px] h-[18px]" />
               <span className="text-sm font-normal tracking-20-smaller">
-                Home
+                HM
               </span>
             </Link>
             <Link
@@ -36,7 +36,7 @@ export default function ProductsPage() {
             >
               <Package className="w-[18px] h-[18px]" />
               <span className="text-sm font-normal tracking-20-smaller">
-                Products
+                PRD
               </span>
             </Link>
             <Link
@@ -45,7 +45,7 @@ export default function ProductsPage() {
             >
               <Activity className="w-[18px] h-[18px]" />
               <span className="text-sm font-normal tracking-20-smaller">
-                Status
+                STS
               </span>
             </Link>
           </div>
