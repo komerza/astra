@@ -10,15 +10,12 @@ import { StickyHeader } from "./components/sticky-header";
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-theme-primary relative overflow-hidden transition-colors duration-300">
-      {/* Glowing effects */}
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#3B82F6] rounded-full blur-3xl opacity-10"></div>
 
       {/* Sticky Header */}
       <StickyHeader />
 
-      {/* Hero Section */}
       <main className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16">
-        {/* Hero Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-new.webp"
@@ -30,7 +27,6 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-theme-primary/20 via-theme-primary/60 to-theme-primary"></div>
         </div>
 
-        {/* Grid Background Overlay */}
         <div className="absolute inset-0 z-1">
           <Image
             src="/grid-background.png"
@@ -40,19 +36,15 @@ export default function LandingPage() {
           />
         </div>
 
-        {/* Particle River Effect */}
         <div className="absolute inset-0 h-full w-full z-5">
           <ParticleRiver />
         </div>
-
-        {/* Top Glow Effect */}
         <div className="absolute left-[50%] top-[-20%] z-5 h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] translate-x-[-50%] bg-[#3B82F6] blur-[200px] opacity-80"></div>
 
         <div className="container mx-auto max-w-4xl text-center relative z-10">
-          {/* Trusted By Badge */}
           <div className="flex items-center justify-center mb-6 sm:mb-8">
             <div className="bg-[#3B82F6]/10 text-xs flex flex-row items-center gap-2 pl-3 sm:pl-4 pr-6 sm:pr-8 py-1 rounded-full shadow-sm border border-[#3B82F6]/50 relative transform scale-100 sm:scale-107">
-              <span className="text-theme-primary">Trusted By Komerza.com</span>
+              <span className="text-theme-primary">TBY</span>
               <div className="absolute grid place-items-center top-1/2 -translate-y-1/2 right-[2px] text-white w-4 h-4 sm:w-5 sm:h-5 bg-[#3B82F6] rounded-full">
                 <svg
                   height="10"
@@ -82,34 +74,29 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Main heading */}
-          <h1 className="text-theme-primary text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-center mx-auto mb-4 sm:mb-6 leading-tight max-w-5xl heading-semibold drop-shadow-2xl">
-            Transform your ideas into
-            <br />
-            Reality with <span className="text-[#3B82F6]">Komerza</span>
-          </h1>
+            <h1 className="text-theme-primary text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-center mx-auto mb-4 sm:mb-6 leading-tight max-w-5xl heading-semibold drop-shadow-2xl">
+              TYII
+              <br />
+              RW <span className="text-[#3B82F6]">Komerza</span>
+            </h1>
+            <p className="text-theme-secondary text-sm sm:text-base text-center max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed drop-shadow-lg px-4">
+              EWDSSOE
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 px-4">
+              <Link href="/products">
+                <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 shadow-lg font-normal">
+                  <ArrowUpRight className="w-5 h-5 sm:w-4 sm:h-4" />
+                  <span>PRD</span>
+                </Button>
+              </Link>
 
-          {/* Subheading */}
-          <p className="text-theme-secondary text-sm sm:text-base text-center max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed drop-shadow-lg px-4">
-            Expert web development services for stunning online experiences.
-          </p>
-
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 px-4">
-            <Link href="/products">
-              <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 shadow-lg font-normal">
-                <ArrowUpRight className="w-5 h-5 sm:w-4 sm:h-4" />
-                <span>Products</span>
-              </Button>
-            </Link>
-
-            <Link href="/status">
-              <Button className="w-full sm:w-auto glass-theme hover:bg-gray-300 dark:hover:bg-white/10 text-theme-primary h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 tracking-20-smaller border border-theme rounded-md flex items-center justify-center gap-2 text-base sm:text-sm transition-all duration-300 font-normal">
-                <span>Status</span>
-                <svg
-                  height="18"
-                  width="18"
-                  viewBox="0 0 18 18"
+              <Link href="/status">
+                <Button className="w-full sm:w-auto glass-theme hover:bg-gray-300 dark:hover:bg-white/10 text-theme-primary h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 tracking-20-smaller border border-theme rounded-md flex items-center justify-center gap-2 text-base sm:text-sm transition-all duration-300 font-normal">
+                  <span>STS</span>
+                  <svg
+                    height="18"
+                    width="18"
+                    viewBox="0 0 18 18"
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 sm:w-4 sm:h-4"
                 >
@@ -154,52 +141,47 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* Products Section */}
-      <section
-        id="products"
-        className="relative flex w-full flex-col gap-4 py-12 sm:py-16"
-      >
-        {/* Background effects */}
-        <div className="pointer-events-none absolute -left-[20%] top-0 z-10 h-64 w-64 sm:h-96 sm:w-96 animate-pulse rounded-full bg-gradient-to-br from-transparent via-transparent to-[#3B82F6] blur-[100px] duration-5000"></div>
-        <div className="pointer-events-none absolute -right-[20%] bottom-0 z-40 h-64 w-[400px] sm:h-96 sm:w-[700px] -rotate-45 animate-pulse rounded-full bg-gradient-to-br from-rose-500/20 via-transparent to-[#3B82F6]/30 blur-[100px] duration-5000"></div>
+        <section
+          id="products"
+          className="relative flex w-full flex-col gap-4 py-12 sm:py-16"
+        >
+          <div className="pointer-events-none absolute -left-[20%] top-0 z-10 h-64 w-64 sm:h-96 sm:w-96 animate-pulse rounded-full bg-gradient-to-br from-transparent via-transparent to-[#3B82F6] blur-[100px] duration-5000"></div>
+          <div className="pointer-events-none absolute -right-[20%] bottom-0 z-40 h-64 w-[400px] sm:h-96 sm:w-[700px] -rotate-45 animate-pulse rounded-full bg-gradient-to-br from-rose-500/20 via-transparent to-[#3B82F6]/30 blur-[100px] duration-5000"></div>
 
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center gap-2 px-4">
-            {/* Badge */}
-            <div className="flex items-center justify-center mb-4 sm:mb-6">
-              <div className="bg-[#3B82F6]/10 text-xs flex flex-row items-center gap-2 pl-3 sm:pl-4 pr-6 sm:pr-8 py-1 rounded-full shadow-sm border border-[#3B82F6]/50 relative transform scale-100 sm:scale-107">
-                <span className="text-theme-primary">Best Seller Products</span>
-                <div className="absolute grid place-items-center top-1/2 -translate-y-1/2 right-[2px] text-white w-4 h-4 sm:w-5 sm:h-5 bg-[#3B82F6] rounded-full">
-                  <SmilePlus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+              <div className="flex items-center justify-center mb-4 sm:mb-6">
+                <div className="bg-[#3B82F6]/10 text-xs flex flex-row items-center gap-2 pl-3 sm:pl-4 pr-6 sm:pr-8 py-1 rounded-full shadow-sm border border-[#3B82F6]/50 relative transform scale-100 sm:scale-107">
+                  <span className="text-theme-primary">BSP</span>
+                  <div className="absolute grid place-items-center top-1/2 -translate-y-1/2 right-[2px] text-white w-4 h-4 sm:w-5 sm:h-5 bg-[#3B82F6] rounded-full">
+                    <SmilePlus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Title */}
-            <h2 className="text-center text-2xl sm:text-3xl heading-semibold text-theme-primary">
-              Best Seller Products
-            </h2>
-            <p className="max-w-xl text-center text-xs text-theme-secondary">
-              Products that are loved by our customers
-            </p>
+              <h2 className="text-center text-2xl sm:text-3xl heading-semibold text-theme-primary">
+                BSP
+              </h2>
+              <p className="max-w-xl text-center text-xs text-theme-secondary">
+                PTALC
+              </p>
+            </div>
           </div>
-        </div>
 
         {/* Products Grid */}
         <div className="container mx-auto mt-6 sm:mt-8 px-4 sm:px-6">
           <LandingProductsClient />
         </div>
 
-        {/* View All Button */}
-        <div className="mt-6 sm:mt-8 flex items-center justify-center px-4">
-          <Link href="/products">
-            <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 font-normal max-w-xs">
-              <Package className="w-5 h-5 sm:w-4 sm:h-4" />
-              <span>View All Products</span>
-            </Button>
-          </Link>
-        </div>
-      </section>
+          <div className="mt-6 sm:mt-8 flex items-center justify-center px-4">
+            <Link href="/products">
+              <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 font-normal max-w-xs">
+                <Package className="w-5 h-5 sm:w-4 sm:h-4" />
+                <span>VAP</span>
+              </Button>
+            </Link>
+          </div>
+        </section>
 
       {/* FAQ Section */}
       <section className="relative py-12 sm:py-20">
@@ -214,15 +196,14 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Title */}
-          <div className="text-center mb-4">
-            <h2 className="text-2xl sm:text-3xl heading-semibold text-theme-primary">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xs text-theme-secondary mt-2">
-              Get answers to common questions
-            </p>
-          </div>
+            <div className="text-center mb-4">
+              <h2 className="text-2xl sm:text-3xl heading-semibold text-theme-primary">
+                FAQS
+              </h2>
+              <p className="text-xs text-theme-secondary mt-2">
+                GACQ
+              </p>
+            </div>
 
           {/* Divider */}
           <div className="w-full h-px bg-gradient-to-r from-transparent via-[#3B82F6]/75 to-transparent mb-12 sm:mb-16"></div>
@@ -232,41 +213,29 @@ export default function LandingPage() {
             <div className="space-y-8 sm:space-y-12">
               <div>
                 <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
-                  What hardware do you support?
+                  Q1
                 </h3>
-                <p className="text-sm text-theme-secondary">
-                  This varies depending on the software you are using. Please
-                  refer to the product page for more information.
-                </p>
+                <p className="text-sm text-theme-secondary">A1</p>
               </div>
               <div>
                 <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
-                  What payment methods do you support?
+                  Q2
                 </h3>
-                <p className="text-sm text-theme-secondary">
-                  We accept cryptocurrency and all major credit cards. Card
-                  payments are processed securely through Stripe.
-                </p>
+                <p className="text-sm text-theme-secondary">A2</p>
               </div>
             </div>
             <div className="space-y-8 sm:space-y-12">
               <div>
                 <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
-                  What operating systems do you support?
+                  Q3
                 </h3>
-                <p className="text-sm text-theme-secondary">
-                  This varies depending on the software you are using. Please
-                  refer to the product page for more information.
-                </p>
+                <p className="text-sm text-theme-secondary">A3</p>
               </div>
               <div>
                 <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
-                  My question isn't listed here, what do I do?
+                  Q4
                 </h3>
-                <p className="text-sm text-theme-secondary">
-                  If you require further support, you can contact us in the
-                  "Support" section.
-                </p>
+                <p className="text-sm text-theme-secondary">A4</p>
               </div>
             </div>
           </div>

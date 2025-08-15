@@ -28,7 +28,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             >
               <Home className="w-[18px] h-[18px]" />
               <span className="text-sm font-normal tracking-20-smaller">
-                Home
+                HM
               </span>
             </Link>
             <Link
@@ -37,7 +37,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             >
               <Package className="w-[18px] h-[18px]" />
               <span className="text-sm font-normal tracking-20-smaller">
-                Products
+                PRD
               </span>
             </Link>
             <Link
@@ -46,7 +46,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             >
               <Activity className="w-[18px] h-[18px]" />
               <span className="text-sm font-normal tracking-20-smaller">
-                Status
+                STS
               </span>
             </Link>
           </div>
