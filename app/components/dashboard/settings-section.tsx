@@ -58,7 +58,9 @@ export function SettingsSection() {
 
   const handleDeleteAccount = () => {
     // This would typically make an API call to delete the account
-    console.log("Account deletion requested")
+    if (process.env.NODE_ENV !== "production") {
+      console.log("Account deletion requested")
+    }
   }
 
   return (

@@ -47,7 +47,9 @@ export function CartDropdown() {
           setProductsInfo(productMap);
         }
       } catch (error) {
-        console.warn("Failed to fetch product info:", error);
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("Failed to fetch product info:", error);
+        }
       }
     };
 

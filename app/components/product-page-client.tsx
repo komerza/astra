@@ -74,7 +74,9 @@ export function ProductPageClient({ slug }: { slug: string }) {
           }
         }
       } catch (e) {
-        console.warn("Failed to load product", e);
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("Failed to load product", e);
+        }
       }
     }
     load();
@@ -89,11 +91,7 @@ export function ProductPageClient({ slug }: { slug: string }) {
       const response: PaginatedApiResponse<Review> =
         await api.getProductReviews(productId, page);
 
-      console.log("Reviews response:", response); // Debug log
-
       if (response.success && response.data) {
-        console.log("Raw review data:", response.data); // Debug log
-
         if (page === 1) {
           setReviews(response.data);
         } else {
@@ -103,11 +101,15 @@ export function ProductPageClient({ slug }: { slug: string }) {
         setTotalReviewPages(response.pages);
         setReviewsPage(page);
       } else {
-        console.warn("Failed to load reviews:", response.message);
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("Failed to load reviews:", response.message);
+        }
         setReviews([]);
       }
     } catch (error) {
-      console.error("Error loading reviews:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error loading reviews:", error);
+      }
       setReviews([]);
     } finally {
       setReviewsLoading(false);
@@ -203,8 +205,6 @@ export function ProductPageClient({ slug }: { slug: string }) {
 
   // Format reviews with proper validation and fallbacks
   const formattedReviews = reviews.map((review) => {
-    console.log("Raw review object:", review); // Debug log
-
     // Validate date
     let formattedDate = "Unknown date";
     try {
@@ -219,7 +219,9 @@ export function ProductPageClient({ slug }: { slug: string }) {
         }
       }
     } catch (error) {
-      console.warn("Invalid date:", review.dateCreated);
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("Invalid date:", review.dateCreated);
+      }
     }
 
     // Validate rating
@@ -245,7 +247,6 @@ export function ProductPageClient({ slug }: { slug: string }) {
       reply: review.reply && review.reply.trim() ? review.reply : undefined,
     };
 
-    console.log("Formatted review:", formatted); // Debug log
     return formatted;
   });
 
@@ -264,8 +265,6 @@ export function ProductPageClient({ slug }: { slug: string }) {
       onLoadMore: loadMoreReviews,
     },
   };
-
-  console.log("Final tabs product:", tabsProduct); // Debug log
 
   return (
     <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
