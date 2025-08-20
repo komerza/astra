@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CreditCard, X, Mail } from "lucide-react";
-import { useNotifications } from "./notification-system";
+import { toast } from "sonner";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -17,7 +17,6 @@ export function CheckoutModal({
   onClose,
   couponCode = undefined,
 }: CheckoutModalProps) {
-  const { addNotification } = useNotifications();
   const [email, setEmail] = useState("");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
@@ -38,11 +37,8 @@ export function CheckoutModal({
 
   const processCheckout = async () => {
     if (!email.trim()) {
-      addNotification({
-        type: "error",
-        title: "Email Required",
-        message: "Please enter your email address to continue.",
-        duration: 3000,
+      toast.error("Email Required", {
+        description: "Please enter your email address to continue.",
       });
       return;
     }
@@ -80,23 +76,17 @@ export function CheckoutModal({
 
       console.log("Checkout result:", result);
 
-      addNotification({
-        type: "success",
-        title: "Checkout Started!",
-        message: "Redirecting to payment...",
-        duration: 3000,
+      toast.success("Checkout Started!", {
+        description: "Redirecting to payment...",
       });
       onClose();
       setEmail("");
     } catch (error) {
       console.error("Checkout error:", error);
-      addNotification({
-        type: "error",
-        title: "Checkout Failed",
-        message: `Unable to start checkout: ${
+      toast.error("Checkout Failed", {
+        description: `Unable to start checkout: ${
           error instanceof Error ? error.message : "Unknown error"
         }`,
-        duration: 5000,
       });
     } finally {
       setIsCheckingOut(false);
