@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { CartProvider } from "./context/cart-context"
 import { KOMERZA_STORE_ID } from "@/lib/komerza"
+import { Toaster } from "sonner"
 
 export const metadata: Metadata = {
   title: "Komerza Astra - Start your commerce journey",
@@ -55,6 +56,7 @@ export default function RootLayout({
       </head>
       <body>
         <CartProvider>{children}</CartProvider>
+        <Toaster />
       </body>
     </html>
   );
