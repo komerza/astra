@@ -149,11 +149,15 @@ export function SupportSection() {
       if (response.success && response.data) {
         setTickets(response.data);
       } else {
-        console.error("Failed to fetch tickets:", response.message);
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Failed to fetch tickets:", response.message);
+        }
         setTickets([]);
       }
     } catch (error) {
-      console.error("Error fetching tickets:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error fetching tickets:", error);
+      }
       setTickets([]);
     } finally {
       setLoading(false);
@@ -189,7 +193,9 @@ export function SupportSection() {
         );
       }
     } catch (error) {
-      console.error("Error creating ticket:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error creating ticket:", error);
+      }
       alert("Failed to create ticket. Please try again.");
     } finally {
       setSubmitting(false);
@@ -226,7 +232,9 @@ export function SupportSection() {
         );
       }
     } catch (error) {
-      console.error("Error adding response:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error adding response:", error);
+      }
       alert("Failed to add response. Please try again.");
     } finally {
       setSubmitting(false);
@@ -253,7 +261,9 @@ export function SupportSection() {
         );
       }
     } catch (error) {
-      console.error("Error closing ticket:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error closing ticket:", error);
+      }
       alert("Failed to close ticket. Please try again.");
     }
   };
@@ -272,7 +282,9 @@ export function SupportSection() {
         );
       }
     } catch (error) {
-      console.error("Error fetching ticket details:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error fetching ticket details:", error);
+      }
       alert("Failed to load ticket details. Please try again.");
     }
   };

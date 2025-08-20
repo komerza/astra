@@ -78,11 +78,15 @@ export function OrdersSection() {
         setOrders(response.data);
         setTotalPages(response.pages);
       } else {
-        console.error("Failed to fetch orders:", response.message);
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Failed to fetch orders:", response.message);
+        }
         setOrders([]);
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error fetching orders:", error);
+      }
       setOrders([]);
     } finally {
       setLoading(false);
@@ -155,7 +159,9 @@ export function OrdersSection() {
         setSelectedOrder(response.data);
       }
     } catch (error) {
-      console.error("Error fetching order details:", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error fetching order details:", error);
+      }
     }
   };
 
