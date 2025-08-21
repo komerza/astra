@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link"
 import { ProductImageGallery } from "@/app/components/product-image-gallery"
 import { ProductActionsWrapper } from "@/app/components/product-actions-wrapper"
@@ -37,25 +38,59 @@ interface PaginatedApiResponse<T> {
   pages: number;
 }
 
-export function ProductPageClient({ slug }: { slug: string }) {
+export function ProductPageClient() {
+  return (
+    <Suspense
+      fallback={
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-theme-secondary">Loading product...</p>
+        </div>
+      }
+    >
+      <ProductPageContent />
+    </Suspense>
+  );
+}
+
+function ProductPageContent() {
+  const searchParams = useSearchParams();
+  const slug = searchParams.get("id") || searchParams.get("slug"); // Support both id and slug
+
   const [product, setProduct] = useState<ProductReference | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [reviewsPage, setReviewsPage] = useState(1);
   const [totalReviewPages, setTotalReviewPages] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!slug) {
+      setError("No product ID provided");
+      setLoading(false);
+      return;
+    }
+
     async function load() {
       const api: any = globalThis.komerza;
-      if (!api) return;
+      if (!api) {
+        setError("Komerza API not available");
+        setLoading(false);
+        return;
+      }
 
       try {
+        setLoading(true);
+        setError(null);
+
         if (typeof api.getProduct === "function") {
           const res = await api.getProduct({ idOrSlug: slug });
           if (res?.success && res.data) {
             setProduct(res.data);
             // Load reviews for this product
             loadReviews(res.data.id, 1);
+            setLoading(false);
             return;
           }
         }
@@ -70,13 +105,20 @@ export function ProductPageClient({ slug }: { slug: string }) {
               setProduct(found);
               // Load reviews for this product
               loadReviews(found.id, 1);
+            } else {
+              setError("Product not found");
             }
+          } else {
+            setError("Failed to load store data");
           }
         }
       } catch (e) {
         if (process.env.NODE_ENV !== "production") {
           console.warn("Failed to load product", e);
         }
+        setError("Failed to load product");
+      } finally {
+        setLoading(false);
       }
     }
     load();
@@ -172,6 +214,36 @@ export function ProductPageClient({ slug }: { slug: string }) {
       ratingBreakdown,
     };
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p className="text-theme-secondary">Loading product...</p>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !product) {
+    return (
+      <div className="text-center py-12">
+        <h1 className="text-2xl font-bold text-theme-primary mb-4">
+          Product Not Found
+        </h1>
+        <p className="text-theme-secondary mb-6">
+          {error || "The product you're looking for doesn't exist."}
+        </p>
+        <Link
+          href="/products"
+          className="bg-[#3B82F6] hover:bg-[#2563EB] text-white px-6 py-2 rounded-md transition-colors"
+        >
+          Browse All Products
+        </Link>
+      </div>
+    );
+  }
 
   if (!product) {
     return <p className="text-theme-secondary">Loading...</p>;

@@ -342,7 +342,9 @@ export function SearchButton() {
                       {filteredProducts.map((product, index) => (
                         <Link
                           key={product.id}
-                          href={`/products/${product.slug}`}
+                          href={`/product?id=${encodeURIComponent(
+                            product.slug
+                          )}`}
                           onClick={closeSearch}
                           className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-[44px] ${
                             selectedIndex === index
@@ -527,7 +529,7 @@ export function SearchButton() {
                   {filteredProducts.map((product, index) => (
                     <Link
                       key={product.id}
-                      href={`/products/${product.slug}`}
+                      href={`/product?id=${encodeURIComponent(product.slug)}`}
                       onClick={closeSearch}
                       className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-200 group ${
                         selectedIndex === index

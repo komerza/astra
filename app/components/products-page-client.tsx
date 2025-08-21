@@ -294,7 +294,7 @@ export function ProductsPageClient() {
             {currentProducts.map((product) => (
               <Link
                 key={product.id}
-                href={`/products/${encodeURIComponent(product.slug)}`}
+                href={`/product?id=${encodeURIComponent(product.slug)}`}
               >
                 {viewMode === "grid" ? (
                   // Grid View - Using EXACT same cards from home page

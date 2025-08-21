@@ -1,18 +1,13 @@
-"use client"
+import { ProductsHeader } from "@/components/products-header";
+import { ProductPageClient } from "@/app/components/product-page-client";
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-
-export default function ProductRedirectPage() {
-  const router = useRouter()
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const slug = params.get("slug")
-    if (slug) {
-      router.replace(`/products/${encodeURIComponent(slug)}`)
-    }
-  }, [router])
-
-  return null
+export default function ProductPage() {
+  return (
+    <div className="min-h-screen bg-theme-primary relative overflow-hidden">
+      <ProductsHeader />
+      <main className="container mx-auto pt-24 px-4 sm:px-6">
+        <ProductPageClient />
+      </main>
+    </div>
+  );
 }
