@@ -21,7 +21,7 @@ export default function LandingPage() {
         {/* Hero Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-new.webp"
+            src="/hero.webp"
             alt="Hero Background"
             fill
             className="object-cover opacity-25"
@@ -33,7 +33,7 @@ export default function LandingPage() {
         {/* Grid Background Overlay */}
         <div className="absolute inset-0 z-1">
           <Image
-            src="/grid-background.png"
+            src="/hero-grid.png"
             alt="Grid Background"
             fill
             className="object-cover opacity-5"

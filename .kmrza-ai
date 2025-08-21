@@ -1,0 +1,71 @@
+app/
+app/components/
+app/components/cart-button.tsx:c|Cart button, has basket count on here used in nav
+app/components/cart-dropdown.tsx:c|Cart dropdown, shows items in the cart
+app/components/checkout-modal.tsx:c|Checkout modal, used for the checkout process has email input
+app/components/custom-dropdown.tsx:c|Custom dropdown component, takes in options, value, onChange
+app/components/dashboard/:Contains files for the customer dashboard
+app/components/dashboard/affiliates-section.tsx:c|Komerza customer affiliate manage panel section
+app/components/dashboard/dashboard-layout.tsx:c|Customer dashboard
+app/components/dashboard/dashboard-overview.tsx:c|Customer dashboard overview section
+app/components/dashboard/orders-section.tsx:c|Customer orders management section
+app/components/dashboard/settings-section.tsx:c|Customer account settings section
+app/components/dashboard/support-section.tsx:c|Customer support section, has Komerza tickets
+app/components/landing-products-client.tsx:c|Landing products client section
+app/components/mobile-nav.tsx:c|Mobile navigation component
+app/components/particle-river.tsx:c|Particle river animation component
+app/components/product-actions-wrapper.tsx:c|Product actions wrapper, has product name and review page for the product view page
+app/components/product-actions.tsx:c|Product actions, has buy now and add to basket button on product view page
+app/components/product-description-tabs.tsx:c|Product description tabs component, has reviews, descriptions and features tab
+app/components/product-image-gallery.tsx:c|Product image gallery component
+app/components/product-page-client.tsx:c|VIEW ALL PRODUCTS page, check ProductPageClient for implementation
+app/components/products-page-client.tsx:c|VIEW INDIVIDUAL PRODUCT page, check ProductsPageClient
+app/components/search-button.tsx:c|Search button component, this searches Komerza store products in the nav
+app/components/sticky-header.tsx:c|Sticky header component, for desktop
+app/components/sticky-navbar.tsx:c|Sticky navbar component, for mobile
+app/context/
+app/context/cart-context.tsx:c|Cart context provider, manages cart state (which is configured at Komerza)
+app/dashboard/
+app/dashboard/page.tsx:c|Customer dashboard home page
+app/globals.css:s|Global CSS styles, you can change colors here
+app/layout.tsx:c|Layout component, wraps all pages
+app/login/
+app/login/page.tsx:c|Customer login page
+app/page.tsx:c|The main hero page
+app/product/
+app/product/page.tsx:c|ALL PRODUCTS page
+app/products/
+app/products/page.tsx:c|INDIVIDUAL product view page
+components/
+components/products-header.tsx:c|Products header component, displays the product title and other metadata
+components/theme-provider.tsx:c|Theme provider component, wraps the application in a theme context
+components/ui/
+components/ui/alert.tsx:c|Alert component, displays a message to the user
+components/ui/aspect-ratio.tsx:c|Aspect ratio component, maintains a specific aspect ratio for its children
+components/ui/avatar.tsx:c|Avatar component, displays a user profile picture
+components/ui/badge.tsx:c|Badge component, displays a small notification or status
+components/ui/button.tsx:c|Button component, triggers an action when clicked
+components/ui/card.tsx:c|Card component, displays content in a structured format
+components/ui/input.tsx:c|Input component, allows users to enter text
+components/ui/label.tsx:c|Label component, provides a text label for form elements
+components/ui/progress.tsx:c|Progress component, indicates the progress of a task
+components/ui/separator.tsx:c|Separator component, visually divides content
+components/ui/sheet.tsx:c|Sheet component, displays content in a modal-like container
+components/ui/skeleton.tsx:c|Skeleton component, displays a placeholder for loading content
+components/ui/textarea.tsx:c|Textarea component, allows users to enter multi-line text
+components/ui/toggle.tsx:c|Toggle component, allows users to switch between two states
+components/ui/tooltip.tsx:c|Tooltip component, displays additional information on hover
+components.json:cfg|Components configuration file
+lib/
+lib/komerza.ts:c|Contains the STORE_ID to set up the Komerza API integration
+lib/product-slugs.ts:c|Run-time slugs list, ignore this file
+lib/utils.ts:c|Contains Tailwind cn function
+next.config.mjs:o|Next.js config, avoid editing this
+package.json:cfg|Packages
+postcss.config.mjs:o|PostCSS config, avoid editing this
+public/
+public/hero-grid.png:i|Hero grid image
+public/hero.webp:i|Hero background image
+public/komerza.svg:i|Komerza logo
+tailwind.config.ts:c|Colors don't exist here
+tsconfig.json:cfg|TypeScript configuration
