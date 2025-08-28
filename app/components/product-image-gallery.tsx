@@ -178,7 +178,9 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                       {/* Pulse animation ring */}
                       <div
                         className={`absolute inset-0 rounded-full border-2 border-[#3b82f6] transition-opacity duration-300 ${
-                          isHoveringFirstImage ? "animate-ping opacity-30" : "opacity-0"
+                          isHoveringFirstImage
+                            ? "animate-ping opacity-30"
+                            : "opacity-0"
                         }`}
                       ></div>
                     </button>
@@ -196,13 +198,23 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                 onClick={handleVideoClose}
                 className="absolute top-4 right-4 z-30 w-8 h-8 bg-black/70 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
 
               <iframe
-                src="https://www.youtube.com/embed/r9lBKawPx6w?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1"
+                src="https://www.youtube.com/embed/xvFZjo5PgG0?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1"
                 title="Product Demo Video"
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -236,7 +248,9 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           {!isVideoPlaying && (
             <div
               className={`absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm z-10 transition-all duration-300 ${
-                isHoveringFirstImage && currentIndex === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
+                isHoveringFirstImage && currentIndex === 0
+                  ? "opacity-0 pointer-events-none"
+                  : "opacity-100"
               }`}
             >
               {currentIndex + 1} / {images.length}
@@ -251,7 +265,9 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
               key={index}
               onClick={() => goToSlide(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex ? "bg-[#3B82F6] w-6" : "bg-white/30 hover:bg-white/50"
+                index === currentIndex
+                  ? "bg-[#3B82F6] w-6"
+                  : "bg-white/30 hover:bg-white/50"
               }`}
               disabled={isTransitioning}
             />
@@ -266,7 +282,9 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             key={index}
             onClick={() => goToSlide(index)}
             className={`relative w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all duration-300 ${
-              index === currentIndex ? "border-[#3B82F6] opacity-100" : "border-white/20 opacity-60 hover:opacity-80"
+              index === currentIndex
+                ? "border-[#3B82F6] opacity-100"
+                : "border-white/20 opacity-60 hover:opacity-80"
             }`}
             disabled={isTransitioning}
           >
@@ -290,9 +308,10 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
       {/* Swipe Hint (Mobile) */}
       <div className="lg:hidden text-center mt-2">
         <p className="text-xs text-[#808080]">
-          Swipe left or right to view more images • Hover first image to play video
+          Swipe left or right to view more images • Hover first image to play
+          video
         </p>
       </div>
     </div>
-  )
+  );
 }

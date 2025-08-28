@@ -64,13 +64,17 @@ export function CheckoutModal({
         couponCode?.trim()
       );
 
-      console.log("Checkout result:", result);
+      if (result.success) {
+        console.log("Checkout result:", result);
 
-      toast.success("Checkout Started!", {
-        description: "Redirecting to payment...",
-      });
-      onClose();
-      setEmail("");
+        toast.success("Checkout Started!", {
+          description: "Redirecting to payment...",
+        });
+        onClose();
+        setEmail("");
+      } else {
+        toast.error(result.message);
+      }
     } catch (error) {
       console.error("Checkout error:", error);
       toast.error("Checkout Failed", {
@@ -115,7 +119,7 @@ export function CheckoutModal({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="pl-10 bg-theme-secondary border-theme text-theme-primary placeholder:text-theme-secondary h-12 rounded-md focus:ring-2 focus:ring-[#3B82F6]/20 focus:border-[#3B82F6]/50"
+                className="pl-10 outline-none bg-theme-secondary border-theme text-theme-primary placeholder:text-theme-secondary h-12 rounded-md focus:ring-2 focus:ring-[#3B82F6] focus:border-[#3B82F6]"
                 onKeyDown={(e) => e.key === "Enter" && processCheckout()}
                 autoFocus
               />

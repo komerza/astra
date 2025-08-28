@@ -16,12 +16,18 @@ interface Product {
   image: string
 }
 
+let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "EUR",
+});
+
 export function LandingProductsClient() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     async function load() {
-      const res = await globalThis.komerza.getStore()
+      const res = await globalThis.komerza.getStore();
+      formatter = await globalThis.komerza.createFormatter();
       if (res.success && res.data) {
         const mapped: Product[] = res.data.products
           .slice(0, 3)
@@ -35,11 +41,11 @@ export function LandingProductsClient() {
               ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
               : "/product-placeholder.png",
           }));
-        setProducts(mapped)
+        setProducts(mapped);
       }
     }
-    load()
-  }, [])
+    load();
+  }, []);
 
   return (
     <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 max-w-6xl mx-auto">
@@ -82,8 +88,7 @@ export function LandingProductsClient() {
                       Starting at
                     </span>
                     <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
-                      <span className="mr-0.5 text-lg sm:text-xl">€</span>
-                      {p.price.toFixed(2)}
+                      {formatter.format(p.price)}
                     </span>
                   </div>
                 </div>

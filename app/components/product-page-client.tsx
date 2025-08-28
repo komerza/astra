@@ -8,10 +8,12 @@ import { ProductActionsWrapper } from "@/app/components/product-actions-wrapper"
 import { ProductDescriptionTabs } from "@/app/components/product-description-tabs"
 
 interface Variant {
-  id: string
-  name: string
-  cost: number
-  description?: string
+  id: string;
+  name: string;
+  cost: number;
+  description?: string;
+  stock?: number;
+  stockMode?: number;
 }
 
 interface ProductReference {
@@ -37,6 +39,11 @@ interface PaginatedApiResponse<T> {
   data?: T[];
   pages: number;
 }
+
+let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "EUR",
+});
 
 export function ProductPageClient() {
   return (
@@ -127,6 +134,8 @@ function ProductPageContent() {
   const loadReviews = async (productId: string, page: number = 1) => {
     const api: any = globalThis.komerza;
     if (!api || typeof api.getProductReviews !== "function") return;
+
+    formatter = await globalThis.komerza.createFormatter();
 
     try {
       setReviewsLoading(true);
@@ -268,6 +277,8 @@ function ProductPageContent() {
       name: v.name,
       price: v.cost,
       description: v.description || "",
+      stock: v.stock || 0,
+      stockMode: v.stockMode || 0,
     })),
     image: images[0],
     rating: reviewStats.averageRating,
@@ -344,7 +355,7 @@ function ProductPageContent() {
         <ProductImageGallery images={images} productName={product.name} />
       </div>
       <div className="space-y-6">
-        <ProductActionsWrapper product={actionProduct} />
+        <ProductActionsWrapper formatter={formatter} product={actionProduct} />
       </div>
       <div className="lg:col-span-2 mt-16">
         <ProductDescriptionTabs product={tabsProduct} />

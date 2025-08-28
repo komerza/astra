@@ -49,7 +49,7 @@ export function MobileNav({
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+            className="fixed top-16 left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
             onClick={closeMenu}
           />
 
@@ -78,17 +78,7 @@ export function MobileNav({
                   </span>
                 </Link>
                 <Link
-                  href="/status"
-                  onClick={closeMenu}
-                  className="text-theme-secondary hover:text-[#3B82F6] hover:bg-gray-100 dark:hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
-                >
-                  <Activity className="w-5 h-5" />
-                  <span className="text-base font-normal tracking-20-smaller">
-                    Status
-                  </span>
-                </Link>
-                <Link
-                  href="#"
+                  href="/dashboard/support"
                   onClick={closeMenu}
                   className="text-theme-secondary hover:text-[#3B82F6] hover:bg-gray-100 dark:hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
                 >
@@ -101,7 +91,7 @@ export function MobileNav({
                   <Link href="/dashboard" onClick={closeMenu}>
                     <Button className="w-full bg-[#3B82F6] text-white hover:bg-[#2563EB] h-12 px-4 py-3 rounded-md flex items-center justify-center gap-3 text-base tracking-20-smaller transition-all duration-300 font-normal mobile-touch-target">
                       <LayoutDashboard className="w-5 h-5" />
-                      <span>Dashboard</span>
+                      <span>Client Area</span>
                     </Button>
                   </Link>
                 </div>

@@ -55,6 +55,11 @@ interface SortOption {
   name: string;
 }
 
+let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "EUR",
+});
+
 // Custom Dropdown Component
 function CustomDropdown({
   options,
@@ -133,6 +138,7 @@ export function ProductsPageClient() {
   useEffect(() => {
     async function load() {
       const res = await globalThis.komerza.getStore();
+      formatter = await globalThis.komerza.createFormatter();
       if (res.success && res.data) {
         const mapped: Product[] = res.data.products.map((p: any) => ({
           id: p.id,
@@ -225,30 +231,6 @@ export function ProductsPageClient() {
   const endIndex = startIndex + productsPerPage;
   const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
-  // Helper function to get game abbreviation
-  const getGameAbbreviation = (game: string) => {
-    switch (game) {
-      case "Software Development":
-        return "DEV";
-      case "Web Design":
-        return "WEB";
-      case "Business Software":
-        return "BIZ";
-      case "Data Analytics":
-        return "DATA";
-      case "Mobile Development":
-        return "MOBILE";
-      case "E-commerce":
-        return "SHOP";
-      case "Website Building":
-        return "SITE";
-      case "Design Software":
-        return "DESIGN";
-      default:
-        return "SW";
-    }
-  };
-
   if (products.length === 0) {
     return <p className="text-theme-secondary">Loading products...</p>;
   }
@@ -327,9 +309,6 @@ export function ProductsPageClient() {
                     <div className="flex flex-1 flex-col gap-2 p-2">
                       <h3 className="flex flex-wrap items-center gap-1 text-lg sm:text-xl font-semibold text-theme-primary">
                         {product.name}
-                        <span className="ml-1 rounded-md border border-theme bg-theme-secondary px-2 py-0.5 text-xs shadow-md">
-                          {getGameAbbreviation(product.game)}
-                        </span>
                       </h3>
                       <div className="mt-2 flex w-full flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4">
                         <Button className="w-full h-10 sm:h-12 rounded-full border border-theme bg-theme-secondary shadow-lg text-theme-primary font-normal text-sm sm:text-base px-4 hover:bg-gray-200 dark:hover:bg-white/15 transition-all duration-300">
@@ -341,8 +320,7 @@ export function ProductsPageClient() {
                             Starting at
                           </span>
                           <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
-                            <span className="mr-0.5 text-lg sm:text-xl">€</span>
-                            {product.basePrice.toFixed(2)}
+                            {formatter.format(product.basePrice)}
                           </span>
                         </div>
                       </div>
@@ -497,7 +475,7 @@ export function ProductsPageClient() {
         className={`
         ${
           showFilters
-            ? "lg:relative lg:w-80 fixed inset-0 z-50 lg:z-auto bg-black/50 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none"
+            ? "lg:relative lg:w-80 fixed top-16 left-0 right-0 bottom-0 z-50 lg:z-auto bg-black/50 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none"
             : "hidden lg:block lg:w-80"
         }
       `}

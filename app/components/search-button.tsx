@@ -40,13 +40,13 @@ const suggestedItems = [
     name: "Support",
     description: "Get help and contact support.",
     icon: HelpCircle,
-    href: "/support",
+    href: "/dashboard/support",
   },
 ];
 
 export function SearchButton() {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -280,7 +280,7 @@ export function SearchButton() {
           <>
             {/* Backdrop */}
             <div
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              className="fixed top-16 left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-50"
               onClick={closeSearch}
             />
 

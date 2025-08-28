@@ -1,13 +1,34 @@
-import Link from "next/link"
+"use client";
+
+import Link from "next/link";
 import { ArrowUpRight, Package, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image"
+import Image from "next/image";
 import { SmilePlus } from "lucide-react";
 import { ParticleRiver } from "./components/particle-river";
 import { LandingProductsClient } from "./components/landing-products-client";
 import { StickyHeader } from "./components/sticky-header";
+import { useEffect, useState } from "react";
 
 export default function LandingPage() {
+  const [bannerUrl, setBannerUrl] = useState("/komerza-logo.png"); // Default fallback
+
+  useEffect(() => {
+    async function getBanner() {
+      try {
+        const url = await globalThis.komerza.getStoreBannerUrl();
+        if (url) {
+          setBannerUrl(url);
+        }
+      } catch (error) {
+        console.warn("Failed to load store banner, using fallback:", error);
+        // Keep the default banner
+      }
+    }
+
+    getBanner();
+  }, []);
+
   return (
     <div className="min-h-screen bg-theme-primary relative overflow-hidden transition-colors duration-300">
       {/* Glowing effects */}
@@ -100,54 +121,6 @@ export default function LandingPage() {
               <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 shadow-lg font-normal">
                 <ArrowUpRight className="w-5 h-5 sm:w-4 sm:h-4" />
                 <span>Products</span>
-              </Button>
-            </Link>
-
-            <Link href="/status">
-              <Button className="w-full sm:w-auto glass-theme hover:bg-gray-300 dark:hover:bg-white/10 text-theme-primary h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 tracking-20-smaller border border-theme rounded-md flex items-center justify-center gap-2 text-base sm:text-sm transition-all duration-300 font-normal">
-                <span>Status</span>
-                <svg
-                  height="18"
-                  width="18"
-                  viewBox="0 0 18 18"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 sm:w-4 sm:h-4"
-                >
-                  <g fill="currentColor">
-                    <path
-                      d="M7.93903 13.72C8.52503 13.134 9.47503 13.134 10.06 13.72"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1"
-                    ></path>
-                    <path
-                      d="M5.81799 11.598C7.57499 9.84099 10.425 9.84099 12.182 11.598"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1"
-                    ></path>
-                    <path
-                      d="M3.69702 9.47699C6.62602 6.54799 11.375 6.54799 14.304 9.47699"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1"
-                    ></path>
-                    <path
-                      d="M1.57501 7.35599C5.67601 3.25499 12.324 3.25499 16.424 7.35599"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1"
-                    ></path>
-                  </g>
-                </svg>
               </Button>
             </Link>
           </div>
@@ -278,13 +251,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <Image
-                src="/kimera-logo.svg"
-                alt="Komerza"
-                width={120}
-                height={48}
-                className="h-6 sm:h-8 w-auto"
-              />
+              <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
             </div>
 
             <div className="flex items-center space-x-4 sm:space-x-6 mb-4 md:mb-0">

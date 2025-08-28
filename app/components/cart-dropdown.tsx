@@ -94,7 +94,7 @@ export function CartDropdown() {
           </div>
           <div className="flex-1 overflow-y-auto px-6 space-y-3">
             {state.items.length === 0 && (
-              <p className="text-theme-secondary text-sm">
+              <p className="text-theme-secondary text-sm mt-6">
                 Your cart is empty.
               </p>
             )}

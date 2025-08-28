@@ -9,25 +9,42 @@ import { CartDropdown } from "./cart-dropdown"
 import { MobileNav } from "./mobile-nav"
 
 export function StickyNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
-  const { state, dispatch } = useCart()
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const { state, dispatch } = useCart();
+
+  const [bannerUrl, setBannerUrl] = useState("/komerza-logo.png"); // Default fallback
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    async function getBanner() {
+      try {
+        const url = await globalThis.komerza.getStoreBannerUrl();
+        if (url) {
+          setBannerUrl(url);
+        }
+      } catch (error) {
+        console.warn("Failed to load store banner, using fallback:", error);
+        // Keep the default banner
+      }
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    getBanner();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
       {/* Sticky Navbar */}
       <div
         className={`fixed top-0 z-50 w-full duration-500 transition-all ${
-          isScrolled ? "header-blur bg-white/[0.01] backdrop-blur-md" : "bg-transparent"
+          isScrolled
+            ? "header-blur bg-white/[0.01] backdrop-blur-md"
+            : "bg-transparent"
         }`}
       >
         <div className="page-container flex h-[70px] w-full items-center justify-between px-4">
@@ -35,16 +52,10 @@ export function StickyNavbar() {
           <div className="flex items-center gap-4">
             <Link href="/">
               <div className="flex flex-row items-center gap-2">
-                <Image
-                  alt="website logo"
-                  width={32}
-                  height={32}
-                  className="animate-eye-flip-vertical h-8 w-8 rounded-md"
-                  src="/kimera-logo.svg"
-                />
+                <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
                 <div className="monument-bold relative flex flex-row items-end font-semibold tracking-[0.02em]">
-                  <span className="text-white">visuals</span>
-                  <span className="text-[#3B82F6]">.gg</span>
+                  <span className="text-white">komerza</span>
+                  <span className="text-[#3B82F6]">.com</span>
                 </div>
               </div>
             </Link>
@@ -56,7 +67,7 @@ export function StickyNavbar() {
                   Products
                 </button>
               </Link>
-              <Link href="https://discord.visuals.gg/" target="_blank">
+              <Link href="https://discord.com" target="_blank">
                 <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
                   Discord
                 </button>
@@ -64,11 +75,6 @@ export function StickyNavbar() {
               <Link href="/payment-methods">
                 <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
                   Payment Methods
-                </button>
-              </Link>
-              <Link href="/status">
-                <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
-                  Status
                 </button>
               </Link>
             </div>
@@ -112,7 +118,10 @@ export function StickyNavbar() {
       </div>
 
       {/* Mobile Navigation */}
-      <MobileNav isOpen={isMobileNavOpen} onClose={() => setIsMobileNavOpen(false)} />
+      <MobileNav
+        isOpen={isMobileNavOpen}
+        onClose={() => setIsMobileNavOpen(false)}
+      />
     </>
-  )
+  );
 }
