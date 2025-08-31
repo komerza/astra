@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Menu, X, Home, Package, HelpCircle, LayoutDashboard, Activity } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Link } from "react-router-dom"
 import { CartButton } from "./cart-button";
 
 interface MobileNavProps {
@@ -58,7 +58,7 @@ export function MobileNav({
             <div className="container mx-auto px-6 py-6">
               <nav className="space-y-4">
                 <Link
-                  href="/"
+                  to="/"
                   onClick={closeMenu}
                   className="text-[#3B82F6] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-3 rounded-md bg-[#3B82F6]/10 px-4 py-3 transition-colors duration-300 mobile-touch-target"
                 >
@@ -68,7 +68,7 @@ export function MobileNav({
                   </span>
                 </Link>
                 <Link
-                  href="/products"
+                  to="/products"
                   onClick={closeMenu}
                   className="text-theme-secondary hover:text-[#3B82F6] hover:bg-gray-100 dark:hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
                 >
@@ -78,7 +78,7 @@ export function MobileNav({
                   </span>
                 </Link>
                 <Link
-                  href="/dashboard/support"
+                  to="/dashboard/support"
                   onClick={closeMenu}
                   className="text-theme-secondary hover:text-[#3B82F6] hover:bg-gray-100 dark:hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
                 >
@@ -88,7 +88,7 @@ export function MobileNav({
                   </span>
                 </Link>
                 <div className="pt-4 border-t border-theme">
-                  <Link href="/dashboard" onClick={closeMenu}>
+                  <Link to="/dashboard" onClick={closeMenu}>
                     <Button className="w-full bg-[#3B82F6] text-white hover:bg-[#2563EB] h-12 px-4 py-3 rounded-md flex items-center justify-center gap-3 text-base tracking-20-smaller transition-all duration-300 font-normal mobile-touch-target">
                       <LayoutDashboard className="w-5 h-5" />
                       <span>Client Area</span>

@@ -38,3 +38,6 @@ next-env.d.ts
 # Static export output
 /out
 .env
+
+# Vite build output
+dist/

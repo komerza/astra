@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, SmilePlus } from "lucide-react"
@@ -51,13 +50,12 @@ export function LandingProductsClient() {
     <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 max-w-6xl mx-auto">
       {products.map((p) => (
         <div key={p.id} className="w-full sm:w-80 lg:w-96">
-          <Link href={`/product?id=${encodeURIComponent(p.slug)}`}>
+          <Link to={`/product?id=${encodeURIComponent(p.slug)}`}>
             <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300 flex flex-col h-full">
               <div className="relative w-full aspect-video cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6]/20 to-[#1d4ed8]/20"></div>
-                <Image
+                <img
                   alt={p.name}
-                  fill
                   className="object-cover duration-200 group-hover:scale-105"
                   src={p.image}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 320px, 384px"

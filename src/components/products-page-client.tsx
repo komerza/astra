@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -276,15 +275,14 @@ export function ProductsPageClient() {
             {currentProducts.map((product) => (
               <Link
                 key={product.id}
-                href={`/product?id=${encodeURIComponent(product.slug)}`}
+                to={`/product?id=${encodeURIComponent(product.slug)}`}
               >
                 {viewMode === "grid" ? (
                   // Grid View - Using EXACT same cards from home page
                   <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
                     <div className="relative w-full aspect-video cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl">
-                      <Image
+                      <img
                         alt={product.name}
-                        fill
                         className="object-cover duration-200 group-hover:scale-105"
                         src={product.image || "/product-placeholder.png"}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -331,9 +329,8 @@ export function ProductsPageClient() {
                   <div className="group relative rounded-2xl border border-theme bg-theme-secondary shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300 p-4">
                     <div className="flex items-center gap-4">
                       <div className="relative w-24 h-16 flex-shrink-0 overflow-hidden rounded-lg">
-                        <Image
+                        <img
                           alt={product.name}
-                          fill
                           className="object-cover"
                           src={product.image || "/product-placeholder.png"}
                           sizes="96px"

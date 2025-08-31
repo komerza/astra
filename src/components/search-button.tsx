@@ -2,12 +2,10 @@
 
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
-import { useTheme } from "next-themes"
 import { Search, X, ArrowRight, User, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter } from "next/navigation";
+import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 // Define Product interface to match the products page
 interface Product {
@@ -56,7 +54,7 @@ export function SearchButton() {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   // Load products from the global store
   useEffect(() => {
@@ -144,7 +142,7 @@ export function SearchButton() {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Navigate to products page with search query
-      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
       closeSearch();
     }
   };
@@ -190,7 +188,7 @@ export function SearchButton() {
           const selectedItem = allItems[selectedIndex];
           // Navigate to the selected item
           if (selectedItem.href) {
-            router.push(selectedItem.href);
+            navigate(selectedItem.href);
             closeSearch();
           }
         } else if (searchQuery.trim()) {
@@ -342,7 +340,7 @@ export function SearchButton() {
                       {filteredProducts.map((product, index) => (
                         <Link
                           key={product.id}
-                          href={`/product?id=${encodeURIComponent(
+                          to={`/product?id=${encodeURIComponent(
                             product.slug
                           )}`}
                           onClick={closeSearch}
@@ -353,7 +351,7 @@ export function SearchButton() {
                           }`}
                         >
                           <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                            <Image
+                            <img
                               src={product.image || "/product-placeholder.png"}
                               alt={product.name}
                               width={28}
@@ -413,7 +411,7 @@ export function SearchButton() {
                         return (
                           <Link
                             key={item.id}
-                            href={item.href}
+                            to={item.href}
                             onClick={closeSearch}
                             className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-[44px] ${
                               selectedIndex === itemIndex
@@ -529,7 +527,7 @@ export function SearchButton() {
                   {filteredProducts.map((product, index) => (
                     <Link
                       key={product.id}
-                      href={`/product?id=${encodeURIComponent(product.slug)}`}
+                      to={`/product?id=${encodeURIComponent(product.slug)}`}
                       onClick={closeSearch}
                       className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-200 group ${
                         selectedIndex === index
@@ -538,7 +536,7 @@ export function SearchButton() {
                       }`}
                     >
                       <div className="w-10 h-10 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <Image
+                        <img
                           src={product.image || "/product-placeholder.png"}
                           alt={product.name}
                           width={24}
@@ -595,7 +593,7 @@ export function SearchButton() {
                     return (
                       <Link
                         key={item.id}
-                        href={item.href}
+                        to={item.href}
                         onClick={closeSearch}
                         className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-200 group ${
                           selectedIndex === itemIndex

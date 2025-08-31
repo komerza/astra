@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
+import { Link } from "react-router-dom";
 import { Home, Package, Activity } from "lucide-react";
-import { CartButton } from "@/app/components/cart-button";
-import { MobileNav } from "@/app/components/mobile-nav";
-import { SearchButton } from "@/app/components/search-button";
+import { CartButton } from "@/components/cart-button";
+import { MobileNav } from "@/components/mobile-nav";
+import { SearchButton } from "@/components/search-button";
 import { useEffect, useState } from "react";
 
 export function ProductsHeader() {
@@ -30,12 +29,12 @@ export function ProductsHeader() {
   return (
     <header className="h-16 flex items-center justify-between container mx-auto top-0 absolute inset-x-0 z-50 px-4 sm:px-6">
       <div className="flex items-center space-x-8">
-        <Link href="/">
+        <Link to="/">
           <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
         </Link>
         <div className="items-center gap-4 hidden md:flex">
           <Link
-            href="/"
+            to="/"
             className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
           >
             <Home className="w-[18px] h-[18px]" />
@@ -44,7 +43,7 @@ export function ProductsHeader() {
             </span>
           </Link>
           <Link
-            href="/products"
+            to="/products"
             className="text-[#3B82F6] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-[#3B82F6]/10 px-2.5 py-1.5 transition-colors duration-300"
           >
             <Package className="w-[18px] h-[18px]" />
