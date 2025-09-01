@@ -313,7 +313,7 @@ export function ProductsPageClient() {
                         {product.name}
                       </h3>
                       <div className="mt-2 flex w-full flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4">
-                        <Button className="w-full h-10 sm:h-12 rounded-full border border-theme bg-theme-secondary shadow-lg text-theme-primary font-normal text-sm sm:text-base px-4 hover:bg-gray-200 dark:hover:bg-white/15 transition-all duration-300">
+                        <Button className="w-full h-10 sm:h-12 rounded-full border border-theme bg-theme-secondary shadow-lg text-theme-primary font-normal text-sm sm:text-base px-4 hover:bg-white/15 transition-all duration-300">
                           <ShoppingCart className="w-4 h-4 mr-2" />
                           <span>Buy Now</span>
                         </Button>

@@ -50,8 +50,6 @@ export function SearchButton() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isMobile, setIsMobile] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -100,17 +98,6 @@ export function SearchButton() {
     loadProducts();
   }, [ready]);
 
-  // Theme detection
-  useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark";
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      setTheme("light");
-    }
-  }, []);
-
   // Check if mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -155,20 +142,17 @@ export function SearchButton() {
     const query = e.target.value;
     setSearchQuery(query);
 
-    // Filter products in real-time
     if (query.trim()) {
       const filtered = products
-        .filter(
-          (product) =>
-            product.name.toLowerCase().includes(query.toLowerCase()) ||
-            product.description.toLowerCase().includes(query.toLowerCase())
+        .filter((p) =>
+          p.name.toLowerCase().includes(query.toLowerCase())
         )
-        .slice(0, 3); // Limit to top 3 results
+        .slice(0, 3);
       setFilteredProducts(filtered);
     } else {
-      // Show popular products when search is empty
       setFilteredProducts(products.filter((p) => p.popular).slice(0, 3));
     }
+
     setSelectedIndex(-1);
   };
 
@@ -247,23 +231,12 @@ export function SearchButton() {
     };
   }, [isExpanded, selectedIndex, allItems, searchQuery]);
 
-  // Don't render until mounted to avoid hydration issues
-  if (!mounted) {
-    return (
-      <Button className="bg-transparent border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 h-8 w-8 p-0 rounded-md transition-all duration-300">
-        <Search className="w-4 h-4" />
-      </Button>
-    );
-  }
-
-  // Theme-aware classes
-  const isDark = theme === "dark";
-  const bgClass = isDark ? "bg-[#050505]" : "bg-white";
-  const borderClass = isDark ? "border-white/20" : "border-gray-300";
-  const textPrimaryClass = isDark ? "text-white" : "text-gray-900";
-  const textSecondaryClass = isDark ? "text-[#808080]" : "text-gray-600";
-  const hoverBgClass = isDark ? "hover:bg-white/10" : "hover:bg-gray-100";
-  const inputBgClass = isDark ? "bg-[#050505]" : "bg-white";
+  const bgClass = "bg-[#050505]";
+  const borderClass = "border-white/20";
+  const textPrimaryClass = "text-white";
+  const textSecondaryClass = "text-[#808080]";
+  const hoverBgClass = "hover:bg-white/10";
+  const inputBgClass = "bg-[#050505]";
 
   // Mobile Modal Search
   if (isMobile) {
@@ -482,9 +455,7 @@ export function SearchButton() {
               className={`shortcut -mr-1 hidden justify-end gap-0.5 whitespace-nowrap ${textSecondaryClass} text-xs md:flex`}
             >
               <kbd
-                className={`flex h-5 min-w-5 items-center justify-center rounded border ${borderClass} ${
-                  isDark ? "bg-white/5" : "bg-gray-100"
-                } px-1`}
+                className={`flex h-5 min-w-5 items-center justify-center rounded border ${borderClass} bg-white/5 px-1`}
               >
                 Esc
               </kbd>

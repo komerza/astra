@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "react-router-dom";
-import { StickyHeader } from "@/components/sticky-header";
+import { Navbar } from "@/components/navbar";
 import { StoreBanner } from "@/components/store-banner";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ProductsSection } from "@/components/landing/ProductsSection";
@@ -10,12 +10,12 @@ import { useEffect, useState } from "react";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-theme-primary relative overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen bg-theme-primary relative overflow-hidden">
       {/* Glowing effects */}
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#3B82F6] rounded-full blur-3xl opacity-10"></div>
 
-      {/* Sticky Header */}
-      <StickyHeader />
+      {/* Navbar */}
+      <Navbar />
 
       {/* Hero Section */}
       <HeroSection />

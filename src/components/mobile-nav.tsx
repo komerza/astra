@@ -70,7 +70,7 @@ export function MobileNav({
                 <Link
                   to="/products"
                   onClick={closeMenu}
-                  className="text-theme-secondary hover:text-[#3B82F6] hover:bg-gray-100 dark:hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
+                  className="text-theme-secondary hover:text-[#3B82F6] hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
                 >
                   <Package className="w-5 h-5" />
                   <span className="text-base font-normal tracking-20-smaller">
@@ -80,7 +80,7 @@ export function MobileNav({
                 <Link
                   to="/dashboard/support"
                   onClick={closeMenu}
-                  className="text-theme-secondary hover:text-[#3B82F6] hover:bg-gray-100 dark:hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
+                  className="text-theme-secondary hover:text-[#3B82F6] hover:bg-white/15 flex items-center gap-3 rounded-md bg-transparent px-4 py-3 transition-colors duration-300 mobile-touch-target"
                 >
                   <HelpCircle className="w-5 h-5" />
                   <span className="text-base font-normal tracking-20-smaller">

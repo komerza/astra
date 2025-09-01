@@ -1,17 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { ShoppingCart, UserPlus, Menu } from "lucide-react"
-import { useCart } from "@/context/cart-context";
-import { CartDropdown } from "./cart-dropdown"
-import { MobileNav } from "./mobile-nav"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { UserPlus, Menu } from "lucide-react";
+import { SearchButton } from "./search-button";
+import { CartButton } from "./cart-button";
+import { MobileNav } from "./mobile-nav";
 import { StoreBanner } from "@/components/store-banner";
 
-export function StickyNavbar() {
+export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const { state, dispatch } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,30 +65,15 @@ export function StickyNavbar() {
 
           {/* Right Side Actions */}
           <div className="flex flex-row items-center gap-4">
-            {/* Cart Button */}
-            <div className="relative">
-              <button
-                onClick={() => dispatch({ type: "TOGGLE_CART" })}
-                className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-8 w-8 rounded-md px-2 relative"
-              >
-                <ShoppingCart size={18} />
-                {state.items.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#3B82F6] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {state.items.length}
-                  </span>
-                )}
-              </button>
-              <CartDropdown />
-            </div>
-
+            <SearchButton />
+            <CartButton />
             {/* Dashboard Button - Desktop */}
             <Link to="/dashboard" className="hidden sm:block">
-              <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-[#3B82F6] text-primary-foreground dark:text-accent-foreground shadow hover:bg-[#3B82F6]/90 h-8 rounded-md px-3 text-xs">
+              <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-[#3B82F6] text-primary-foreground shadow hover:bg-[#3B82F6]/90 h-8 rounded-md px-3 text-xs">
                 <UserPlus size={14} />
                 Dashboard
               </button>
             </Link>
-
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileNavOpen(true)}
