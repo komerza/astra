@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CreditCard, Tag, X, Plus, Minus } from "lucide-react";
 import { CheckoutModal } from "./checkout-modal";
-import { useKomerza } from "@/KomerzaProvider";
 import { useStoreData } from "@/lib/store-data";
 
 interface ProductInfo {
@@ -27,12 +26,11 @@ export function CartDropdown() {
     {}
   );
 
-  // Fetch product information when cart opens or items change
-  const { ready } = useKomerza();
+  // Build product information from cached products when the cart opens
   const { products } = useStoreData();
 
   useEffect(() => {
-    if (!state.isOpen || !ready || products.length === 0) return;
+    if (!state.isOpen || products.length === 0) return;
     const productMap: Record<string, ProductInfo> = {};
     products.forEach((product) => {
       productMap[product.id] = {
@@ -46,7 +44,7 @@ export function CartDropdown() {
       };
     });
     setProductsInfo(productMap);
-  }, [state.isOpen, state.items.length, ready, products]);
+  }, [state.isOpen, products]);
 
   const handleCheckout = async () => {
     if (state.items.length === 0) return;
