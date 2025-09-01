@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import { User, HelpCircle } from "lucide-react";
-import { useKomerza } from "@/lib/use-komerza";
+import { useKomerza } from "@/KomerzaProvider";
 import type { Product } from "@/types/product";
 
 export interface SuggestedItem {

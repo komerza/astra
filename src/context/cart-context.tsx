@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useEffect, useReducer, useCallback, type ReactNode } from "react"
-import { useKomerza } from "@/lib/use-komerza";
+import { useKomerza } from "@/KomerzaProvider";
 
 interface BasketItem {
   productId: string

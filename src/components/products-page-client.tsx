@@ -17,7 +17,7 @@ import {
   ChevronDown,
   X
 } from "lucide-react";
-import { useKomerza } from "@/lib/use-komerza";
+import { useKomerza } from "@/KomerzaProvider";
 import type { Product } from "@/types/product";
 
 // Define missing interfaces

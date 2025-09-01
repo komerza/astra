@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CreditCard, X, Mail } from "lucide-react";
 import { toast } from "sonner";
-import { useKomerza } from "@/lib/use-komerza";
+import { useKomerza } from "@/KomerzaProvider";
 
 interface CheckoutModalProps {
   isOpen: boolean;

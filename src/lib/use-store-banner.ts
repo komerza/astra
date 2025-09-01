@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useKomerza } from "./use-komerza";
+import { useKomerza } from "@/KomerzaProvider";
 
 export function useStoreBanner(fallback = "/komerza-logo.png") {
   const { ready } = useKomerza();
