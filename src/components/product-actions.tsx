@@ -13,18 +13,18 @@ import { useCart } from "@/context/cart-context";
 import { CheckoutModal } from "./checkout-modal";
 import { toast } from "sonner";
 import type { Product, ProductVariant } from "@/types/product";
+import { useCurrencyFormatter } from "@/lib/use-currency-formatter";
 
 interface ProductActionsProps {
   product: Product;
-  formatter: Intl.NumberFormat;
   onPriceChange: (price: number) => void;
 }
 
 export function ProductActions({
   product,
   onPriceChange,
-  formatter,
 }: ProductActionsProps) {
+  const formatter = useCurrencyFormatter();
   // Ensure variants exist and are valid
   const variants =
     product.variants && product.variants.length > 0 ? product.variants : [];

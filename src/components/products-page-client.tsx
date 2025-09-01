@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +17,8 @@ import {
   ChevronDown,
   X
 } from "lucide-react";
-import { useKomerza } from "@/KomerzaProvider";
 import { useStoreData } from "@/lib/store-data";
+import { useCurrencyFormatter } from "@/lib/use-currency-formatter";
 
 // Define missing interfaces
 interface Category {
@@ -38,11 +38,6 @@ interface SortOption {
   id: string;
   name: string;
 }
-
-let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "EUR",
-});
 
 // Custom Dropdown Component
 function CustomDropdown({
@@ -119,14 +114,7 @@ export function ProductsPageClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
 
-  const { ready } = useKomerza();
-
-  useEffect(() => {
-    if (!ready) return;
-    (async () => {
-      formatter = await globalThis.komerza.createFormatter();
-    })();
-  }, [ready]);
+  const formatter = useCurrencyFormatter();
 
   const categories: Category[] = [
     { id: "all", name: "All", count: products.length },

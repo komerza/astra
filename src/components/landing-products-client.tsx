@@ -1,30 +1,17 @@
 "use client"
 
-import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
-import { useKomerza } from "@/KomerzaProvider";
 import { useStoreData } from "@/lib/store-data";
-
-let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "EUR",
-});
+import { useCurrencyFormatter } from "@/lib/use-currency-formatter";
 
 export function LandingProductsClient() {
   const { products: allProducts } = useStoreData();
   const products = allProducts.slice(0, 3);
 
-  const { ready } = useKomerza();
-
-  useEffect(() => {
-    if (!ready) return;
-    (async () => {
-      formatter = await globalThis.komerza.createFormatter();
-    })();
-  }, [ready]);
+  const formatter = useCurrencyFormatter();
 
   return (
     <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 max-w-6xl mx-auto">
