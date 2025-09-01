@@ -7,6 +7,8 @@ import { SearchButton } from "./search-button";
 import { CartButton } from "./cart-button";
 import { MobileNav } from "./mobile-nav";
 import { StoreBanner } from "@/components/store-banner";
+import { navLinks } from "./nav-links";
+import { NavLink as NavItem } from "./nav-link";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,21 +47,17 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden flex-row items-center sm:flex">
-              <Link to="/products">
-                <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
-                  Products
-                </button>
-              </Link>
-              <Link to="https://discord.com" target="_blank">
-                <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
-                  Discord
-                </button>
-              </Link>
-              <Link to="/payment-methods">
-                <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
-                  Payment Methods
-                </button>
-              </Link>
+              {navLinks
+                .filter((link) => link.showInNavbar)
+                .map((link) => (
+                  <NavItem
+                    key={link.href}
+                    to={link.href}
+                    target={link.external ? "_blank" : undefined}
+                  >
+                    {link.label}
+                  </NavItem>
+                ))}
             </div>
           </div>
 
