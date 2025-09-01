@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { UserPlus, Menu } from "lucide-react";
+import { UserPlus, Menu, X } from "lucide-react";
 import { SearchButton } from "./search-button";
 import { CartButton } from "./cart-button";
 import { MobileNav } from "./mobile-nav";
@@ -74,10 +74,10 @@ export function Navbar() {
             </Link>
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMobileNavOpen(true)}
+              onClick={() => setIsMobileNavOpen((prev) => !prev)}
               className="duration-200 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 py-2 block sm:hidden px-2"
             >
-              <Menu size={14} />
+              {isMobileNavOpen ? <X size={14} /> : <Menu size={14} />}
             </button>
           </div>
         </div>
