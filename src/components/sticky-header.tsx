@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
+import { Link } from "react-router-dom"
 import {
   Home,
   Package,
@@ -11,7 +11,6 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { CartButton } from "./cart-button";
 import { SearchButton } from "./search-button";
 import { MobileNav } from "./mobile-nav";
@@ -57,7 +56,7 @@ export function StickyHeader() {
           {/* Desktop Navigation */}
           <div className="items-center gap-4 hidden md:flex">
             <Link
-              href="#"
+              to="#"
               className="text-[#3B82F6] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-[#3B82F6]/10 px-2.5 py-1.5 transition-colors duration-300"
             >
               <Home className="w-[18px] h-[18px]" />
@@ -66,7 +65,7 @@ export function StickyHeader() {
               </span>
             </Link>
             <Link
-              href="/products"
+              to="/products"
               className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
             >
               <Package className="w-[18px] h-[18px]" />
@@ -75,7 +74,7 @@ export function StickyHeader() {
               </span>
             </Link>
             <Link
-              href="/dashboard/support"
+              to="/dashboard/support"
               className="text-theme-secondary hover:text-[#3B82F6] hover:bg-[#3B82F6]/10 flex items-center gap-2 rounded-md bg-transparent px-2.5 py-1.5 transition-colors duration-300"
             >
               <HelpCircle className="w-[18px] h-[18px]" />
@@ -90,7 +89,7 @@ export function StickyHeader() {
         <div className="hidden md:flex items-center gap-2">
           <SearchButton />
           <CartButton />
-          <Link href="/dashboard">
+          <Link to="/dashboard">
             <Button className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-4 py-2 rounded-md flex items-center gap-2 text-sm tracking-20-smaller transition-all duration-300 font-normal">
               <span>Client Area</span>
               <ArrowRight className="w-[18px] h-[18px]" />

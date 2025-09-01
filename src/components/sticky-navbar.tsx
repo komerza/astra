@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { Link } from "react-router-dom"
 import { ShoppingCart, UserPlus, Menu } from "lucide-react"
-import { useCart } from "../context/cart-context"
+import { useCart } from "@/context/cart-context";
 import { CartDropdown } from "./cart-dropdown"
 import { MobileNav } from "./mobile-nav"
 
@@ -50,7 +49,7 @@ export function StickyNavbar() {
         <div className="page-container flex h-[70px] w-full items-center justify-between px-4">
           {/* Logo and Navigation */}
           <div className="flex items-center gap-4">
-            <Link href="/">
+            <Link to="/">
               <div className="flex flex-row items-center gap-2">
                 <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
                 <div className="monument-bold relative flex flex-row items-end font-semibold tracking-[0.02em]">
@@ -62,17 +61,17 @@ export function StickyNavbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden flex-row items-center sm:flex">
-              <Link href="/products">
+              <Link to="/products">
                 <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
                   Products
                 </button>
               </Link>
-              <Link href="https://discord.com" target="_blank">
+              <Link to="https://discord.com" target="_blank">
                 <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
                   Discord
                 </button>
               </Link>
-              <Link href="/payment-methods">
+              <Link to="/payment-methods">
                 <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-8 rounded-md px-3 text-xs text-muted-foreground hover:bg-[#ffffff05]">
                   Payment Methods
                 </button>
@@ -99,7 +98,7 @@ export function StickyNavbar() {
             </div>
 
             {/* Dashboard Button - Desktop */}
-            <Link href="/dashboard" className="hidden sm:block">
+            <Link to="/dashboard" className="hidden sm:block">
               <button className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-[#3B82F6] text-primary-foreground dark:text-accent-foreground shadow hover:bg-[#3B82F6]/90 h-8 rounded-md px-3 text-xs">
                 <UserPlus size={14} />
                 Dashboard

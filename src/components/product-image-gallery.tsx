@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import Image from "next/image"
 import { ChevronLeft, ChevronRight, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -144,13 +143,11 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                 onMouseEnter={index === 0 ? handleFirstImageHover : undefined}
                 onMouseLeave={index === 0 ? handleFirstImageLeave : undefined}
               >
-                <Image
+                <img
                   src={image || "/placeholder.svg"}
                   alt={`${productName} - Image ${index + 1}`}
-                  fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority={index === 0}
                 />
 
                 {/* Play button overlay for first image */}
@@ -288,10 +285,9 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             }`}
             disabled={isTransitioning}
           >
-            <Image
+            <img
               src={image || "/placeholder.svg"}
               alt={`${productName} - Thumbnail ${index + 1}`}
-              fill
               className="object-cover"
               sizes="80px"
             />

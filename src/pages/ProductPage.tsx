@@ -1,5 +1,5 @@
 import { ProductsHeader } from "@/components/products-header";
-import { ProductPageClient } from "@/app/components/product-page-client";
+import { ProductPageClient } from "@/components/product-page-client";
 
 export default function ProductPage() {
   return (

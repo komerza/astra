@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { ArrowUpRight, Package, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { SmilePlus } from "lucide-react";
-import { ParticleRiver } from "./components/particle-river";
-import { LandingProductsClient } from "./components/landing-products-client";
-import { StickyHeader } from "./components/sticky-header";
+import { ParticleRiver } from "@/components/particle-river";
+import { LandingProductsClient } from "@/components/landing-products-client";
+import { StickyHeader } from "@/components/sticky-header";
 import { useEffect, useState } from "react";
 
 export default function LandingPage() {
@@ -41,22 +40,19 @@ export default function LandingPage() {
       <main className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16">
         {/* Hero Background Image */}
         <div className="absolute inset-0 z-0">
-          <Image
+          <img
             src="/hero.webp"
             alt="Hero Background"
-            fill
             className="object-cover opacity-25"
-            priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-theme-primary/20 via-theme-primary/60 to-theme-primary"></div>
         </div>
 
         {/* Grid Background Overlay */}
         <div className="absolute inset-0 z-1">
-          <Image
+          <img
             src="/hero-grid.png"
             alt="Grid Background"
-            fill
             className="object-cover opacity-5"
           />
         </div>
@@ -117,7 +113,7 @@ export default function LandingPage() {
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 px-4">
-            <Link href="/products">
+            <Link to="/products">
               <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 shadow-lg font-normal">
                 <ArrowUpRight className="w-5 h-5 sm:w-4 sm:h-4" />
                 <span>Products</span>
@@ -165,7 +161,7 @@ export default function LandingPage() {
 
         {/* View All Button */}
         <div className="mt-6 sm:mt-8 flex items-center justify-center px-4">
-          <Link href="/products">
+          <Link to="/products">
             <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 font-normal max-w-xs">
               <Package className="w-5 h-5 sm:w-4 sm:h-4" />
               <span>View All Products</span>
@@ -256,19 +252,19 @@ export default function LandingPage() {
 
             <div className="flex items-center space-x-4 sm:space-x-6 mb-4 md:mb-0">
               <Link
-                href="#"
+                to="#"
                 className="text-theme-secondary hover:text-[#3B82F6] text-sm tracking-20-smaller transition-colors duration-300"
               >
                 About
               </Link>
               <Link
-                href="#"
+                to="#"
                 className="text-theme-secondary hover:text-[#3B82F6] text-sm tracking-20-smaller transition-colors duration-300"
               >
                 Contact
               </Link>
               <Link
-                href="#"
+                to="#"
                 className="text-theme-secondary hover:text-[#3B82F6] text-sm tracking-20-smaller transition-colors duration-300"
               >
                 Terms

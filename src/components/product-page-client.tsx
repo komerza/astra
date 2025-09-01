@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link"
-import { ProductImageGallery } from "@/app/components/product-image-gallery"
-import { ProductActionsWrapper } from "@/app/components/product-actions-wrapper"
-import { ProductDescriptionTabs } from "@/app/components/product-description-tabs"
+import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom"
+import { ProductImageGallery } from "@/components/product-image-gallery"
+import { ProductActionsWrapper } from "@/components/product-actions-wrapper"
+import { ProductDescriptionTabs } from "@/components/product-description-tabs"
 
 interface Variant {
   id: string;
@@ -61,7 +61,7 @@ export function ProductPageClient() {
 }
 
 function ProductPageContent() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const slug = searchParams.get("id") || searchParams.get("slug"); // Support both id and slug
 
   const [product, setProduct] = useState<ProductReference | null>(null);
@@ -245,7 +245,7 @@ function ProductPageContent() {
           {error || "The product you're looking for doesn't exist."}
         </p>
         <Link
-          href="/products"
+          to="/products"
           className="bg-[#3B82F6] hover:bg-[#2563EB] text-white px-6 py-2 rounded-md transition-colors"
         >
           Browse All Products
@@ -362,7 +362,7 @@ function ProductPageContent() {
       </div>
       <div className="lg:col-span-2 mt-8">
         <Link
-          href="/products"
+          to="/products"
           className="text-sm text-theme-secondary underline"
         >
           Back to Products

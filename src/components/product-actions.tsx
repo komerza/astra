@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import {
   ShoppingCart,
@@ -9,7 +9,7 @@ import {
   CreditCard,
   AlertTriangle,
 } from "lucide-react";
-import { useCart } from "@/app/context/cart-context";
+import { useCart } from "@/context/cart-context";
 import { CheckoutModal } from "./checkout-modal";
 import { toast } from "sonner";
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCart } from "@/app/context/cart-context"
+import { useCart } from "@/context/cart-context";
 import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
 import { CartDropdown } from "./cart-dropdown"
