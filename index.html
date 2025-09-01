@@ -6,24 +6,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
-    <script src="https://cdn.komerza.com/komerza.min.js"></script>
-    <script>
-      function initKomerza() {
-        if (typeof globalThis.komerza !== 'undefined') {
-          globalThis.komerza.init("7c1e4aa4-a28f-4855-a7e1-6dcc020d2083");
-        } else {
-          setTimeout(initKomerza, 100);
-        }
-      }
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-      localStorage.setItem('theme', 'dark');
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initKomerza);
-      } else {
-        initKomerza();
-      }
-    </script>
     <title>Komerza Astra</title>
   </head>
   <body>
