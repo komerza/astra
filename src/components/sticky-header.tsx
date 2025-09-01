@@ -2,41 +2,20 @@
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import {
-  Home,
-  Package,
-  HelpCircle,
-  LayoutDashboard,
-  Activity,
-  ArrowRight,
-} from "lucide-react";
+import { Home, Package, HelpCircle, LayoutDashboard, Activity, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CartButton } from "./cart-button";
 import { SearchButton } from "./search-button";
 import { MobileNav } from "./mobile-nav";
+import { StoreBanner } from "@/components/store-banner";
 
 export function StickyHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [bannerUrl, setBannerUrl] = useState("/komerza-logo.png"); // Default fallback
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-
-    async function getBanner() {
-      try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
-        if (url) {
-          setBannerUrl(url);
-        }
-      } catch (error) {
-        console.warn("Failed to load store banner, using fallback:", error);
-        // Keep the default banner
-      }
-    }
-
-    getBanner();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -51,7 +30,7 @@ export function StickyHeader() {
     >
       <div className="container mx-auto h-full flex items-center justify-between px-4 sm:px-6">
         <div className="flex items-center space-x-8">
-         <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
+         <StoreBanner className="h-6 w-auto" />
 
           {/* Desktop Navigation */}
           <div className="items-center gap-4 hidden md:flex">

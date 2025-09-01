@@ -6,6 +6,7 @@ import { Search, X, ArrowRight, User, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
+import { useKomerza } from "@/lib/use-komerza";
 
 // Define Product interface to match the products page
 interface Product {
@@ -56,8 +57,11 @@ export function SearchButton() {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+  const { ready } = useKomerza();
+
   // Load products from the global store
   useEffect(() => {
+    if (!ready) return;
     async function loadProducts() {
       try {
         setLoading(true);
@@ -94,7 +98,7 @@ export function SearchButton() {
       }
     }
     loadProducts();
-  }, []);
+  }, [ready]);
 
   // Theme detection
   useEffect(() => {

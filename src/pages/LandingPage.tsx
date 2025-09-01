@@ -7,27 +7,9 @@ import { SmilePlus } from "lucide-react";
 import { ParticleRiver } from "@/components/particle-river";
 import { LandingProductsClient } from "@/components/landing-products-client";
 import { StickyHeader } from "@/components/sticky-header";
-import { useEffect, useState } from "react";
+import { StoreBanner } from "@/components/store-banner";
 
 export default function LandingPage() {
-  const [bannerUrl, setBannerUrl] = useState("/komerza-logo.png"); // Default fallback
-
-  useEffect(() => {
-    async function getBanner() {
-      try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
-        if (url) {
-          setBannerUrl(url);
-        }
-      } catch (error) {
-        console.warn("Failed to load store banner, using fallback:", error);
-        // Keep the default banner
-      }
-    }
-
-    getBanner();
-  }, []);
-
   return (
     <div className="min-h-screen bg-theme-primary relative overflow-hidden transition-colors duration-300">
       {/* Glowing effects */}
@@ -247,7 +229,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
+              <StoreBanner className="h-6 w-auto" />
             </div>
 
             <div className="flex items-center space-x-4 sm:space-x-6 mb-4 md:mb-0">

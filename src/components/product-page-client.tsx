@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { ProductImageGallery } from "@/components/product-image-gallery"
 import { ProductActionsWrapper } from "@/components/product-actions-wrapper"
 import { ProductDescriptionTabs } from "@/components/product-description-tabs"
+import { useKomerza } from "@/lib/use-komerza";
 
 interface Variant {
   id: string;
@@ -72,12 +73,15 @@ function ProductPageContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { ready } = useKomerza();
+
   useEffect(() => {
     if (!slug) {
       setError("No product ID provided");
       setLoading(false);
       return;
     }
+    if (!ready) return;
 
     async function load() {
       const api: any = globalThis.komerza;
@@ -129,13 +133,13 @@ function ProductPageContent() {
       }
     }
     load();
-  }, [slug]);
+  }, [slug, ready]);
 
   const loadReviews = async (productId: string, page: number = 1) => {
     const api: any = globalThis.komerza;
     if (!api || typeof api.getProductReviews !== "function") return;
 
-    formatter = await globalThis.komerza.createFormatter();
+    formatter = await api.createFormatter();
 
     try {
       setReviewsLoading(true);

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CreditCard, Tag, X, Plus, Minus } from "lucide-react";
 import { CheckoutModal } from "./checkout-modal";
+import { useKomerza } from "@/lib/use-komerza";
 
 interface ProductInfo {
   id: string;
@@ -26,10 +27,11 @@ export function CartDropdown() {
   );
 
   // Fetch product information when cart opens or items change
+  const { ready } = useKomerza();
+
   useEffect(() => {
     const fetchProductsInfo = async () => {
       if (state.items.length === 0) return;
-
       try {
         const api: any = globalThis.komerza;
         if (!api || typeof api.getStore !== "function") return;
@@ -53,10 +55,10 @@ export function CartDropdown() {
       }
     };
 
-    if (state.isOpen) {
+    if (state.isOpen && ready) {
       fetchProductsInfo();
     }
-  }, [state.isOpen, state.items.length]);
+  }, [state.isOpen, state.items.length, ready]);
 
   const handleCheckout = async () => {
     if (state.items.length === 0) return;

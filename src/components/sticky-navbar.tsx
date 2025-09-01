@@ -6,32 +6,17 @@ import { ShoppingCart, UserPlus, Menu } from "lucide-react"
 import { useCart } from "@/context/cart-context";
 import { CartDropdown } from "./cart-dropdown"
 import { MobileNav } from "./mobile-nav"
+import { StoreBanner } from "@/components/store-banner";
 
 export function StickyNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const { state, dispatch } = useCart();
 
-  const [bannerUrl, setBannerUrl] = useState("/komerza-logo.png"); // Default fallback
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
-    async function getBanner() {
-      try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
-        if (url) {
-          setBannerUrl(url);
-        }
-      } catch (error) {
-        console.warn("Failed to load store banner, using fallback:", error);
-        // Keep the default banner
-      }
-    }
-
-    getBanner();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -51,7 +36,7 @@ export function StickyNavbar() {
           <div className="flex items-center gap-4">
             <Link to="/">
               <div className="flex flex-row items-center gap-2">
-                <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
+                <StoreBanner className="h-6 w-auto" />
                 <div className="monument-bold relative flex flex-row items-end font-semibold tracking-[0.02em]">
                   <span className="text-white">komerza</span>
                   <span className="text-[#3B82F6]">.com</span>

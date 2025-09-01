@@ -5,32 +5,14 @@ import { Home, Package, Activity } from "lucide-react";
 import { CartButton } from "@/components/cart-button";
 import { MobileNav } from "@/components/mobile-nav";
 import { SearchButton } from "@/components/search-button";
-import { useEffect, useState } from "react";
+import { StoreBanner } from "@/components/store-banner";
 
 export function ProductsHeader() {
-  const [bannerUrl, setBannerUrl] = useState("/komerza-logo.png"); // Default fallback
-
-  useEffect(() => {
-    async function getBanner() {
-      try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
-        if (url) {
-          setBannerUrl(url);
-        }
-      } catch (error) {
-        console.warn("Failed to load store banner, using fallback:", error);
-        // Keep the default banner
-      }
-    }
-
-    getBanner();
-  }, []);
-
   return (
     <header className="h-16 flex items-center justify-between container mx-auto top-0 absolute inset-x-0 z-50 px-4 sm:px-6">
       <div className="flex items-center space-x-8">
         <Link to="/">
-          <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
+          <StoreBanner className="h-6 w-auto" />
         </Link>
         <div className="items-center gap-4 hidden md:flex">
           <Link

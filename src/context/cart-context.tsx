@@ -1,6 +1,7 @@
 "use client"
 
-import { createContext, useContext, useEffect, useReducer, type ReactNode } from "react"
+import { createContext, useContext, useEffect, useReducer, useCallback, type ReactNode } from "react"
+import { useKomerza } from "@/lib/use-komerza";
 
 interface BasketItem {
   productId: string
@@ -49,22 +50,26 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false })
+  const { ready } = useKomerza();
 
-  const refreshItems = () => {
-    const items = globalThis.komerza.getBasket()
-    dispatch({ type: "SET_ITEMS", payload: items })
-  }
+  const refreshItems = useCallback(() => {
+    if (!ready) return;
+    const items = globalThis.komerza.getBasket();
+    dispatch({ type: "SET_ITEMS", payload: items });
+  }, [ready]);
 
   useEffect(() => {
-    refreshItems()
-  }, [])
+    refreshItems();
+  }, [refreshItems]);
 
   const addItem = (productId: string, variantId: string, quantity: number) => {
+    if (!ready) return;
     globalThis.komerza.addToBasket(productId, variantId, quantity);
-    refreshItems()
-  }
+    refreshItems();
+  };
 
   const removeItem = (productId: string, variantId: string) => {
+    if (!ready) return;
     globalThis.komerza.removeFromBasket(productId, variantId);
     refreshItems();
   };
@@ -74,6 +79,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     variantId: string,
     quantity: number
   ) => {
+    if (!ready) return;
     // Remove the item first, then add it back with the new quantity
     globalThis.komerza.removeFromBasket(productId, variantId);
     if (quantity > 0) {
@@ -83,9 +89,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const clearCart = () => {
-    globalThis.komerza.clearBasket()
-    refreshItems()
-  }
+    if (!ready) return;
+    globalThis.komerza.clearBasket();
+    refreshItems();
+  };
 
   return (
     <CartContext.Provider

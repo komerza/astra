@@ -17,6 +17,7 @@ import {
   ChevronDown,
   X
 } from "lucide-react";
+import { useKomerza } from "@/lib/use-komerza";
 
 // Define missing interfaces
 interface Category {
@@ -134,7 +135,10 @@ export function ProductsPageClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
 
+  const { ready } = useKomerza();
+
   useEffect(() => {
+    if (!ready) return;
     async function load() {
       const res = await globalThis.komerza.getStore();
       formatter = await globalThis.komerza.createFormatter();
@@ -161,7 +165,7 @@ export function ProductsPageClient() {
       }
     }
     load();
-  }, []);
+  }, [ready]);
 
   const categories: Category[] = [
     { id: "all", name: "All", count: products.length },

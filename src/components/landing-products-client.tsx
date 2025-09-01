@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, SmilePlus } from "lucide-react"
+import { useKomerza } from "@/lib/use-komerza";
 
 interface Product {
   id: string
@@ -23,7 +24,10 @@ let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
 export function LandingProductsClient() {
   const [products, setProducts] = useState<Product[]>([]);
 
+  const { ready } = useKomerza();
+
   useEffect(() => {
+    if (!ready) return;
     async function load() {
       const res = await globalThis.komerza.getStore();
       formatter = await globalThis.komerza.createFormatter();
@@ -44,7 +48,7 @@ export function LandingProductsClient() {
       }
     }
     load();
-  }, []);
+  }, [ready]);
 
   return (
     <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 max-w-6xl mx-auto">
