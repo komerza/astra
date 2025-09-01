@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CreditCard, X, Mail } from "lucide-react";
 import { toast } from "sonner";
+import { useKomerza } from "@/lib/use-komerza";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -19,21 +20,9 @@ export function CheckoutModal({
 }: CheckoutModalProps) {
   const [email, setEmail] = useState("");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const { ready } = useKomerza();
 
   if (!isOpen) return null;
-
-  const waitForKomerza = async (maxAttempts = 50) => {
-    for (let i = 0; i < maxAttempts; i++) {
-      if (
-        globalThis.komerza &&
-        typeof globalThis.komerza.checkout === "function"
-      ) {
-        return true;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-    return false;
-  };
 
   const processCheckout = async () => {
     if (!email.trim()) {
@@ -42,14 +31,10 @@ export function CheckoutModal({
       });
       return;
     }
-
     setIsCheckingOut(true);
 
     try {
-      // Wait for komerza API to be available
-      const isReady = await waitForKomerza();
-
-      if (!isReady) {
+      if (!ready || typeof globalThis.komerza?.checkout !== "function") {
         throw new Error(
           "Komerza API failed to load. Please refresh the page and try again."
         );
