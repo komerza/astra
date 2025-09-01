@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   ShoppingCart,
   Plus,
@@ -18,11 +18,13 @@ import { useCurrencyFormatter } from "@/lib/use-currency-formatter";
 interface ProductActionsProps {
   product: Product;
   onPriceChange: (price: number) => void;
+  onVariantChange?: (variant: ProductVariant) => void;
 }
 
 export function ProductActions({
   product,
   onPriceChange,
+  onVariantChange,
 }: ProductActionsProps) {
   const formatter = useCurrencyFormatter();
   // Ensure variants exist and are valid
@@ -44,11 +46,15 @@ export function ProductActions({
   const getStockDisplay = (variant: ProductVariant) => {
     switch (variant.stockMode) {
       case 0: // Calculated
-        return variant.stock > 0 ? `${variant.stock} in stock` : "Out of stock";
+        return (variant.stock || 0) > 0
+          ? `${variant.stock} in stock`
+          : "Out of stock";
       case 1: // Ignored
         return "Always available"; // Show this instead of null
       case 2: // Fixed
-        return variant.stock > 0 ? `${variant.stock} in stock` : "Out of stock";
+        return (variant.stock || 0) > 0
+          ? `${variant.stock} in stock`
+          : "Out of stock";
       default:
         return "Always available";
     }
@@ -58,7 +64,7 @@ export function ProductActions({
     switch (variant.stockMode) {
       case 0: // Calculated
       case 2: // Fixed
-        return variant.stock > 0;
+        return (variant.stock || 0) > 0;
       case 1: // Ignored
         return true; // Always available if stock is ignored
       default:
@@ -66,11 +72,11 @@ export function ProductActions({
     }
   };
 
-  const getMaxQuantity = (variant: ProductVariant) => {
+  const getMaxQuantity = (variant: ProductVariant): number => {
     switch (variant.stockMode) {
       case 0: // Calculated
       case 2: // Fixed
-        return variant.stock;
+        return variant.stock || 0;
       case 1: // Ignored
         return 999; // No limit if stock is ignored
       default:
@@ -81,7 +87,7 @@ export function ProductActions({
   const getStockStatusColor = (variant: ProductVariant) => {
     if (variant.stockMode === 1) return "bg-gray-400"; // Gray for ignored stock
 
-    const stock = variant.stock;
+    const stock = variant.stock || 0;
     if (stock === 0) return "bg-red-500";
     if (stock <= 5) return "bg-orange-500";
     return "bg-green-500";
@@ -94,6 +100,11 @@ export function ProductActions({
     const newQuantity = Math.min(quantity, maxQty);
     setQuantity(newQuantity);
     onPriceChange(variant.price * newQuantity);
+
+    // Notify parent component about variant change
+    if (onVariantChange) {
+      onVariantChange(variant);
+    }
   };
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -156,19 +167,19 @@ export function ProductActions({
                     handleQuantityChange(Math.max(1, quantity - 1))
                   }
                   disabled={isOutOfStock || quantity <= 1}
-                  className="bg-transparent border border-white/20 text-gray-900 dark:text-white hover:bg-white/10 font-semibold h-8 w-8 p-0 rounded-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-transparent border border-white/20 text-white hover:bg-white/10 font-semibold h-8 w-8 p-0 rounded-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Minus className="w-4 h-4" />
                 </Button>
 
-                <div className="flex items-center justify-center w-8 h-8 text-gray-900 dark:text-white font-medium text-sm">
+                <div className="flex items-center justify-center w-8 h-8 text-white font-medium text-sm">
                   {quantity}
                 </div>
 
                 <Button
                   onClick={() => handleQuantityChange(quantity + 1)}
                   disabled={isOutOfStock || quantity >= currentMaxQuantity}
-                  className="bg-transparent border border-white/20 text-gray-900 dark:text-white hover:bg-white/10 font-semibold h-8 w-8 p-0 rounded-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-transparent border border-white/20 text-white hover:bg-white/10 font-semibold h-8 w-8 p-0 rounded-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Plus className="w-4 h-4" />
                 </Button>
@@ -192,7 +203,7 @@ export function ProductActions({
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-gray-900 dark:text-white heading-semibold">
+                    <h4 className="text-white heading-semibold">
                       {variant.name}
                     </h4>
                     <div className="flex items-center gap-2">

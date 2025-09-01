@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { komerzaCache } from "@/lib/komerza-cache";
 import type { Review } from "@/types/product";
 import type { PaginatedApiResponse } from "@/types/api";
 import { formatReviews, ApiReview } from "@/lib/review-utils";
@@ -12,14 +13,11 @@ export function useProductReviews(productId: string | null) {
   const loadReviews = useCallback(
     async (pageToLoad: number = 1) => {
       if (!productId) return;
-      const api: any = globalThis.komerza;
-      if (!api || typeof api.getProductReviews !== "function") return;
       try {
         setLoading(true);
-        const response: PaginatedApiResponse<ApiReview> = await api.getProductReviews(
-          productId,
-          pageToLoad
-        );
+        // Use cached reviews fetch
+        const response: PaginatedApiResponse<ApiReview> =
+          await komerzaCache.getProductReviews(productId, pageToLoad);
         if (response.success && response.data) {
           setReviews((prev) =>
             pageToLoad === 1

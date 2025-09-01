@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useKomerza } from "@/KomerzaProvider";
 import { mapKomerzaProduct } from "@/lib/store-data";
+import { komerzaCache } from "@/lib/komerza-cache";
 import type { Product } from "@/types/product";
 
 export function useProductData(idOrSlug: string | null) {
@@ -14,36 +15,23 @@ export function useProductData(idOrSlug: string | null) {
     let cancelled = false;
 
     async function load() {
-      const api: any = globalThis.komerza;
-      if (!api) {
-        setError("Komerza API not available");
-        return;
-      }
+      if (!idOrSlug) return;
+
       try {
         setLoading(true);
         setError(null);
-        if (typeof api.getProduct === "function") {
-          const res = await api.getProduct({ idOrSlug });
-          if (!cancelled && res?.success && res.data) {
-            setProduct(mapKomerzaProduct(res.data));
-            return;
-          }
+        console.log("Loading product", idOrSlug);
+
+        // Use cached product fetch
+        const result = await komerzaCache.getProduct(idOrSlug);
+        if (!cancelled && result?.success && result.data) {
+          setProduct(mapKomerzaProduct(result.data));
+          console.log("setProduct", result.data);
+          return;
         }
-        if (typeof api.getStore === "function") {
-          const store = await api.getStore();
-          if (
-            !cancelled &&
-            store?.success &&
-            store.data?.products
-          ) {
-            const found = store.data.products.find(
-              (p: any) => p.id === idOrSlug || p.slug === idOrSlug
-            );
-            if (found) {
-              setProduct(mapKomerzaProduct(found));
-              return;
-            }
-          }
+
+        // Only set error if we reach here (product not found)
+        if (!cancelled) {
           setError("Product not found");
         }
       } catch (e) {

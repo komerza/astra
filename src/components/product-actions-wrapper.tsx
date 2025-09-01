@@ -8,19 +8,19 @@ import { useCurrencyFormatter } from "@/lib/use-currency-formatter";
 
 interface ProductActionsWrapperProps {
   product: Product;
+  onVariantChange?: (variant: ProductVariant) => void;
 }
 
 export function ProductActionsWrapper({
   product,
+  onVariantChange,
 }: ProductActionsWrapperProps) {
   const formatter = useCurrencyFormatter();
   // Ensure variants exist and have at least one item
   const variants: ProductVariant[] =
     product.variants && product.variants.length > 0 ? product.variants : [];
 
-  const [currentPrice, setCurrentPrice] = useState<number>(
-    variants[0].price
-  );
+  const [currentPrice, setCurrentPrice] = useState<number>(variants[0].price);
 
   // Default values for optional properties
   const rating = product.rating || 0;
@@ -33,7 +33,7 @@ export function ProductActionsWrapper({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl md:text-4xl heading-semibold text-gray-900 dark:text-white">
+            <h1 className="text-3xl md:text-4xl heading-semibold text-white">
               {product.name}
             </h1>
           </div>
@@ -60,9 +60,7 @@ export function ProductActionsWrapper({
                 }`}
               />
             ))}
-            <span className="text-gray-900 dark:text-white text-sm ml-2">
-              {rating}
-            </span>
+            <span className="text-white text-sm ml-2">{rating}</span>
           </div>
           {reviews > 0 && (
             <span className="text-[#808080] text-sm">({reviews} reviews)</span>
@@ -80,6 +78,7 @@ export function ProductActionsWrapper({
           variants,
         }}
         onPriceChange={setCurrentPrice}
+        onVariantChange={onVariantChange}
       />
     </div>
   );

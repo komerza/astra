@@ -5,6 +5,7 @@ export interface ProductVariant {
   description?: string;
   stock?: number;
   stockMode?: number; // 0 = Calculated, 1 = Ignored, 2 = Fixed
+  imageNames?: string[]; // Array of image names for this variant
 }
 
 export interface Review {
@@ -43,6 +44,7 @@ export interface Product {
   rating?: number;
   reviews?: number;
   image?: string;
+  imageNames?: string[]; // Array of image names for the product
   description?: string;
   longDescription?: string;
   features?: string[];

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useKomerza } from "@/KomerzaProvider";
+import { komerzaCache } from "@/lib/komerza-cache";
 
 export function useStoreBanner(fallback = "/komerza-logo.png") {
   const { ready } = useKomerza();
@@ -11,7 +12,8 @@ export function useStoreBanner(fallback = "/komerza-logo.png") {
     let cancelled = false;
     (async () => {
       try {
-        const banner = await globalThis.komerza.getStoreBannerUrl();
+        // Use cached banner fetch
+        const banner = await komerzaCache.getStoreBannerUrl();
         if (banner && !cancelled) setUrl(banner);
       } catch (e) {
         if (process.env.NODE_ENV !== "production") {

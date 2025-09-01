@@ -38,10 +38,6 @@ export function Navbar() {
             <Link to="/">
               <div className="flex flex-row items-center gap-2">
                 <StoreBanner className="h-6 w-auto" />
-                <div className="monument-bold relative flex flex-row items-end font-semibold tracking-[0.02em]">
-                  <span className="text-white">komerza</span>
-                  <span className="text-[#3B82F6]">.com</span>
-                </div>
               </div>
             </Link>
 

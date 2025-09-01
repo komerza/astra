@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { ProductImageGallery } from "@/components/product-image-gallery";
 import { ProductActionsWrapper } from "@/components/product-actions-wrapper";
@@ -8,7 +8,7 @@ import { ProductDescriptionTabs } from "@/components/product-description-tabs";
 import { useProductData } from "@/lib/use-product-data";
 import { useProductReviews } from "@/lib/use-product-reviews";
 import { calculateReviewStats } from "@/lib/review-utils";
-import type { Product } from "@/types/product";
+import type { Product, ProductVariant } from "@/types/product";
 
 export function ProductPageClient() {
   return (
@@ -36,6 +36,20 @@ function ProductPageContent() {
     totalPages,
     loadMore,
   } = useProductReviews(product?.id || null);
+
+  // State to track the currently selected variant
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
+    null
+  );
+
+  // Update selected variant when product loads or changes
+  useEffect(() => {
+    if (product && product.variants && product.variants.length > 0) {
+      setSelectedVariant(product.variants[0]);
+    } else {
+      setSelectedVariant(null);
+    }
+  }, [product]);
 
   if (loading) {
     return (
@@ -65,12 +79,31 @@ function ProductPageContent() {
     );
   }
 
-  const images =
-    product.imageNames && product.imageNames.length > 0
-      ? product.imageNames.map(
-          (name) => `https://user-generated-content.komerza.com/${name}`
-        )
-      : ["/product-placeholder.png"];
+  // Function to get images for display
+  const getDisplayImages = () => {
+    // If a variant is selected and has images, use variant images
+    if (
+      selectedVariant &&
+      selectedVariant.imageNames &&
+      selectedVariant.imageNames.length > 0
+    ) {
+      return selectedVariant.imageNames.map(
+        (name) => `https://user-generated-content.komerza.com/${name}`
+      );
+    }
+
+    // Otherwise, use product images
+    if (product.imageNames && product.imageNames.length > 0) {
+      return product.imageNames.map(
+        (name) => `https://user-generated-content.komerza.com/${name}`
+      );
+    }
+
+    // Final fallback to placeholder
+    return ["/product-placeholder.png"];
+  };
+
+  const images = getDisplayImages();
 
   const reviewStats = calculateReviewStats(reviews);
 
@@ -102,7 +135,10 @@ function ProductPageContent() {
         <ProductImageGallery images={images} productName={product.name} />
       </div>
       <div className="space-y-6">
-        <ProductActionsWrapper product={actionProduct} />
+        <ProductActionsWrapper
+          product={actionProduct}
+          onVariantChange={setSelectedVariant}
+        />
       </div>
       <div className="lg:col-span-2 mt-16">
         <ProductDescriptionTabs product={tabsProduct} />

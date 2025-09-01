@@ -104,7 +104,7 @@ function getStatusColor(status: string) {
 }
 
 export function ProductsPageClient() {
-  const { products } = useStoreData();
+  const { products, loading } = useStoreData();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPriceRange, setSelectedPriceRange] = useState("all");
@@ -183,8 +183,31 @@ export function ProductsPageClient() {
   const endIndex = startIndex + productsPerPage;
   const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
-  if (products.length === 0) {
-    return <p className="text-theme-secondary">Loading products...</p>;
+  // Show loading state while data is being fetched
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <p className="text-theme-secondary">Loading products...</p>
+      </div>
+    );
+  }
+
+  // Show empty state if no products after loading
+  if (!loading && products.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <div className="bg-theme-secondary border border-theme rounded-2xl p-8 max-w-md mx-auto">
+          <Package className="w-12 h-12 text-theme-secondary mx-auto mb-4" />
+          <h3 className="text-theme-primary text-lg font-medium mb-2">
+            No products available
+          </h3>
+          <p className="text-theme-secondary text-sm">
+            Please check back later or contact support.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

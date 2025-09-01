@@ -33,7 +33,7 @@ export function FaqSection() {
         <div className="grid max-w-4xl grid-cols-1 gap-8 sm:gap-12 mx-auto lg:grid-cols-2">
           <div className="space-y-8 sm:space-y-12">
             <div>
-              <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
+              <h3 className="text-base sm:text-lg leading-6 text-white mb-3 sm:mb-4">
                 What hardware do you support?
               </h3>
               <p className="text-sm text-theme-secondary">
@@ -42,7 +42,7 @@ export function FaqSection() {
               </p>
             </div>
             <div>
-              <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
+              <h3 className="text-base sm:text-lg leading-6 text-white mb-3 sm:mb-4">
                 What payment methods do you support?
               </h3>
               <p className="text-sm text-theme-secondary">
@@ -53,7 +53,7 @@ export function FaqSection() {
           </div>
           <div className="space-y-8 sm:space-y-12">
             <div>
-              <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
+              <h3 className="text-base sm:text-lg leading-6 text-white mb-3 sm:mb-4">
                 What operating systems do you support?
               </h3>
               <p className="text-sm text-theme-secondary">
@@ -62,7 +62,7 @@ export function FaqSection() {
               </p>
             </div>
             <div>
-              <h3 className="text-base sm:text-lg leading-6 text-gray-900 dark:text-white mb-3 sm:mb-4">
+              <h3 className="text-base sm:text-lg leading-6 text-white mb-3 sm:mb-4">
                 My question isn't listed here, what do I do?
               </h3>
               <p className="text-sm text-theme-secondary">
@@ -74,6 +74,6 @@ export function FaqSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
