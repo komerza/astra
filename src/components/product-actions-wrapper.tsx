@@ -4,16 +4,16 @@ import { useState } from "react"
 import { Star } from "lucide-react"
 import { ProductActions } from "./product-actions"
 import type { Product, ProductVariant } from "@/types/product";
+import { useCurrencyFormatter } from "@/lib/use-currency-formatter";
 
 interface ProductActionsWrapperProps {
   product: Product;
-  formatter: Intl.NumberFormat;
 }
 
 export function ProductActionsWrapper({
   product,
-  formatter,
 }: ProductActionsWrapperProps) {
+  const formatter = useCurrencyFormatter();
   // Ensure variants exist and have at least one item
   const variants: ProductVariant[] =
     product.variants && product.variants.length > 0 ? product.variants : [];
@@ -79,7 +79,6 @@ export function ProductActionsWrapper({
           ...product,
           variants,
         }}
-        formatter={formatter}
         onPriceChange={setCurrentPrice}
       />
     </div>

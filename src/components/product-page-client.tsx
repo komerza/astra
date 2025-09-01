@@ -41,11 +41,6 @@ interface PaginatedApiResponse<T> {
   pages: number;
 }
 
-let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "EUR",
-});
-
 export function ProductPageClient() {
   return (
     <Suspense
@@ -138,8 +133,6 @@ function ProductPageContent() {
   const loadReviews = async (productId: string, page: number = 1) => {
     const api: any = globalThis.komerza;
     if (!api || typeof api.getProductReviews !== "function") return;
-
-    formatter = await api.createFormatter();
 
     try {
       setReviewsLoading(true);
@@ -359,7 +352,7 @@ function ProductPageContent() {
         <ProductImageGallery images={images} productName={product.name} />
       </div>
       <div className="space-y-6">
-        <ProductActionsWrapper formatter={formatter} product={actionProduct} />
+        <ProductActionsWrapper product={actionProduct} />
       </div>
       <div className="lg:col-span-2 mt-16">
         <ProductDescriptionTabs product={tabsProduct} />
