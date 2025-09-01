@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, SmilePlus } from "lucide-react"
+import { ShoppingCart } from "lucide-react"
 import { useKomerza } from "@/KomerzaProvider";
-import type { Product } from "@/types/product";
+import { useStoreData } from "@/lib/store-data";
 
 let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -14,32 +14,16 @@ let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
 });
 
 export function LandingProductsClient() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const { products: allProducts } = useStoreData();
+  const products = allProducts.slice(0, 3);
 
   const { ready } = useKomerza();
 
   useEffect(() => {
     if (!ready) return;
-    async function load() {
-      const res = await globalThis.komerza.getStore();
+    (async () => {
       formatter = await globalThis.komerza.createFormatter();
-      if (res.success && res.data) {
-        const mapped: Product[] = res.data.products
-          .slice(0, 3)
-          .map((p: any) => ({
-            id: p.id,
-            slug: p.slug ?? p.id,
-            name: p.name,
-            description: p.description,
-            basePrice: p.variants[0]?.cost || 0,
-            image: p.imageNames[0]
-              ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
-              : "/product-placeholder.png",
-          }));
-        setProducts(mapped);
-      }
-    }
-    load();
+    })();
   }, [ready]);
 
   return (

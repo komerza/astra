@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { CreditCard, Tag, X, Plus, Minus } from "lucide-react";
 import { CheckoutModal } from "./checkout-modal";
 import { useKomerza } from "@/KomerzaProvider";
+import { useStoreData } from "@/lib/store-data";
 
 interface ProductInfo {
   id: string;
@@ -28,37 +29,24 @@ export function CartDropdown() {
 
   // Fetch product information when cart opens or items change
   const { ready } = useKomerza();
+  const { products } = useStoreData();
 
   useEffect(() => {
-    const fetchProductsInfo = async () => {
-      if (state.items.length === 0) return;
-      try {
-        const api: any = globalThis.komerza;
-        if (!api || typeof api.getStore !== "function") return;
-
-        const store = await api.getStore();
-        if (store?.success && store.data?.products) {
-          const productMap: Record<string, ProductInfo> = {};
-          store.data.products.forEach((product: any) => {
-            productMap[product.id] = {
-              id: product.id,
-              name: product.name,
-              variants: product.variants || [],
-            };
-          });
-          setProductsInfo(productMap);
-        }
-      } catch (error) {
-        if (process.env.NODE_ENV !== "production") {
-          console.warn("Failed to fetch product info:", error);
-        }
-      }
-    };
-
-    if (state.isOpen && ready) {
-      fetchProductsInfo();
-    }
-  }, [state.isOpen, state.items.length, ready]);
+    if (!state.isOpen || !ready || products.length === 0) return;
+    const productMap: Record<string, ProductInfo> = {};
+    products.forEach((product) => {
+      productMap[product.id] = {
+        id: product.id,
+        name: product.name,
+        variants: (product.variants || []).map((v) => ({
+          id: v.id,
+          name: v.name,
+          cost: v.price,
+        })),
+      };
+    });
+    setProductsInfo(productMap);
+  }, [state.isOpen, state.items.length, ready, products]);
 
   const handleCheckout = async () => {
     if (state.items.length === 0) return;

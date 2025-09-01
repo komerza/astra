@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import { User, HelpCircle } from "lucide-react";
-import { useKomerza } from "@/KomerzaProvider";
 import type { Product } from "@/types/product";
+import { useStoreData } from "@/lib/store-data";
 
 export interface SuggestedItem {
   id: string;
@@ -16,13 +16,11 @@ export interface SuggestedItem {
 export function useSearch() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [products, setProducts] = useState<Product[]>([]);
+  const { products, loading } = useStoreData();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { ready } = useKomerza();
 
   const suggestedItems: SuggestedItem[] = [
     {
@@ -42,47 +40,10 @@ export function useSearch() {
   ];
 
   useEffect(() => {
-    if (!ready) return;
-    let ignore = false;
-    async function loadProducts() {
-      try {
-        setLoading(true);
-        const res = await globalThis.komerza.getStore();
-        if (res.success && res.data && !ignore) {
-          const mapped: Product[] = res.data.products.map((p: any) => ({
-            id: p.id,
-            slug: p.slug ?? p.id,
-            name: p.name,
-            game: "Software",
-            category: "software",
-            basePrice: p.variants[0]?.cost || 0,
-            maxPrice: p.variants[0]?.cost || 0,
-            rating: p.rating || 4.5,
-            reviews: Math.floor(Math.random() * 100) + 10,
-            image: p.imageNames[0]
-              ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
-              : "/product-placeholder.png",
-            description: p.description || "High-quality software solution",
-            features: [],
-            status: "In Stock",
-            popular: p.isBestSeller || false,
-          }));
-          setProducts(mapped);
-          setFilteredProducts(mapped.filter((p) => p.popular).slice(0, 3));
-        }
-      } catch (error) {
-        if (process.env.NODE_ENV !== "production") {
-          console.error("Failed to load products:", error);
-        }
-      } finally {
-        setLoading(false);
-      }
+    if (products.length > 0) {
+      setFilteredProducts(products.filter((p) => p.popular).slice(0, 3));
     }
-    loadProducts();
-    return () => {
-      ignore = true;
-    };
-  }, [ready]);
+  }, [products]);
 
   const allItems = [...filteredProducts.slice(0, 3), ...suggestedItems];
 
