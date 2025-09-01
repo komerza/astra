@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, SmilePlus } from "lucide-react"
-import { useKomerza } from "@/lib/use-komerza";
+import { useKomerza } from "@/KomerzaProvider";
 import type { Product } from "@/types/product";
 
 let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {

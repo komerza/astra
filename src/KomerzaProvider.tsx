@@ -13,6 +13,10 @@ export function useKomerzaState() {
   return useContext(KomerzaContext);
 }
 
+export function useKomerza() {
+  return useKomerzaState();
+}
+
 export function KomerzaProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<KomerzaState>({ ready: false, error: null });
 
@@ -32,17 +36,6 @@ export function KomerzaProvider({ children }: { children: ReactNode }) {
         setState({ ready: false, error });
       });
   }, []);
-
-  useEffect(() => {
-    if (state.ready) {
-      setTimeout(() => document.dispatchEvent(new Event("komerza:ready")), 0);
-    } else if (state.error) {
-      setTimeout(
-        () => document.dispatchEvent(new CustomEvent("komerza:load-error", { detail: state.error })),
-        0
-      );
-    }
-  }, [state.ready, state.error]);
 
   if (!state.ready) {
     return null;

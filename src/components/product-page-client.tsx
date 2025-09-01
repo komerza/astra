@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 import { ProductImageGallery } from "@/components/product-image-gallery"
 import { ProductActionsWrapper } from "@/components/product-actions-wrapper"
 import { ProductDescriptionTabs } from "@/components/product-description-tabs"
-import { useKomerza } from "@/lib/use-komerza";
+import { useKomerza } from "@/KomerzaProvider";
 
 interface Variant {
   id: string;
