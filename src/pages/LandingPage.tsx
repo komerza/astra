@@ -6,7 +6,6 @@ import { StoreBanner } from "@/components/store-banner";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { ProductsSection } from "@/components/landing/ProductsSection";
 import { FaqSection } from "@/components/landing/FaqSection";
-import { useEffect, useState } from "react";
 
 export default function LandingPage() {
   return (
