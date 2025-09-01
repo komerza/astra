@@ -18,7 +18,7 @@ import {
   X
 } from "lucide-react";
 import { useKomerza } from "@/KomerzaProvider";
-import type { Product } from "@/types/product";
+import { useStoreData } from "@/lib/store-data";
 
 // Define missing interfaces
 interface Category {
@@ -109,7 +109,7 @@ function getStatusColor(status: string) {
 }
 
 export function ProductsPageClient() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const { products } = useStoreData();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPriceRange, setSelectedPriceRange] = useState("all");
@@ -123,32 +123,9 @@ export function ProductsPageClient() {
 
   useEffect(() => {
     if (!ready) return;
-    async function load() {
-      const res = await globalThis.komerza.getStore();
+    (async () => {
       formatter = await globalThis.komerza.createFormatter();
-      if (res.success && res.data) {
-        const mapped: Product[] = res.data.products.map((p: any) => ({
-          id: p.id,
-          slug: p.slug ?? p.id,
-          name: p.name,
-          game: "Software",
-          category: "software",
-          basePrice: p.variants[0]?.cost || 0,
-          maxPrice: p.variants[0]?.cost || 0,
-          rating: p.rating || 4.5,
-          reviews: Math.floor(Math.random() * 100) + 10,
-          image: p.imageNames[0]
-            ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
-            : "/product-placeholder.png",
-          description: p.description || "High-quality software solution",
-          features: [],
-          status: "In Stock",
-          popular: p.isBestSeller,
-        }));
-        setProducts(mapped);
-      }
-    }
-    load();
+    })();
   }, [ready]);
 
   const categories: Category[] = [
