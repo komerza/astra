@@ -7,24 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 import { useKomerza } from "@/lib/use-komerza";
-
-// Define Product interface to match the products page
-interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  game: string;
-  category: string;
-  basePrice: number;
-  maxPrice: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  description: string;
-  features: string[];
-  status: string;
-  popular: boolean;
-}
+import type { Product } from "@/types/product";
 
 const suggestedItems = [
   {

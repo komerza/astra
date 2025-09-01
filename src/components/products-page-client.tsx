@@ -18,6 +18,7 @@ import {
   X
 } from "lucide-react";
 import { useKomerza } from "@/lib/use-komerza";
+import type { Product } from "@/types/product";
 
 // Define missing interfaces
 interface Category {
@@ -31,23 +32,6 @@ interface PriceRange {
   name: string;
   min: number;
   max: number;
-}
-
-interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  game: string;
-  category: string;
-  basePrice: number;
-  maxPrice: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  description: string;
-  features: string[];
-  status: string;
-  popular: boolean;
 }
 
 interface SortOption {

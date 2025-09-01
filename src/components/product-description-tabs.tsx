@@ -4,39 +4,7 @@ import { useState } from "react"
 import { Star, Shield, CheckCircle, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-
-interface Review {
-  id: string; // Changed from number to string to match what you're passing
-  author: string;
-  rating: number;
-  date: string;
-  comment: string; // This is what you're passing from product-page-client
-  reply?: string; // Added optional reply field
-}
-
-interface ReviewsData {
-  averageRating: number;
-  totalReviews: number;
-  ratingBreakdown: {
-    5: number;
-    4: number;
-    3: number;
-    2: number;
-    1: number;
-  };
-  recentReviews: Review[];
-  hasMoreReviews?: boolean; // Added these fields you're passing
-  loadingMoreReviews?: boolean;
-  onLoadMore?: () => void;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  longDescription: string;
-  features: string[];
-  reviewsData: ReviewsData;
-}
+import type { Product } from "@/types/product";
 
 interface ProductDescriptionTabsProps {
   product: Product;

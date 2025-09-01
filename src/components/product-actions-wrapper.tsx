@@ -3,25 +3,7 @@
 import { useState } from "react"
 import { Star } from "lucide-react"
 import { ProductActions } from "./product-actions"
-
-interface ProductVariant {
-  id: string
-  name: string
-  price: number
-  description: string
-}
-
-interface Product {
-  id: string
-  name: string
-  game: string
-  basePrice: number
-  variants?: ProductVariant[]
-  image: string
-  rating?: number
-  reviews?: number
-  category?: string
-}
+import type { Product, ProductVariant } from "@/types/product";
 
 interface ProductActionsWrapperProps {
   product: Product;
@@ -33,10 +15,12 @@ export function ProductActionsWrapper({
   formatter,
 }: ProductActionsWrapperProps) {
   // Ensure variants exist and have at least one item
-  const variants =
+  const variants: ProductVariant[] =
     product.variants && product.variants.length > 0 ? product.variants : [];
 
-  const [currentPrice, setCurrentPrice] = useState(variants[0].price);
+  const [currentPrice, setCurrentPrice] = useState<number>(
+    variants[0].price
+  );
 
   // Default values for optional properties
   const rating = product.rating || 0;
