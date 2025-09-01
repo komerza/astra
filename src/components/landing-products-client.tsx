@@ -6,15 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, SmilePlus } from "lucide-react"
 import { useKomerza } from "@/lib/use-komerza";
-
-interface Product {
-  id: string
-  slug: string
-  name: string
-  description: string
-  price: number
-  image: string
-}
+import type { Product } from "@/types/product";
 
 let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -39,7 +31,7 @@ export function LandingProductsClient() {
             slug: p.slug ?? p.id,
             name: p.name,
             description: p.description,
-            price: p.variants[0]?.cost || 0,
+            basePrice: p.variants[0]?.cost || 0,
             image: p.imageNames[0]
               ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
               : "/product-placeholder.png",
@@ -90,7 +82,7 @@ export function LandingProductsClient() {
                       Starting at
                     </span>
                     <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
-                      {formatter.format(p.price)}
+                      {formatter.format(p.basePrice || 0)}
                     </span>
                   </div>
                 </div>

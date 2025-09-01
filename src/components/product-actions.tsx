@@ -12,24 +12,7 @@ import {
 import { useCart } from "@/context/cart-context";
 import { CheckoutModal } from "./checkout-modal";
 import { toast } from "sonner";
-
-interface ProductVariant {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  stock: number;
-  stockMode: number; // 0 = Calculated, 1 = Ignored, 2 = Fixed
-}
-
-interface Product {
-  id: string;
-  name: string;
-  game: string;
-  basePrice: number;
-  variants: ProductVariant[];
-  image: string;
-}
+import type { Product, ProductVariant } from "@/types/product";
 
 interface ProductActionsProps {
   product: Product;
@@ -50,7 +33,9 @@ export function ProductActions({
   console.log("ProductActions received product:", product);
   console.log("ProductActions variants:", variants);
 
-  const [selectedVariant, setSelectedVariant] = useState(variants[0]);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
+    variants[0]
+  );
   const [quantity, setQuantity] = useState(1);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const { dispatch, addItem } = useCart();
