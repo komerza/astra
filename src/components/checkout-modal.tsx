@@ -40,26 +40,19 @@ export function CheckoutModal({
         );
       }
 
-      if (!couponCode) {
-        couponCode = undefined;
-      }
+      const emailAddress = email.trim();
+      const code = couponCode?.trim() || undefined;
 
-      const result = await globalThis.komerza.checkout(
-        email.trim(),
-        couponCode?.trim()
-      );
+      await globalThis.komerza.checkout({
+        emailAddress,
+        couponCode: code,
+      });
 
-      if (result.success) {
-        console.log("Checkout result:", result);
-
-        toast.success("Checkout Started!", {
-          description: "Redirecting to payment...",
-        });
-        onClose();
-        setEmail("");
-      } else {
-        toast.error(result.message);
-      }
+      toast.success("Checkout Started!", {
+        description: "Redirecting to payment...",
+      });
+      onClose();
+      setEmail("");
     } catch (error) {
       console.error("Checkout error:", error);
       toast.error("Checkout Failed", {
