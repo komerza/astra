@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { Home, Package, HelpCircle, LayoutDashboard, Activity, ArrowRight } from "lucide-react";
+import { Home, Package, HelpCircle, ArrowRight, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CartButton } from "./cart-button";
 import { SearchButton } from "./search-button";
@@ -11,6 +11,7 @@ import { StoreBanner } from "@/components/store-banner";
 
 export function StickyHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,8 +77,21 @@ export function StickyHeader() {
           </Link>
         </div>
 
-        {/* Mobile Navigation */}
-        <MobileNav />
+        {/* Mobile Actions */}
+        <div className="flex items-center gap-2 md:hidden">
+          <CartButton />
+          <button
+            onClick={() => setIsMobileNavOpen(true)}
+            className="duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+          >
+            <Menu className="w-4 h-4" />
+          </button>
+        </div>
+
+        <MobileNav
+          isOpen={isMobileNavOpen}
+          onClose={() => setIsMobileNavOpen(false)}
+        />
       </div>
     </header>
   );
