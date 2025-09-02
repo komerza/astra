@@ -6,6 +6,8 @@ import { ShoppingCart, UserPlus, Menu } from "lucide-react"
 import { useCart } from "@/context/cart-context";
 import { CartDropdown } from "./cart-dropdown"
 import { MobileNav } from "./mobile-nav"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export function StickyNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,7 +23,7 @@ export function StickyNavbar() {
 
     async function getBanner() {
       try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
+        const url = await(globalThis as any).komerza.getStoreBannerUrl();
         if (url) {
           setBannerUrl(url);
         }

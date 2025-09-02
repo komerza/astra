@@ -4,8 +4,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, SmilePlus } from "lucide-react"
-
+import { ShoppingCart, SmilePlus } from "lucide-react";
 interface Product {
   id: string
   slug: string
@@ -25,8 +24,8 @@ export function LandingProductsClient() {
 
   useEffect(() => {
     async function load() {
-      const res = await globalThis.komerza.getStore();
-      formatter = await globalThis.komerza.createFormatter();
+      const res = await(globalThis as any).komerza.getStore();
+      formatter = await(globalThis as any).komerza.createFormatter();
       if (res.success && res.data) {
         const mapped: Product[] = res.data.products
           .slice(0, 3)

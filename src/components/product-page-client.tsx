@@ -50,7 +50,7 @@ export function ProductPageClient() {
     <Suspense
       fallback={
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-4"></div>
           <p className="text-theme-secondary">Loading product...</p>
         </div>
       }
@@ -228,7 +228,7 @@ function ProductPageContent() {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-4"></div>
         <p className="text-theme-secondary">Loading product...</p>
       </div>
     );
@@ -361,10 +361,7 @@ function ProductPageContent() {
         <ProductDescriptionTabs product={tabsProduct} />
       </div>
       <div className="lg:col-span-2 mt-8">
-        <Link
-          to="/products"
-          className="text-sm text-theme-secondary underline"
-        >
+        <Link to="/products" className="text-sm text-theme-secondary underline">
           Back to Products
         </Link>
       </div>

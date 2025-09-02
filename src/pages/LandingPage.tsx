@@ -15,7 +15,7 @@ export default function LandingPage() {
   useEffect(() => {
     async function getBanner() {
       try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
+        const url = await (globalThis as any).komerza.getStoreBannerUrl();
         if (url) {
           setBannerUrl(url);
         }
@@ -274,7 +274,7 @@ export default function LandingPage() {
 
           <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-theme">
             <p className="text-center text-xs text-theme-secondary tracking-20-smaller">
-              © 2025 Komerza UAB. All rights reserved.
+              © 2025 {}. All rights reserved.
             </p>
           </div>
         </div>

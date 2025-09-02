@@ -61,26 +61,47 @@ export function SearchButton() {
     async function loadProducts() {
       try {
         setLoading(true);
-        const res = await globalThis.komerza.getStore();
+        const res = await (globalThis as any).komerza.getStore();
         if (res.success && res.data) {
-          const mapped: Product[] = res.data.products.map((p: any) => ({
-            id: p.id,
-            slug: p.slug ?? p.id,
-            name: p.name,
-            game: "Software",
-            category: "software",
-            basePrice: p.variants[0]?.cost || 0,
-            maxPrice: p.variants[0]?.cost || 0,
-            rating: p.rating || 4.5,
-            reviews: Math.floor(Math.random() * 100) + 10,
-            image: p.imageNames[0]
-              ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
-              : "/product-placeholder.png",
-            description: p.description || "High-quality software solution",
-            features: [],
-            status: "In Stock",
-            popular: p.isBestSeller || false,
-          }));
+          const mapped: Product[] = res.data.products.map((p: any) => {
+            // Determine stock status based on the first variant
+            const firstVariant = p.variants[0];
+            let stockStatus = "In Stock";
+
+            if (firstVariant) {
+              switch (firstVariant.stockMode) {
+                case 0: // Calculated
+                case 2: // Fixed
+                  stockStatus =
+                    (firstVariant.stock || 0) > 0 ? "In Stock" : "Out of Stock";
+                  break;
+                case 1: // Ignored
+                  stockStatus = "In Stock"; // Always available
+                  break;
+                default:
+                  stockStatus = "In Stock";
+              }
+            }
+
+            return {
+              id: p.id,
+              slug: p.slug ?? p.id,
+              name: p.name,
+              game: "Software",
+              category: "software",
+              basePrice: p.variants[0]?.cost || 0,
+              maxPrice: p.variants[0]?.cost || 0,
+              rating: p.rating || 4.5,
+              reviews: Math.floor(Math.random() * 100) + 10,
+              image: p.imageNames[0]
+                ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
+                : "/product-placeholder.png",
+              description: p.description || "High-quality software solution",
+              features: [],
+              status: stockStatus,
+              popular: p.isBestSeller || false,
+            };
+          });
           setProducts(mapped);
           // Initially show popular products
           setFilteredProducts(mapped.filter((p) => p.popular).slice(0, 3));
@@ -340,17 +361,15 @@ export function SearchButton() {
                       {filteredProducts.map((product, index) => (
                         <Link
                           key={product.id}
-                          to={`/product?id=${encodeURIComponent(
-                            product.slug
-                          )}`}
+                          to={`/product?id=${encodeURIComponent(product.slug)}`}
                           onClick={closeSearch}
                           className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-[44px] ${
                             selectedIndex === index
-                              ? "bg-blue-500/20 border border-blue-500/50"
+                              ? "bg-primary-500/20 border border-primary-500/50"
                               : `${hoverBgClass} border border-transparent`
                           }`}
                         >
-                          <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          <div className="w-12 h-12 rounded-xl bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
                             <img
                               src={product.image || "/product-placeholder.png"}
                               alt={product.name}
@@ -415,12 +434,12 @@ export function SearchButton() {
                             onClick={closeSearch}
                             className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-[44px] ${
                               selectedIndex === itemIndex
-                                ? "bg-blue-500/20 border border-blue-500/50"
+                                ? "bg-primary-500/20 border border-primary-500/50"
                                 : `${hoverBgClass} border border-transparent`
                             }`}
                           >
-                            <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                              <IconComponent className="w-6 h-6 text-blue-500" />
+                            <div className="w-12 h-12 rounded-xl bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0">
+                              <IconComponent className="w-6 h-6 text-primary-500" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4
@@ -531,11 +550,11 @@ export function SearchButton() {
                       onClick={closeSearch}
                       className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-200 group ${
                         selectedIndex === index
-                          ? "bg-blue-500/20 border border-blue-500/50"
+                          ? "bg-primary-500/20 border border-primary-500/50"
                           : `${hoverBgClass} border border-transparent`
                       }`}
                     >
-                      <div className="w-10 h-10 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      <div className="w-10 h-10 rounded-lg bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
                         <img
                           src={product.image || "/product-placeholder.png"}
                           alt={product.name}
@@ -597,12 +616,12 @@ export function SearchButton() {
                         onClick={closeSearch}
                         className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-200 group ${
                           selectedIndex === itemIndex
-                            ? "bg-blue-500/20 border border-blue-500/50"
+                            ? "bg-primary-500/20 border border-primary-500/50"
                             : `${hoverBgClass} border border-transparent`
                         }`}
                       >
-                        <div className="w-10 h-10 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-5 h-5 text-blue-500" />
+                        <div className="w-10 h-10 rounded-lg bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-5 h-5 text-primary-500" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4

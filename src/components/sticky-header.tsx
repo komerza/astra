@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
+import { Card } from "@/components/ui/card";
 import {
   Home,
   Package,
@@ -26,7 +27,7 @@ export function StickyHeader() {
 
     async function getBanner() {
       try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
+        const url = await(globalThis as any).komerza.getStoreBannerUrl();
         if (url) {
           setBannerUrl(url);
         }
@@ -51,7 +52,7 @@ export function StickyHeader() {
     >
       <div className="container mx-auto h-full flex items-center justify-between px-4 sm:px-6">
         <div className="flex items-center space-x-8">
-         <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
+          <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
 
           {/* Desktop Navigation */}
           <div className="items-center gap-4 hidden md:flex">

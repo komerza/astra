@@ -15,7 +15,7 @@ import {
   Grid,
   List,
   ChevronDown,
-  X
+  X,
 } from "lucide-react";
 
 // Define missing interfaces
@@ -136,27 +136,48 @@ export function ProductsPageClient() {
 
   useEffect(() => {
     async function load() {
-      const res = await globalThis.komerza.getStore();
-      formatter = await globalThis.komerza.createFormatter();
+      const res = await (globalThis as any).komerza.getStore();
+      formatter = await (globalThis as any).komerza.createFormatter();
       if (res.success && res.data) {
-        const mapped: Product[] = res.data.products.map((p: any) => ({
-          id: p.id,
-          slug: p.slug ?? p.id,
-          name: p.name,
-          game: "Software",
-          category: "software",
-          basePrice: p.variants[0]?.cost || 0,
-          maxPrice: p.variants[0]?.cost || 0,
-          rating: p.rating || 4.5,
-          reviews: Math.floor(Math.random() * 100) + 10,
-          image: p.imageNames[0]
-            ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
-            : "/product-placeholder.png",
-          description: p.description || "High-quality software solution",
-          features: [],
-          status: "In Stock",
-          popular: p.isBestSeller,
-        }));
+        const mapped: Product[] = res.data.products.map((p: any) => {
+          // Determine stock status based on the first variant
+          const firstVariant = p.variants[0];
+          let stockStatus = "In Stock";
+
+          if (firstVariant) {
+            switch (firstVariant.stockMode) {
+              case 0: // Calculated
+              case 2: // Fixed
+                stockStatus =
+                  (firstVariant.stock || 0) > 0 ? "In Stock" : "Out of Stock";
+                break;
+              case 1: // Ignored
+                stockStatus = "In Stock"; // Always available
+                break;
+              default:
+                stockStatus = "In Stock";
+            }
+          }
+
+          return {
+            id: p.id,
+            slug: p.slug ?? p.id,
+            name: p.name,
+            game: "Software",
+            category: "software",
+            basePrice: p.variants[0]?.cost || 0,
+            maxPrice: p.variants[0]?.cost || 0,
+            rating: p.rating || 4.5,
+            reviews: Math.floor(Math.random() * 100) + 10,
+            image: p.imageNames[0]
+              ? `https://user-generated-content.komerza.com/${p.imageNames[0]}`
+              : "/product-placeholder.png",
+            description: p.description || "High-quality software solution",
+            features: [],
+            status: stockStatus,
+            popular: p.isBestSeller,
+          };
+        });
         setProducts(mapped);
       }
     }

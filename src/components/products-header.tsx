@@ -13,7 +13,7 @@ export function ProductsHeader() {
   useEffect(() => {
     async function getBanner() {
       try {
-        const url = await globalThis.komerza.getStoreBannerUrl();
+        const url = await(globalThis as any).komerza.getStoreBannerUrl();
         if (url) {
           setBannerUrl(url);
         }

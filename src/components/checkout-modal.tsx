@@ -19,14 +19,16 @@ export function CheckoutModal({
 }: CheckoutModalProps) {
   const [email, setEmail] = useState("");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
   const waitForKomerza = async (maxAttempts = 50) => {
     for (let i = 0; i < maxAttempts; i++) {
       if (
-        globalThis.komerza &&
-        typeof globalThis.komerza.checkout === "function"
+        (globalThis as any).komerza &&
+        typeof (globalThis as any).komerza.checkout === "function"
       ) {
         return true;
       }
@@ -59,7 +61,7 @@ export function CheckoutModal({
         couponCode = undefined;
       }
 
-      const result = await globalThis.komerza.checkout(
+      const result = await(globalThis as any).komerza.checkout(
         email.trim(),
         couponCode?.trim()
       );
@@ -67,11 +69,16 @@ export function CheckoutModal({
       if (result.success) {
         console.log("Checkout result:", result);
 
-        toast.success("Checkout Started!", {
-          description: "Redirecting to payment...",
-        });
-        onClose();
-        setEmail("");
+        setIsCheckingOut(false);
+        setIsRedirecting(true);
+        setCheckoutUrl(result.url || null);
+
+        // Auto-redirect after 2 seconds if URL is available
+        if (result.url) {
+          setTimeout(() => {
+            window.location.href = result.url;
+          }, 2000);
+        }
       } else {
         toast.error(result.message);
       }
@@ -82,8 +89,22 @@ export function CheckoutModal({
           error instanceof Error ? error.message : "Unknown error"
         }`,
       });
-    } finally {
       setIsCheckingOut(false);
+    }
+  };
+
+  const handleManualRedirect = () => {
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
+    }
+  };
+
+  const handleClose = () => {
+    if (!isCheckingOut && !isRedirecting) {
+      onClose();
+      setEmail("");
+      setCheckoutUrl(null);
+      setIsRedirecting(false);
     }
   };
 
@@ -92,56 +113,94 @@ export function CheckoutModal({
       {/* Modal Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={handleClose}
       />
 
       {/* Modal Content */}
       <div className="relative bg-theme-primary border border-theme rounded-2xl shadow-2xl w-full max-w-md p-6 animate-in fade-in-0 zoom-in-95 duration-200">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-theme-primary text-lg font-semibold">Checkout</h3>
+          <h3 className="text-theme-primary text-lg font-semibold">
+            {isRedirecting ? "Redirecting to Checkout" : "Checkout"}
+          </h3>
           <Button
-            onClick={onClose}
-            className="bg-transparent hover:bg-theme-secondary text-theme-primary h-8 w-8 p-0 rounded-md transition-all duration-300"
+            onClick={handleClose}
+            disabled={isCheckingOut || isRedirecting}
+            className="bg-transparent hover:bg-theme-secondary text-theme-primary h-8 w-8 p-0 rounded-md transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-theme-secondary disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <X className="w-4 h-4" />
           </Button>
         </div>
 
         <div className="space-y-4">
-          <div>
-            <label className="block text-theme-primary text-sm font-medium mb-2">
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-secondary w-4 h-4" />
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                className="pl-10 outline-none bg-theme-secondary border-theme text-theme-primary placeholder:text-theme-secondary h-12 rounded-md focus:ring-2 focus:ring-[#3B82F6] focus:border-[#3B82F6]"
-                onKeyDown={(e) => e.key === "Enter" && processCheckout()}
-                autoFocus
-              />
+          {isRedirecting ? (
+            // Redirecting State
+            <div className="text-center py-8">
+              <div className="w-16 h-16 border-4 border-[#3B82F6] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <h4 className="text-theme-primary text-lg font-medium mb-2">
+                Redirecting to Payment
+              </h4>
+              <p className="text-theme-secondary text-sm mb-6">
+                You will be redirected automatically in a few seconds...
+              </p>
+              {checkoutUrl && (
+                <Button
+                  onClick={handleManualRedirect}
+                  className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-12 px-6 rounded-md transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-[#60A5FA]"
+                >
+                  Continue Manually
+                </Button>
+              )}
             </div>
-          </div>
+          ) : (
+            // Email Input State
+            <>
+              <div>
+                <label className="block text-theme-primary text-sm font-medium mb-2">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-secondary w-4 h-4" />
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    className="pl-10 bg-theme-secondary border-theme text-theme-primary placeholder:text-theme-secondary h-12 rounded-md focus:ring-2 focus:ring-[#3B82F6] focus:border-[#3B82F6] outline-none focus:outline-none border-0"
+                    onKeyDown={(e) => e.key === "Enter" && processCheckout()}
+                    autoFocus
+                    disabled={isCheckingOut}
+                  />
+                </div>
+              </div>
 
-          <div className="flex gap-3 pt-4">
-            <Button
-              onClick={onClose}
-              className="flex-1 bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary h-12 rounded-md transition-all duration-300"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={processCheckout}
-              disabled={isCheckingOut || !email.trim()}
-              className="flex-1 bg-[#3B82F6] text-white hover:bg-[#2563EB] h-12 px-4 rounded-md flex items-center justify-center gap-2 text-sm transition-all duration-300 disabled:opacity-50"
-            >
-              <CreditCard className="w-4 h-4" />
-              {isCheckingOut ? "Processing..." : "Continue to Payment"}
-            </Button>
-          </div>
+              <div className="flex gap-3 pt-4">
+                <Button
+                  onClick={handleClose}
+                  disabled={isCheckingOut}
+                  className="flex-1 bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary h-12 rounded-md transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-theme-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={processCheckout}
+                  disabled={isCheckingOut || !email.trim()}
+                  className="flex-1 bg-[#3B82F6] text-white hover:bg-[#2563EB] h-12 px-4 rounded-md flex items-center justify-center gap-2 text-sm transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-[#60A5FA] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isCheckingOut ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-4 h-4" />
+                      Continue to Payment
+                    </>
+                  )}
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

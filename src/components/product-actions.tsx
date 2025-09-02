@@ -128,10 +128,6 @@ export function ProductActions({
 
     addItem(product.id, selectedVariant.id, quantity);
 
-    toast.success("Added to Cart!", {
-      description: `${product.name} (${selectedVariant.name}) added to cart`,
-    });
-
     dispatch({ type: "OPEN_CART" });
   };
 
