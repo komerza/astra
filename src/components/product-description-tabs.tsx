@@ -75,7 +75,7 @@ export function ProductDescriptionTabs({
 
   return (
     <div className="space-y-6">
-      {/* Tab Navigation */}
+
       <div className="flex space-x-1 bg-theme-secondary p-1 rounded-lg border border-theme">
         {tabs.map((tab) => (
           <button
@@ -97,7 +97,7 @@ export function ProductDescriptionTabs({
         ))}
       </div>
 
-      {/* Tab Content */}
+
       <div className="rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-6 sm:p-8 shadow-theme">
         {activeTab === "description" && (
           <div>
@@ -138,7 +138,7 @@ export function ProductDescriptionTabs({
 
         {activeTab === "reviews" && (
           <div className="space-y-8">
-            {/* Reviews Header */}
+
             <div>
               <h3 className="text-xl sm:text-2xl heading-semibold text-theme-primary mb-6">
                 Customer Reviews
@@ -146,9 +146,9 @@ export function ProductDescriptionTabs({
 
               {product.reviewsData.totalReviews > 0 ? (
                 <>
-                  {/* Rating Summary */}
+
                   <div className="grid md:grid-cols-2 gap-8 mb-8">
-                    {/* Overall Rating */}
+
                     <div className="text-center md:text-left">
                       <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                         <span className="text-4xl font-bold text-theme-primary">
@@ -173,7 +173,7 @@ export function ProductDescriptionTabs({
                       </p>
                     </div>
 
-                    {/* Rating Breakdown */}
+
                     <div className="space-y-2">
                       {[5, 4, 3, 2, 1].map((rating) => (
                         <div key={rating} className="flex items-center gap-3">
@@ -196,7 +196,7 @@ export function ProductDescriptionTabs({
                     </div>
                   </div>
 
-                  {/* Individual Reviews */}
+
                   <div className="space-y-6">
                     <h4 className="text-lg heading-semibold text-theme-primary">
                       Recent Reviews
@@ -207,7 +207,7 @@ export function ProductDescriptionTabs({
                         key={review.id}
                         className="border border-theme rounded-lg p-6 bg-theme-tertiary"
                       >
-                        {/* Review Header */}
+
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-[#3B82F6]/20 rounded-full flex items-center justify-center">
@@ -246,7 +246,7 @@ export function ProductDescriptionTabs({
                           </div>
                         </div>
 
-                        {/* Review Content */}
+
                         <div>
                           <p className="text-theme-secondary text-sm leading-relaxed">
                             {review.comment}
@@ -265,7 +265,7 @@ export function ProductDescriptionTabs({
                       </div>
                     ))}
 
-                    {/* Load More Reviews Button */}
+
                     {product.reviewsData.hasMoreReviews && (
                       <div className="text-center pt-6">
                         <Button

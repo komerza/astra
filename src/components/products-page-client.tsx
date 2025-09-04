@@ -257,9 +257,9 @@ export function ProductsPageClient() {
 
   return (
     <div className="flex gap-6">
-      {/* Main Content - Left Side */}
+
       <div className="flex-1 space-y-6">
-        {/* Mobile Filter Toggle - Only on mobile */}
+
         <div className="lg:hidden">
           <Button
             onClick={() => setShowFilters(!showFilters)}
@@ -270,7 +270,7 @@ export function ProductsPageClient() {
           </Button>
         </div>
 
-        {/* Results Summary */}
+
         <div className="flex items-center justify-between">
           <p className="text-theme-secondary text-sm">
             Showing {startIndex + 1}-
@@ -284,7 +284,7 @@ export function ProductsPageClient() {
           )}
         </div>
 
-        {/* Products Grid/List */}
+
         {currentProducts.length > 0 ? (
           <div
             className={
@@ -419,7 +419,7 @@ export function ProductsPageClient() {
           </div>
         ) : null}
 
-        {/* Pagination */}
+
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 mt-8">
             <Button
@@ -460,7 +460,7 @@ export function ProductsPageClient() {
           </div>
         )}
 
-        {/* Empty State */}
+
         {currentProducts.length === 0 && (
           <div className="text-center py-12">
             <div className="bg-theme-secondary border border-theme rounded-2xl p-8 max-w-md mx-auto">
@@ -487,8 +487,8 @@ export function ProductsPageClient() {
         )}
       </div>
 
-      {/* Right Sidebar - Search and Filters */}
-      {/* Mobile: Overlay panel, Desktop: Sidebar */}
+
+
       <div
         className={`
         ${
@@ -498,7 +498,7 @@ export function ProductsPageClient() {
         }
       `}
       >
-        {/* Mobile backdrop - only visible on mobile when filters are shown */}
+
         {showFilters && (
           <div
             className="absolute inset-0 lg:hidden"
@@ -506,7 +506,7 @@ export function ProductsPageClient() {
           />
         )}
 
-        {/* Filter panel */}
+
         <div
           className={`
           lg:space-y-6 
@@ -517,7 +517,7 @@ export function ProductsPageClient() {
           }
         `}
         >
-          {/* Close button - only on mobile */}
+
           {showFilters && (
             <div className="flex items-center justify-between lg:hidden mb-4">
               <h2 className="text-theme-primary text-lg font-semibold">
@@ -532,7 +532,7 @@ export function ProductsPageClient() {
             </div>
           )}
 
-          {/* Search Box */}
+
           <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
             <h3 className="text-theme-primary font-medium mb-4">
               Search Products
@@ -549,7 +549,7 @@ export function ProductsPageClient() {
             </div>
           </div>
 
-          {/* View Options */}
+
           <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
             <h3 className="text-theme-primary font-medium mb-4">
               View Options
@@ -580,11 +580,11 @@ export function ProductsPageClient() {
             </div>
           </div>
 
-          {/* Filters */}
+
           <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
             <h3 className="text-theme-primary font-medium mb-4">Filters</h3>
             <div className="space-y-4">
-              {/* Category Filter */}
+
               <div>
                 <label className="block text-theme-primary text-sm font-medium mb-2">
                   Category
@@ -597,7 +597,7 @@ export function ProductsPageClient() {
                 />
               </div>
 
-              {/* Price Filter */}
+
               <div>
                 <label className="block text-theme-primary text-sm font-medium mb-2">
                   Price Range
@@ -610,7 +610,7 @@ export function ProductsPageClient() {
                 />
               </div>
 
-              {/* Sort Filter */}
+
               <div>
                 <label className="block text-theme-primary text-sm font-medium mb-2">
                   Sort By
@@ -623,7 +623,7 @@ export function ProductsPageClient() {
                 />
               </div>
 
-              {/* Clear Filters */}
+
               {(searchQuery ||
                 selectedCategory !== "all" ||
                 selectedPriceRange !== "all") && (

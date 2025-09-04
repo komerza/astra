@@ -286,7 +286,7 @@ export function SearchButton() {
   if (isMobile) {
     return (
       <>
-        {/* Search Icon Button */}
+
         <Button
           onClick={toggleSearch}
           className={`bg-transparent border ${borderClass} ${textPrimaryClass} ${hoverBgClass} h-8 w-8 p-0 rounded-md transition-all duration-300`}
@@ -294,20 +294,20 @@ export function SearchButton() {
           <Search className="w-4 h-4" />
         </Button>
 
-        {/* Mobile Search Modal */}
+
         {isExpanded && (
           <>
-            {/* Backdrop */}
+
             <div
               className="fixed top-16 left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-50"
               onClick={closeSearch}
             />
 
-            {/* Modal */}
+
             <div
               className={`fixed inset-4 top-20 bottom-auto ${bgClass} border ${borderClass} rounded-2xl shadow-2xl z-50 max-h-[80vh] overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300`}
             >
-              {/* Header */}
+
               <form
                 onSubmit={handleSearch}
                 className={`flex items-center gap-3 p-4 border-b ${borderClass}`}
@@ -338,9 +338,9 @@ export function SearchButton() {
                 </Button>
               </form>
 
-              {/* Content */}
+
               <div className="p-4 space-y-6 overflow-y-auto max-h-[60vh]">
-                {/* Loading State */}
+
                 {loading && (
                   <div className="text-center py-8">
                     <p className={`${textSecondaryClass} text-base`}>
@@ -349,7 +349,7 @@ export function SearchButton() {
                   </div>
                 )}
 
-                {/* Products Section */}
+
                 {!loading && filteredProducts.length > 0 && (
                   <div>
                     <h3
@@ -400,7 +400,7 @@ export function SearchButton() {
                   </div>
                 )}
 
-                {/* No Results */}
+
                 {!loading && searchQuery && filteredProducts.length === 0 && (
                   <div className="text-center py-8">
                     <p className={`${textSecondaryClass} text-base mb-4`}>
@@ -415,7 +415,7 @@ export function SearchButton() {
                   </div>
                 )}
 
-                {/* Suggested Section */}
+
                 {!loading && (
                   <div>
                     <h3
@@ -473,7 +473,7 @@ export function SearchButton() {
   // Desktop Search (existing implementation with updates)
   return (
     <div ref={containerRef} className="relative flex items-center">
-      {/* Search Input */}
+
       <div
         className={`absolute right-0 top-0 h-8 ${inputBgClass} border ${borderClass} rounded-md backdrop-blur-md transition-all duration-300 ease-out overflow-hidden ${
           isExpanded ? "w-80 opacity-100" : "w-0 opacity-0"
@@ -508,12 +508,12 @@ export function SearchButton() {
         </form>
       </div>
 
-      {/* Search Results Dropdown */}
+
       {isExpanded && (
         <div
           className={`absolute top-10 right-0 w-80 ${bgClass} border ${borderClass} rounded-lg shadow-2xl backdrop-blur-md z-50 overflow-hidden`}
         >
-          {/* Dropdown Header with Close Button */}
+
           <div className="relative p-4 pb-0">
             <Button
               onClick={closeSearch}
@@ -523,9 +523,9 @@ export function SearchButton() {
             </Button>
           </div>
 
-          {/* Content */}
+
           <div className="px-4 pb-4 space-y-4">
-            {/* Loading State */}
+
             {loading && (
               <div className="text-center py-8">
                 <p className={`${textSecondaryClass} text-sm`}>
@@ -534,7 +534,7 @@ export function SearchButton() {
               </div>
             )}
 
-            {/* Products Section */}
+
             {!loading && filteredProducts.length > 0 && (
               <div>
                 <h3
@@ -582,7 +582,7 @@ export function SearchButton() {
               </div>
             )}
 
-            {/* No Results */}
+
             {!loading && searchQuery && filteredProducts.length === 0 && (
               <div className="text-center py-8">
                 <p className={`${textSecondaryClass} text-sm mb-4`}>
@@ -597,7 +597,7 @@ export function SearchButton() {
               </div>
             )}
 
-            {/* Suggested Section */}
+
             {!loading && (
               <div>
                 <h3
@@ -648,7 +648,7 @@ export function SearchButton() {
         </div>
       )}
 
-      {/* Search Icon Button */}
+
       <Button
         onClick={toggleSearch}
         className={`bg-transparent border ${borderClass} ${textPrimaryClass} ${hoverBgClass} h-8 w-8 p-0 rounded-md flex items-center justify-center transition-all duration-300 relative z-10 ${

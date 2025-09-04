@@ -145,14 +145,14 @@ export function ProductActions({
   return (
     <>
       <div className="space-y-6">
-        {/* Variant Selector with Quantity on same line */}
+
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-[#808080] text-sm font-medium tracking-20-smaller">
               Choose variant
             </h3>
 
-            {/* Quantity Selector - Matching the design */}
+
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#808080] tracking-20-smaller">
                 Qty:
@@ -183,7 +183,7 @@ export function ProductActions({
             </div>
           </div>
 
-          {/* Variant Options */}
+
           <div className="space-y-3">
             {variants.map((variant) => (
               <div
@@ -224,7 +224,7 @@ export function ProductActions({
           </div>
         </div>
 
-        {/* Action Buttons - 70% Buy Now, 30% Add to Cart */}
+
         <div className="flex gap-3">
           <Button
             onClick={handleBuyNow}
@@ -256,7 +256,7 @@ export function ProductActions({
         </div>
       </div>
 
-      {/* Checkout Modal */}
+
       <CheckoutModal
         isOpen={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}

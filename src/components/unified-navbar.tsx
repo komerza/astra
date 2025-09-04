@@ -51,7 +51,7 @@ export function UnifiedNavbar() {
             <img src={bannerUrl} alt="Komerza" className="h-6 w-auto" />
           </Link>
 
-          {/* Desktop Navigation */}
+
           <div className="items-center gap-4 hidden md:flex">
             <Link
               to="/"
@@ -91,7 +91,7 @@ export function UnifiedNavbar() {
           </div>
         </div>
 
-        {/* Desktop Actions */}
+
         <div className="flex items-center gap-4">
           <SearchButton />
           <div className="hidden md:flex items-center gap-4">
@@ -104,7 +104,7 @@ export function UnifiedNavbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+
           <Button
             variant="ghost"
             size="sm"
@@ -120,7 +120,7 @@ export function UnifiedNavbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800">
           <div className="container mx-auto px-4 py-4 space-y-4">

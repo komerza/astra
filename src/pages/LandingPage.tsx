@@ -30,15 +30,15 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-theme-primary relative overflow-hidden transition-colors duration-300">
-      {/* Glowing effects */}
+
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#3B82F6] rounded-full blur-3xl opacity-10"></div>
 
-      {/* Unified Navbar */}
+
       <UnifiedNavbar />
 
-      {/* Hero Section */}
+
       <main className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16">
-        {/* Hero Background Image */}
+
         <div className="absolute inset-0 z-0">
           <img
             src="/hero.webp"
@@ -48,7 +48,7 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-theme-primary/20 via-theme-primary/60 to-theme-primary"></div>
         </div>
 
-        {/* Grid Background Overlay */}
+
         <div className="absolute inset-0 z-1">
           <img
             src="/hero-grid.png"
@@ -57,16 +57,16 @@ export default function LandingPage() {
           />
         </div>
 
-        {/* Particle River Effect */}
+
         <div className="absolute inset-0 h-full w-full z-5">
           <ParticleRiver />
         </div>
 
-        {/* Top Glow Effect */}
+
         <div className="absolute left-[50%] top-[-20%] z-5 h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] translate-x-[-50%] bg-[#3B82F6] blur-[200px] opacity-80"></div>
 
         <div className="container mx-auto max-w-4xl text-center relative z-10">
-          {/* Trusted By Badge */}
+
           <div className="flex items-center justify-center mb-6 sm:mb-8">
             <div className="bg-[#3B82F6]/10 text-xs flex flex-row items-center gap-2 pl-3 sm:pl-4 pr-6 sm:pr-8 py-1 rounded-full shadow-sm border border-[#3B82F6]/50 relative transform scale-100 sm:scale-107">
               <span className="text-theme-primary">Trusted By Komerza.com</span>
@@ -99,19 +99,19 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Main heading */}
+
           <h1 className="text-theme-primary text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-center mx-auto mb-4 sm:mb-6 leading-tight max-w-5xl heading-semibold drop-shadow-2xl">
             Transform your ideas into
             <br />
             Reality with <span className="text-[#3B82F6]">Komerza</span>
           </h1>
 
-          {/* Subheading */}
+
           <p className="text-theme-secondary text-sm sm:text-base text-center max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed drop-shadow-lg px-4">
             Expert web development services for stunning online experiences.
           </p>
 
-          {/* CTA buttons */}
+
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 px-4">
             <Link to="/products">
               <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 shadow-lg font-normal">
@@ -123,18 +123,18 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* Products Section */}
+
       <section
         id="products"
         className="relative flex w-full flex-col gap-4 py-12 sm:py-16"
       >
-        {/* Background effects */}
+
         <div className="pointer-events-none absolute -left-[20%] top-0 z-10 h-64 w-64 sm:h-96 sm:w-96 animate-pulse rounded-full bg-gradient-to-br from-transparent via-transparent to-[#3B82F6] blur-[100px] duration-5000"></div>
         <div className="pointer-events-none absolute -right-[20%] bottom-0 z-40 h-64 w-[400px] sm:h-96 sm:w-[700px] -rotate-45 animate-pulse rounded-full bg-gradient-to-br from-rose-500/20 via-transparent to-[#3B82F6]/30 blur-[100px] duration-5000"></div>
 
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center gap-2 px-4">
-            {/* Badge */}
+
             <div className="flex items-center justify-center mb-4 sm:mb-6">
               <div className="bg-[#3B82F6]/10 text-xs flex flex-row items-center gap-2 pl-3 sm:pl-4 pr-6 sm:pr-8 py-1 rounded-full shadow-sm border border-[#3B82F6]/50 relative transform scale-100 sm:scale-107">
                 <span className="text-theme-primary">Best Seller Products</span>
@@ -144,7 +144,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Title */}
+
             <h2 className="text-center text-2xl sm:text-3xl heading-semibold text-theme-primary">
               Best Seller Products
             </h2>
@@ -154,12 +154,12 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Products Grid */}
+
         <div className="container mx-auto mt-6 sm:mt-8 px-4 sm:px-6">
           <LandingProductsClient />
         </div>
 
-        {/* View All Button */}
+
         <div className="mt-6 sm:mt-8 flex items-center justify-center px-4">
           <Link to="/products">
             <Button className="w-full sm:w-auto bg-[#3B82F6] text-white hover:bg-[#2563EB] h-10 sm:h-8 px-6 sm:px-4 py-3 sm:py-2 rounded-md flex items-center justify-center gap-2 text-base sm:text-sm tracking-20-smaller transition-all duration-300 font-normal max-w-xs">
@@ -170,10 +170,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FAQ Section */}
+
       <section className="relative py-12 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
-          {/* FAQ Badge */}
+
           <div className="flex items-center justify-center mb-6 sm:mb-8">
             <div className="bg-[#3B82F6]/10 text-xs flex flex-row items-center gap-2 pl-3 sm:pl-4 pr-6 sm:pr-8 py-1 rounded-full shadow-sm border border-[#3B82F6]/50 relative transform scale-100 sm:scale-107">
               <span className="text-theme-primary">FAQ</span>
@@ -183,7 +183,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Title */}
+
           <div className="text-center mb-4">
             <h2 className="text-2xl sm:text-3xl heading-semibold text-theme-primary">
               Frequently Asked Questions
@@ -193,10 +193,10 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Divider */}
+
           <div className="w-full h-px bg-gradient-to-r from-transparent via-[#3B82F6]/75 to-transparent mb-12 sm:mb-16"></div>
 
-          {/* FAQ Grid */}
+
           <div className="grid max-w-4xl grid-cols-1 gap-8 sm:gap-12 mx-auto lg:grid-cols-2">
             <div className="space-y-8 sm:space-y-12">
               <div>
@@ -242,7 +242,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
+
       <footer className="relative border-t border-theme bg-theme-primary">
         <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex flex-col md:flex-row items-center justify-between">

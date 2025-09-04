@@ -122,7 +122,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
 
   return (
     <div className="relative group">
-      {/* Main Image Container */}
+
       <div
         ref={containerRef}
         className="relative w-full rounded-2xl sm:rounded-3xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-3 sm:p-4 shadow-lg backdrop-blur-md overflow-hidden"
@@ -130,7 +130,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Image Slider */}
+
         <div className="relative w-full aspect-video overflow-hidden rounded-2xl sm:rounded-3xl">
           <div
             className="flex transition-transform duration-300 ease-out h-full"
@@ -150,7 +150,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
 
-                {/* Play button overlay for first image */}
+
                 {index === 0 && currentIndex === 0 && !isVideoPlaying && (
                   <div
                     className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out ${
@@ -172,7 +172,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                         fill="currentColor"
                       />
 
-                      {/* Pulse animation ring */}
+
                       <div
                         className={`absolute inset-0 rounded-full border-2 border-[#3b82f6] transition-opacity duration-300 ${
                           isHoveringFirstImage
@@ -187,10 +187,10 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             ))}
           </div>
 
-          {/* YouTube Video Overlay */}
+
           {currentIndex === 0 && isVideoPlaying && (
             <div className="absolute inset-0 z-20 bg-black rounded-2xl sm:rounded-3xl overflow-hidden animate-in fade-in duration-300">
-              {/* Close button */}
+
               <button
                 onClick={handleVideoClose}
                 className="absolute top-4 right-4 z-30 w-8 h-8 bg-black/70 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
@@ -220,7 +220,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             </div>
           )}
 
-          {/* Navigation Arrows - always show when not playing video */}
+
           {!isVideoPlaying && (
             <>
               <Button
@@ -241,7 +241,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             </>
           )}
 
-          {/* Image Counter - hide only when hovering first image */}
+
           {!isVideoPlaying && (
             <div
               className={`absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm z-10 transition-all duration-300 ${
@@ -255,7 +255,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           )}
         </div>
 
-        {/* Dots Navigation */}
+
         <div className="flex items-center justify-center gap-2 mt-4">
           {images.map((_, index) => (
             <button
@@ -272,7 +272,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
         </div>
       </div>
 
-      {/* Thumbnail Strip (Desktop) */}
+
       <div className="hidden lg:flex gap-2 mt-4 overflow-x-auto">
         {images.map((image, index) => (
           <button
@@ -291,7 +291,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
               className="object-cover"
               sizes="80px"
             />
-            {/* Play icon on first thumbnail */}
+
             {index === 0 && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                 <Play className="w-4 h-4 text-white" fill="currentColor" />
@@ -301,7 +301,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
         ))}
       </div>
 
-      {/* Swipe Hint (Mobile) */}
+
       <div className="lg:hidden text-center mt-2">
         <p className="text-xs text-[#808080]">
           Swipe left or right to view more images • Hover first image to play
