@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SmilePlus } from "lucide-react";
 import { ParticleRiver } from "@/components/particle-river";
 import { LandingProductsClient } from "@/components/landing-products-client";
-import { StickyHeader } from "@/components/sticky-header";
+import { UnifiedNavbar } from "@/components/unified-navbar";
 import { useEffect, useState } from "react";
 
 export default function LandingPage() {
@@ -33,8 +33,8 @@ export default function LandingPage() {
       {/* Glowing effects */}
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#3B82F6] rounded-full blur-3xl opacity-10"></div>
 
-      {/* Sticky Header */}
-      <StickyHeader />
+      {/* Unified Navbar */}
+      <UnifiedNavbar />
 
       {/* Hero Section */}
       <main className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16">
@@ -274,7 +274,7 @@ export default function LandingPage() {
 
           <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-theme">
             <p className="text-center text-xs text-theme-secondary tracking-20-smaller">
-              © 2025 {}. All rights reserved.
+              &copy; 2025 Komerza. All rights reserved.
             </p>
           </div>
         </div>

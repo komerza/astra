@@ -70,13 +70,11 @@ export function CartDropdown() {
   return (
     <>
       <div className="fixed inset-0 z-50 overflow-hidden">
-        {/* Backdrop */}
         <div
           className="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
           onClick={() => dispatch({ type: "CLOSE_CART" })}
         />
 
-        {/* Cart Panel */}
         <div className="absolute top-0 right-0 h-full w-full sm:w-[420px] bg-theme-primary border-l border-theme shadow-2xl flex flex-col transform transition-transform duration-300 ease-out animate-in slide-in-from-right">
           <div className="flex items-center justify-between p-6 border-b border-theme">
             <h2 className="text-theme-primary text-lg heading-semibold">
@@ -216,7 +214,7 @@ export function CartDropdown() {
           </div>
           {state.items.length > 0 && (
             <div className="p-6 border-t border-theme space-y-4">
-              {/* Cart Total */}
+
               <div className="flex justify-between items-center py-2 border-b border-theme">
                 <span className="text-theme-primary font-medium">Total</span>
                 <span className="text-theme-primary font-bold text-lg">
@@ -251,7 +249,6 @@ export function CartDropdown() {
                 </span>
               </div>
 
-              {/* Coupon Input */}
               <div className="space-y-2">
                 <label className="text-theme-primary text-sm font-medium">
                   Coupon Code
@@ -268,7 +265,6 @@ export function CartDropdown() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex gap-3">
                 <Button
                   onClick={handleCheckout}
@@ -289,7 +285,6 @@ export function CartDropdown() {
         </div>
       </div>
 
-      {/* Reusable Checkout Modal */}
       <CheckoutModal
         isOpen={showCheckoutModal}
         onClose={() => setShowCheckoutModal(false)}

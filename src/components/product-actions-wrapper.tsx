@@ -45,7 +45,6 @@ export function ProductActionsWrapper({
 
   return (
     <div className="space-y-6">
-      {/* Product Header with Dynamic Price */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -54,7 +53,6 @@ export function ProductActionsWrapper({
             </h1>
           </div>
 
-          {/* Dynamic Price Display */}
           <div className="text-right">
             <div className="text-3xl md:text-4xl font-bold text-[#3B82F6]">
               <span className="text-2xl"></span>
@@ -63,7 +61,6 @@ export function ProductActionsWrapper({
           </div>
         </div>
 
-        {/* Rating */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1">
             {[...Array(5)].map((_, i) => (
@@ -89,7 +86,6 @@ export function ProductActionsWrapper({
         </div>
       </div>
 
-      {/* Product Actions Component */}
       <ProductActions
         product={{
           ...product,

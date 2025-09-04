@@ -110,13 +110,11 @@ export function CheckoutModal({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      {/* Modal Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={handleClose}
       />
 
-      {/* Modal Content */}
       <div className="relative bg-theme-primary border border-theme rounded-2xl shadow-2xl w-full max-w-md p-6 animate-in fade-in-0 zoom-in-95 duration-200">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-theme-primary text-lg font-semibold">

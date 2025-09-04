@@ -46,10 +46,6 @@ export function ProductActions({
   const variants =
     product.variants && product.variants.length > 0 ? product.variants : [];
 
-  // Debug: Log the product data to see what we're receiving
-  console.log("ProductActions received product:", product);
-  console.log("ProductActions variants:", variants);
-
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [quantity, setQuantity] = useState(1);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);

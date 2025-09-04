@@ -92,7 +92,7 @@ function ProductPageContent() {
         setError(null);
 
         if (typeof api.getProduct === "function") {
-          const res = await api.getProduct({ idOrSlug: slug });
+          const res = await api.getProduct(slug);
           if (res?.success && res.data) {
             setProduct(res.data);
             // Load reviews for this product
