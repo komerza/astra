@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Star } from "lucide-react"
 import { ProductActions } from "./product-actions"
+import { useFormatter } from "@/lib/formatter";
 
 interface ProductVariant {
   id: string
@@ -25,13 +26,10 @@ interface Product {
 
 interface ProductActionsWrapperProps {
   product: Product;
-  formatter: Intl.NumberFormat;
 }
 
-export function ProductActionsWrapper({
-  product,
-  formatter,
-}: ProductActionsWrapperProps) {
+export function ProductActionsWrapper({ product }: ProductActionsWrapperProps) {
+  const { formatPrice } = useFormatter();
   // Ensure variants exist and have at least one item
   const variants =
     product.variants && product.variants.length > 0 ? product.variants : [];
@@ -56,7 +54,7 @@ export function ProductActionsWrapper({
           <div className="text-right">
             <div className="text-3xl md:text-4xl font-bold text-[#3B82F6]">
               <span className="text-2xl"></span>
-              {formatter.format(currentPrice)}
+              {formatPrice(currentPrice)}
             </div>
           </div>
         </div>
@@ -91,7 +89,6 @@ export function ProductActionsWrapper({
           ...product,
           variants,
         }}
-        formatter={formatter}
         onPriceChange={setCurrentPrice}
       />
     </div>

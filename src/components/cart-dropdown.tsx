@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CreditCard, Tag, X, Plus, Minus } from "lucide-react";
 import { CheckoutModal } from "./checkout-modal";
+import { useFormatter } from "@/lib/formatter";
 
 interface ProductInfo {
   id: string;
@@ -24,17 +25,16 @@ export function CartDropdown() {
   const [productsInfo, setProductsInfo] = useState<Record<string, ProductInfo>>(
     {}
   );
+  const { formatPrice } = useFormatter();
 
-  // Fetch product information when cart opens or items change
+  // Fetch product info when cart opens
   useEffect(() => {
+    if (!state.isOpen || state.items.length === 0) return;
+
     const fetchProductsInfo = async () => {
-      if (state.items.length === 0) return;
-
       try {
-        const api: any = globalThis.komerza;
-        if (!api || typeof api.getStore !== "function") return;
-
-        const store = await api.getStore();
+        const api = (globalThis as any).komerza;
+        const store = await api?.getStore?.();
         if (store?.success && store.data?.products) {
           const productMap: Record<string, ProductInfo> = {};
           store.data.products.forEach((product: any) => {
@@ -47,20 +47,40 @@ export function CartDropdown() {
           setProductsInfo(productMap);
         }
       } catch (error) {
-        if (process.env.NODE_ENV !== "production") {
-          console.warn("Failed to fetch product info:", error);
-        }
+        console.warn("Failed to fetch product info:", error);
       }
     };
 
-    if (state.isOpen) {
-      fetchProductsInfo();
-    }
+    fetchProductsInfo();
   }, [state.isOpen, state.items.length]);
 
-  const handleCheckout = async () => {
-    if (state.items.length === 0) return;
-    setShowCheckoutModal(true);
+  // Helper to normalize cart item data
+  const normalizeItem = (item: any) => {
+    const productId = item.productId?.productId || item.productId;
+    const variantId = item.variantId || item.productId?.variantId || "";
+    const quantity = item.quantity || item.productId?.quantity || 1;
+    return {
+      productId: String(productId),
+      variantId: String(variantId),
+      quantity: Number(quantity),
+    };
+  };
+
+  // Helper to calculate item price
+  const getItemPrice = (productId: string, variantId: string) => {
+    const product = productsInfo[productId];
+    const variant = product?.variants.find((v) => v.id === variantId);
+    return variant?.cost || 0;
+  };
+
+  // Calculate total
+  const total = state.items.reduce((sum, item) => {
+    const { productId, variantId, quantity } = normalizeItem(item);
+    return sum + getItemPrice(productId, variantId) * quantity;
+  }, 0);
+
+  const handleCheckout = () => {
+    if (state.items.length > 0) setShowCheckoutModal(true);
   };
 
   if (!state.isOpen) return null;
@@ -97,63 +117,38 @@ export function CartDropdown() {
               </p>
             )}
             {state.items.map((item, idx) => {
-              // Some upstream data might accidentally wrap the basket item inside productId.
-              // Guard against productId (or others) being an object to prevent the React child error.
-              const unwrap = (val: any) =>
-                val && typeof val === "object"
-                  ? JSON.stringify(val)
-                  : String(val);
-              const productId =
-                typeof item.productId === "object" &&
-                (item as any).productId?.productId
-                  ? (item as any).productId.productId
-                  : item.productId;
-              const variantId =
-                item.variantId ||
-                (typeof item.productId === "object" &&
-                  (item as any).productId?.variantId) ||
-                "";
-              const quantity =
-                item.quantity ||
-                (typeof item.productId === "object" &&
-                  (item as any).productId?.quantity) ||
-                1;
+              const { productId, variantId, quantity } = normalizeItem(item);
+              const product = productsInfo[productId];
+              const variant = product?.variants.find((v) => v.id === variantId);
 
-              // Get product info from our fetched data
-              const productInfo = productsInfo[String(productId)];
-              const variantInfo = productInfo?.variants.find(
-                (v) => v.id === String(variantId)
-              );
-
-              const displayName =
-                productInfo?.name || `Product ${unwrap(productId)}`;
-              const displayVariant =
-                variantInfo?.name ||
-                (variantId ? `Variant ${unwrap(variantId)}` : "Standard");
-              const displayPrice = variantInfo?.cost || 0;
-              const totalPrice = displayPrice * Number(quantity);
+              const name = product?.name || `Product ${productId}`;
+              const variantName =
+                variant?.name ||
+                (variantId ? `Variant ${variantId}` : "Standard");
+              const price = variant?.cost || 0;
+              const itemTotal = price * quantity;
 
               return (
                 <div
-                  key={`${unwrap(productId)}-${unwrap(variantId)}-${idx}`}
+                  key={`${productId}-${variantId}-${idx}`}
                   className="p-4 border border-theme rounded-lg bg-theme-secondary space-y-3"
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <h4 className="text-theme-primary text-sm font-medium">
-                        {displayName}
+                        {name}
                       </h4>
                       <p className="text-theme-secondary text-xs">
-                        {displayVariant}
+                        {variantName}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-theme-primary text-sm font-medium">
-                        €{displayPrice.toFixed(2)}
+                        {formatPrice(price)}
                       </p>
-                      {Number(quantity) > 1 && (
+                      {quantity > 1 && (
                         <p className="text-theme-secondary text-xs">
-                          €{totalPrice.toFixed(2)} total
+                          {formatPrice(itemTotal)} total
                         </p>
                       )}
                     </div>
@@ -166,33 +161,22 @@ export function CartDropdown() {
                       </span>
                       <div className="flex items-center gap-1">
                         <Button
-                          onClick={() => {
-                            const currentQuantity = Number(quantity);
-                            if (currentQuantity > 1) {
-                              updateQuantity(
-                                String(productId),
-                                String(variantId),
-                                currentQuantity - 1
-                              );
-                            }
-                          }}
-                          disabled={Number(quantity) <= 1}
+                          onClick={() =>
+                            quantity > 1 &&
+                            updateQuantity(productId, variantId, quantity - 1)
+                          }
+                          disabled={quantity <= 1}
                           className="bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary h-6 w-6 p-0 rounded flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Minus className="w-3 h-3" />
                         </Button>
                         <span className="text-theme-primary text-sm font-medium min-w-[20px] text-center">
-                          {unwrap(quantity)}
+                          {quantity}
                         </span>
                         <Button
-                          onClick={() => {
-                            const currentQuantity = Number(quantity);
-                            updateQuantity(
-                              String(productId),
-                              String(variantId),
-                              currentQuantity + 1
-                            );
-                          }}
+                          onClick={() =>
+                            updateQuantity(productId, variantId, quantity + 1)
+                          }
                           className="bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary h-6 w-6 p-0 rounded flex items-center justify-center"
                         >
                           <Plus className="w-3 h-3" />
@@ -200,9 +184,7 @@ export function CartDropdown() {
                       </div>
                     </div>
                     <Button
-                      onClick={() =>
-                        removeItem(String(productId), String(variantId))
-                      }
+                      onClick={() => removeItem(productId, variantId)}
                       className="bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary h-7 px-2 text-xs"
                     >
                       Remove
@@ -214,38 +196,10 @@ export function CartDropdown() {
           </div>
           {state.items.length > 0 && (
             <div className="p-6 border-t border-theme space-y-4">
-
               <div className="flex justify-between items-center py-2 border-b border-theme">
                 <span className="text-theme-primary font-medium">Total</span>
                 <span className="text-theme-primary font-bold text-lg">
-                  €
-                  {state.items
-                    .reduce((total, item) => {
-                      const productId =
-                        typeof item.productId === "object" &&
-                        (item as any).productId?.productId
-                          ? (item as any).productId.productId
-                          : item.productId;
-                      const variantId =
-                        item.variantId ||
-                        (typeof item.productId === "object" &&
-                          (item as any).productId?.variantId) ||
-                        "";
-                      const quantity =
-                        item.quantity ||
-                        (typeof item.productId === "object" &&
-                          (item as any).productId?.quantity) ||
-                        1;
-
-                      const productInfo = productsInfo[String(productId)];
-                      const variantInfo = productInfo?.variants.find(
-                        (v) => v.id === String(variantId)
-                      );
-                      const price = variantInfo?.cost || 0;
-
-                      return total + price * Number(quantity);
-                    }, 0)
-                    .toFixed(2)}
+                  {formatPrice(total)}
                 </span>
               </div>
 

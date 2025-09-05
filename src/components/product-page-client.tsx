@@ -355,7 +355,7 @@ function ProductPageContent() {
         <ProductImageGallery images={images} productName={product.name} />
       </div>
       <div className="space-y-6">
-        <ProductActionsWrapper formatter={formatter} product={actionProduct} />
+        <ProductActionsWrapper product={actionProduct} />
       </div>
       <div className="lg:col-span-2 mt-16">
         <ProductDescriptionTabs product={tabsProduct} />

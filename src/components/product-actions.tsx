@@ -12,6 +12,7 @@ import {
 import { useCart } from "@/context/cart-context";
 import { CheckoutModal } from "./checkout-modal";
 import { toast } from "sonner";
+import { useFormatter } from "@/lib/formatter";
 
 interface ProductVariant {
   id: string;
@@ -33,15 +34,14 @@ interface Product {
 
 interface ProductActionsProps {
   product: Product;
-  formatter: Intl.NumberFormat;
   onPriceChange: (price: number) => void;
 }
 
 export function ProductActions({
   product,
   onPriceChange,
-  formatter,
 }: ProductActionsProps) {
+  const { formatPrice } = useFormatter();
   // Ensure variants exist and are valid
   const variants =
     product.variants && product.variants.length > 0 ? product.variants : [];
@@ -145,13 +145,11 @@ export function ProductActions({
   return (
     <>
       <div className="space-y-6">
-
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-[#808080] text-sm font-medium tracking-20-smaller">
               Choose variant
             </h3>
-
 
             <div className="flex items-center gap-3">
               <span className="text-sm text-[#808080] tracking-20-smaller">
@@ -182,7 +180,6 @@ export function ProductActions({
               </div>
             </div>
           </div>
-
 
           <div className="space-y-3">
             {variants.map((variant) => (
@@ -215,7 +212,7 @@ export function ProductActions({
                   </div>
                   <div className="text-right">
                     <div className="text-[#3B82F6] font-bold text-lg">
-                      {formatter.format(variant.price)}
+                      {formatPrice(variant.price)}
                     </div>
                   </div>
                 </div>
@@ -223,7 +220,6 @@ export function ProductActions({
             ))}
           </div>
         </div>
-
 
         <div className="flex gap-3">
           <Button
@@ -255,7 +251,6 @@ export function ProductActions({
           </Button>
         </div>
       </div>
-
 
       <CheckoutModal
         isOpen={showCheckoutModal}
