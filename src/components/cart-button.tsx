@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
 import { useCart } from "@/context/cart-context";
-import { Button } from "@/components/ui/button"
-import { ShoppingCart } from "lucide-react"
-import { CartDropdown } from "./cart-dropdown"
+import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
+import { CartDropdown } from "./cart-dropdown";
 
 export function CartButton() {
-  const { dispatch } = useCart()
+  const { dispatch } = useCart();
 
   const itemCount =
     typeof window !== "undefined"
       ? globalThis.komerza?.getBasketItemCount?.() ?? 0
-      : 0
+      : 0;
 
   return (
     <div className="relative">
@@ -22,7 +22,7 @@ export function CartButton() {
         <ShoppingCart className="w-4 h-4" />
         <span className="hidden md:inline">Cart</span>
         {itemCount > 0 && (
-          <span className="absolute -top-2 -right-2 bg-[#3B82F6] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+          <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
             {itemCount}
           </span>
         )}
@@ -30,5 +30,5 @@ export function CartButton() {
 
       <CartDropdown />
     </div>
-  )
+  );
 }

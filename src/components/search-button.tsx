@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import { Search, X, ArrowRight, User, HelpCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import type React from "react";
+import { useState, useRef, useEffect } from "react";
+import { Search, X, ArrowRight, User, HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 // Define Product interface to match the products page
@@ -24,6 +24,11 @@ interface Product {
   status: string;
   popular: boolean;
 }
+
+let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "EUR",
+});
 
 const suggestedItems = [
   {
@@ -49,7 +54,6 @@ export function SearchButton() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isMobile, setIsMobile] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +65,7 @@ export function SearchButton() {
     async function loadProducts() {
       try {
         setLoading(true);
+        formatter = await (globalThis as any).komerza.createFormatter();
         const res = await (globalThis as any).komerza.getStore();
         if (res.success && res.data) {
           const mapped: Product[] = res.data.products.map((p: any) => {
@@ -117,19 +122,9 @@ export function SearchButton() {
     loadProducts();
   }, []);
 
-  // Theme detection
-  useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark";
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      setTheme("light");
-    }
-  }, []);
-
   // Check if mobile
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -273,59 +268,43 @@ export function SearchButton() {
     );
   }
 
-  // Theme-aware classes
-  const isDark = theme === "dark";
-  const bgClass = isDark ? "bg-[#050505]" : "bg-white";
-  const borderClass = isDark ? "border-white/20" : "border-gray-300";
-  const textPrimaryClass = isDark ? "text-white" : "text-gray-900";
-  const textSecondaryClass = isDark ? "text-[#808080]" : "text-gray-600";
-  const hoverBgClass = isDark ? "hover:bg-white/10" : "hover:bg-gray-100";
-  const inputBgClass = isDark ? "bg-[#050505]" : "bg-white";
-
   // Mobile Modal Search
   if (isMobile) {
     return (
       <>
-
         <Button
           onClick={toggleSearch}
-          className={`bg-transparent border ${borderClass} ${textPrimaryClass} ${hoverBgClass} h-8 w-8 p-0 rounded-md transition-all duration-300`}
+          className="bg-transparent border border-gray-700 text-gray-50 hover:bg-gray-800 h-8 w-8 p-0 rounded-md transition-all duration-300"
         >
           <Search className="w-4 h-4" />
         </Button>
 
-
         {isExpanded && (
           <>
-
             <div
               className="fixed top-16 left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm z-50"
               onClick={closeSearch}
             />
 
-
             <div
-              className={`fixed inset-4 top-20 bottom-auto ${bgClass} border ${borderClass} rounded-2xl shadow-2xl z-50 max-h-[80vh] overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300`}
+              className={`fixed inset-4 top-20 bottom-auto bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl z-50 max-h-[80vh] overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300`}
             >
-
               <form
                 onSubmit={handleSearch}
-                className={`flex items-center gap-3 p-4 border-b ${borderClass}`}
+                className={`flex items-center gap-3 p-4 border-b border-gray-700`}
               >
-                <Search
-                  className={`w-5 h-5 ${textSecondaryClass} flex-shrink-0`}
-                />
+                <Search className={`w-5 h-5 text-gray-300 flex-shrink-0`} />
                 <input
                   ref={inputRef}
                   type="text"
                   value={searchQuery}
                   onChange={handleInputChange}
                   placeholder="Search products..."
-                  className={`flex-1 bg-transparent ${textPrimaryClass} placeholder:${textSecondaryClass} border-none outline-none text-base`}
+                  className={`flex-1 bg-transparent text-gray-50 placeholder:text-gray-300 border-none outline-none text-base`}
                 />
                 <Button
                   type="submit"
-                  className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-3 text-sm rounded-md"
+                  className="bg-primary text-white hover:bg-primary-600 h-8 px-3 text-sm rounded-md"
                 >
                   Search
                 </Button>
@@ -338,22 +317,19 @@ export function SearchButton() {
                 </Button>
               </form>
 
-
               <div className="p-4 space-y-6 overflow-y-auto max-h-[60vh]">
-
                 {loading && (
                   <div className="text-center py-8">
-                    <p className={`${textSecondaryClass} text-base`}>
+                    <p className={`text-gray-300 text-base`}>
                       Loading products...
                     </p>
                   </div>
                 )}
 
-
                 {!loading && filteredProducts.length > 0 && (
                   <div>
                     <h3
-                      className={`text-xs font-medium ${textSecondaryClass} uppercase tracking-wider mb-3`}
+                      className={`text-xs font-medium text-gray-300 uppercase tracking-wider mb-3`}
                     >
                       {searchQuery ? "Search Results" : "Popular Products"}
                     </h3>
@@ -365,11 +341,11 @@ export function SearchButton() {
                           onClick={closeSearch}
                           className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-[44px] ${
                             selectedIndex === index
-                              ? "bg-primary-500/20 border border-primary-500/50"
-                              : `${hoverBgClass} border border-transparent`
+                              ? "bg-primary/20 border border-primary-500/50"
+                              : `hover:bg-gray-800 border border-transparent`
                           }`}
                         >
-                          <div className="w-12 h-12 rounded-xl bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
                             <img
                               src={product.image || "/product-placeholder.png"}
                               alt={product.name}
@@ -380,19 +356,17 @@ export function SearchButton() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <h4
-                              className={`${textPrimaryClass} text-base font-medium truncate`}
+                              className={`text-gray-50 text-base font-medium truncate`}
                             >
                               {product.name}
                             </h4>
-                            <p
-                              className={`${textSecondaryClass} text-sm truncate`}
-                            >
-                              €{product.basePrice.toFixed(2)} • ⚫{" "}
+                            <p className={`text-gray-300 text-sm truncate`}>
+                              {formatter.format(product.basePrice)} &bull;{" "}
                               {product.status}
                             </p>
                           </div>
                           <ArrowRight
-                            className={`w-5 h-5 ${textSecondaryClass} flex-shrink-0`}
+                            className={`w-5 h-5 text-gray-300 flex-shrink-0`}
                           />
                         </Link>
                       ))}
@@ -400,26 +374,24 @@ export function SearchButton() {
                   </div>
                 )}
 
-
                 {!loading && searchQuery && filteredProducts.length === 0 && (
                   <div className="text-center py-8">
-                    <p className={`${textSecondaryClass} text-base mb-4`}>
+                    <p className={`text-gray-300 text-base mb-4`}>
                       No products found for "{searchQuery}"
                     </p>
                     <Button
                       onClick={handleSearch}
-                      className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-4 text-sm rounded-md"
+                      className="bg-primary text-white hover:bg-primary-600 h-8 px-4 text-sm rounded-md"
                     >
                       Search all products
                     </Button>
                   </div>
                 )}
 
-
                 {!loading && (
                   <div>
                     <h3
-                      className={`text-xs font-medium ${textSecondaryClass} uppercase tracking-wider mb-3`}
+                      className={`text-xs font-medium text-gray-300 uppercase tracking-wider mb-3`}
                     >
                       Quick Access
                     </h3>
@@ -434,27 +406,25 @@ export function SearchButton() {
                             onClick={closeSearch}
                             className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 min-h-[44px] ${
                               selectedIndex === itemIndex
-                                ? "bg-primary-500/20 border border-primary-500/50"
-                                : `${hoverBgClass} border border-transparent`
+                                ? "bg-primary/20 border border-primary-500/50"
+                                : `hover:bg-gray-800 border border-transparent`
                             }`}
                           >
-                            <div className="w-12 h-12 rounded-xl bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0">
-                              <IconComponent className="w-6 h-6 text-primary-500" />
+                            <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0">
+                              <IconComponent className="w-6 h-6 text-primary" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4
-                                className={`${textPrimaryClass} text-base font-medium truncate`}
+                                className={`text-gray-50 text-base font-medium truncate`}
                               >
                                 {item.name}
                               </h4>
-                              <p
-                                className={`${textSecondaryClass} text-sm truncate`}
-                              >
+                              <p className={`text-gray-300 text-sm truncate`}>
                                 {item.description}
                               </p>
                             </div>
                             <ArrowRight
-                              className={`w-5 h-5 ${textSecondaryClass} flex-shrink-0`}
+                              className={`w-5 h-5 text-gray-300 flex-shrink-0`}
                             />
                           </Link>
                         );
@@ -473,9 +443,8 @@ export function SearchButton() {
   // Desktop Search (existing implementation with updates)
   return (
     <div ref={containerRef} className="relative flex items-center">
-
       <div
-        className={`absolute right-0 top-0 h-8 ${inputBgClass} border ${borderClass} rounded-md backdrop-blur-md transition-all duration-300 ease-out overflow-hidden ${
+        className={`absolute right-0 top-0 h-8 bg-gray-900 border border-gray-700 rounded-md backdrop-blur-md transition-all duration-300 ease-out overflow-hidden ${
           isExpanded ? "w-80 opacity-100" : "w-0 opacity-0"
         }`}
         style={{
@@ -484,23 +453,17 @@ export function SearchButton() {
       >
         <form onSubmit={handleSearch} className="h-full flex items-center">
           <div className="flex items-center w-full h-full px-3">
-            <Search className={`w-4 h-4 ${textSecondaryClass} flex-shrink-0`} />
+            <Search className={`w-4 h-4 text-gray-300 flex-shrink-0`} />
             <input
               ref={inputRef}
               type="text"
               value={searchQuery}
               onChange={handleInputChange}
               placeholder="Search products..."
-              className={`flex-1 bg-transparent ${textPrimaryClass} text-sm placeholder:${textSecondaryClass} border-none outline-none ml-2 min-w-0`}
+              className={`flex-1 bg-transparent text-gray-50 text-sm placeholder:text-gray-300 border-none outline-none ml-2 min-w-0`}
             />
-            <div
-              className={`shortcut -mr-1 hidden justify-end gap-0.5 whitespace-nowrap ${textSecondaryClass} text-xs md:flex`}
-            >
-              <kbd
-                className={`flex h-5 min-w-5 items-center justify-center rounded border ${borderClass} ${
-                  isDark ? "bg-white/5" : "bg-gray-100"
-                } px-1`}
-              >
+            <div className="shortcut -mr-1 hidden justify-end gap-0.5 whitespace-nowrap text-gray-300 text-xs md:flex">
+              <kbd className="flex h-5 min-w-5 items-center justify-center rounded border border-gray-700 bg-gray-800 px-1">
                 Esc
               </kbd>
             </div>
@@ -508,12 +471,10 @@ export function SearchButton() {
         </form>
       </div>
 
-
       {isExpanded && (
         <div
-          className={`absolute top-10 right-0 w-80 ${bgClass} border ${borderClass} rounded-lg shadow-2xl backdrop-blur-md z-50 overflow-hidden`}
+          className={`absolute top-10 right-0 w-80 bg-gray-900 border border-gray-700 rounded-lg shadow-2xl backdrop-blur-md z-50 overflow-hidden`}
         >
-
           <div className="relative p-4 pb-0">
             <Button
               onClick={closeSearch}
@@ -523,22 +484,17 @@ export function SearchButton() {
             </Button>
           </div>
 
-
           <div className="px-4 pb-4 space-y-4">
-
             {loading && (
               <div className="text-center py-8">
-                <p className={`${textSecondaryClass} text-sm`}>
-                  Loading products...
-                </p>
+                <p className={`text-gray-300 text-sm`}>Loading products...</p>
               </div>
             )}
-
 
             {!loading && filteredProducts.length > 0 && (
               <div>
                 <h3
-                  className={`text-xs font-medium ${textSecondaryClass} uppercase tracking-wider mb-3`}
+                  className={`text-xs font-medium text-gray-300 uppercase tracking-wider mb-3`}
                 >
                   {searchQuery ? "Search Results" : "Popular Products"}
                 </h3>
@@ -550,11 +506,11 @@ export function SearchButton() {
                       onClick={closeSearch}
                       className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-200 group ${
                         selectedIndex === index
-                          ? "bg-primary-500/20 border border-primary-500/50"
-                          : `${hoverBgClass} border border-transparent`
+                          ? "bg-primary/20 border border-primary-500/50"
+                          : `hover:bg-gray-800 border border-transparent`
                       }`}
                     >
-                      <div className="w-10 h-10 rounded-lg bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      <div className="w-10 h-10 rounded-lg bg-primary/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
                         <img
                           src={product.image || "/product-placeholder.png"}
                           alt={product.name}
@@ -565,16 +521,17 @@ export function SearchButton() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4
-                          className={`${textPrimaryClass} text-sm font-medium truncate`}
+                          className={`text-gray-50 text-sm font-medium truncate`}
                         >
                           {product.name}
                         </h4>
-                        <p className={`${textSecondaryClass} text-xs truncate`}>
-                          €{product.basePrice.toFixed(2)} • ⚫ {product.status}
+                        <p className={`text-gray-300 text-xs truncate`}>
+                          {formatter.format(product.basePrice)} &bull;{" "}
+                          {product.status}
                         </p>
                       </div>
                       <ArrowRight
-                        className={`w-4 h-4 ${textSecondaryClass} group-hover:${textPrimaryClass} transition-colors duration-200 flex-shrink-0`}
+                        className={`w-4 h-4 text-gray-300 group-hover:text-gray-50 transition-colors duration-200 flex-shrink-0`}
                       />
                     </Link>
                   ))}
@@ -582,26 +539,24 @@ export function SearchButton() {
               </div>
             )}
 
-
             {!loading && searchQuery && filteredProducts.length === 0 && (
               <div className="text-center py-8">
-                <p className={`${textSecondaryClass} text-sm mb-4`}>
+                <p className={`text-gray-300 text-sm mb-4`}>
                   No products found for "{searchQuery}"
                 </p>
                 <Button
                   onClick={handleSearch}
-                  className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-6 px-3 text-xs rounded-md"
+                  className="bg-primary text-white hover:bg-primary-600 h-6 px-3 text-xs rounded-md"
                 >
                   Search all products
                 </Button>
               </div>
             )}
 
-
             {!loading && (
               <div>
                 <h3
-                  className={`text-xs font-medium ${textSecondaryClass} uppercase tracking-wider mb-3`}
+                  className={`text-xs font-medium text-gray-300 uppercase tracking-wider mb-3`}
                 >
                   Quick Access
                 </h3>
@@ -616,27 +571,25 @@ export function SearchButton() {
                         onClick={closeSearch}
                         className={`flex items-center gap-3 p-2 rounded-lg transition-all duration-200 group ${
                           selectedIndex === itemIndex
-                            ? "bg-primary-500/20 border border-primary-500/50"
-                            : `${hoverBgClass} border border-transparent`
+                            ? "bg-primary/20 border border-primary-500/50"
+                            : `hover:bg-gray-800 border border-transparent`
                         }`}
                       >
-                        <div className="w-10 h-10 rounded-lg bg-primary-500/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-5 h-5 text-primary-500" />
+                        <div className="w-10 h-10 rounded-lg bg-primary/20 border border-primary-500/30 flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4
-                            className={`${textPrimaryClass} text-sm font-medium truncate`}
+                            className={`text-gray-50 text-sm font-medium truncate`}
                           >
                             {item.name}
                           </h4>
-                          <p
-                            className={`${textSecondaryClass} text-xs truncate`}
-                          >
+                          <p className={`text-gray-300 text-xs truncate`}>
                             {item.description}
                           </p>
                         </div>
                         <ArrowRight
-                          className={`w-4 h-4 ${textSecondaryClass} group-hover:${textPrimaryClass} transition-colors duration-200 flex-shrink-0`}
+                          className={`w-4 h-4 text-gray-300 group-hover:text-gray-50 transition-colors duration-200 flex-shrink-0`}
                         />
                       </Link>
                     );
@@ -648,12 +601,11 @@ export function SearchButton() {
         </div>
       )}
 
-
       <Button
         onClick={toggleSearch}
-        className={`bg-transparent border ${borderClass} ${textPrimaryClass} ${hoverBgClass} h-8 w-8 p-0 rounded-md flex items-center justify-center transition-all duration-300 relative z-10 ${
+        className={`bg-transparent border border-gray-700 text-gray-50 hover:bg-gray-800 h-8 w-8 p-0 rounded-md flex items-center justify-center transition-all duration-300 relative z-10 ${
           isExpanded
-            ? `${hoverBgClass} opacity-0 pointer-events-none`
+            ? `hover:bg-gray-800 opacity-0 pointer-events-none`
             : "opacity-100"
         }`}
       >

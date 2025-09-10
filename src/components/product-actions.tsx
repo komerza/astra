@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   ShoppingCart,
   Plus,
@@ -147,12 +147,12 @@ export function ProductActions({
       <div className="space-y-6">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-[#808080] text-sm font-medium tracking-20-smaller">
+            <h3 className="text-gray-400 text-sm font-medium tracking-20-smaller">
               Choose variant
             </h3>
 
             <div className="flex items-center gap-3">
-              <span className="text-sm text-[#808080] tracking-20-smaller">
+              <span className="text-sm text-gray-400 tracking-20-smaller">
                 Qty:
               </span>
               <div className="flex items-center gap-2">
@@ -188,7 +188,7 @@ export function ProductActions({
                 onClick={() => handleVariantChange(variant)}
                 className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 ${
                   selectedVariant.id === variant.id
-                    ? "border-[#3B82F6] bg-[#3B82F6]/10"
+                    ? "border-primary bg-primary/10"
                     : isVariantInStock(variant)
                     ? "border-white/10 bg-white/5 hover:border-white/20"
                     : "border-red-200 bg-red-50 opacity-60 cursor-not-allowed"
@@ -205,13 +205,13 @@ export function ProductActions({
                           variant
                         )}`}
                       ></div>
-                      <p className="text-[#808080] text-sm">
+                      <p className="text-gray-400 text-sm">
                         {getStockDisplay(variant)}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-[#3B82F6] font-bold text-lg">
+                    <div className="text-primary font-bold text-lg">
                       {formatPrice(variant.price)}
                     </div>
                   </div>
@@ -228,7 +228,7 @@ export function ProductActions({
             className={`flex-[0.7] h-8 px-4 py-2 rounded-md flex items-center justify-center gap-2 text-sm tracking-20-smaller transition-all duration-300 whitespace-nowrap ${
               isOutOfStock
                 ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                : "bg-[#3B82F6] text-white hover:bg-[#2563EB]"
+                : "bg-primary text-white hover:bg-primary-600"
             }`}
           >
             <CreditCard className="w-4 h-4" />
@@ -238,10 +238,10 @@ export function ProductActions({
           <Button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className={`flex-[0.3] h-8 px-4 py-2 rounded-md border border-[rgba(255,255,255,0.2)] shadow-lg flex items-center justify-center gap-2 text-sm tracking-20-smaller transition-all duration-300 whitespace-nowrap ${
+            className={`flex-[0.3] h-8 px-4 py-2 rounded-md border border-white/20 shadow-lg flex items-center justify-center gap-2 text-sm tracking-20-smaller transition-all duration-300 whitespace-nowrap ${
               isOutOfStock
                 ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                : "bg-[#050505] hover:bg-[#1a1a1a] text-white"
+                : "bg-black hover:bg-gray-900 text-white"
             }`}
           >
             <ShoppingCart className="w-4 h-4" />

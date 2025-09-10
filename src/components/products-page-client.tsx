@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -78,7 +78,7 @@ function CustomDropdown({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-3 py-2 bg-theme-primary border border-theme rounded-lg text-theme-primary text-sm h-10 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/20 focus:border-[#3B82F6]/50 transition-colors duration-200"
+        className="w-full flex items-center justify-between px-3 py-2 bg-theme-primary border border-theme rounded-lg text-theme-primary text-sm h-10 focus:outline-none focus:ring-2 ring-primary-200 focus:border-primary-100 transition-colors duration-200"
       >
         <span>{selectedOption ? selectedOption.name : placeholder}</span>
         <ChevronDown
@@ -257,9 +257,7 @@ export function ProductsPageClient() {
 
   return (
     <div className="flex gap-6">
-
       <div className="flex-1 space-y-6">
-
         <div className="lg:hidden">
           <Button
             onClick={() => setShowFilters(!showFilters)}
@@ -269,7 +267,6 @@ export function ProductsPageClient() {
             Filters
           </Button>
         </div>
-
 
         <div className="flex items-center justify-between">
           <p className="text-theme-secondary text-sm">
@@ -283,7 +280,6 @@ export function ProductsPageClient() {
             </p>
           )}
         </div>
-
 
         {currentProducts.length > 0 ? (
           <div
@@ -300,7 +296,7 @@ export function ProductsPageClient() {
               >
                 {viewMode === "grid" ? (
                   // Grid View - Using EXACT same cards from home page
-                  <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300">
+                  <div className="group relative w-full rounded-2xl sm:rounded-3xl border border-theme bg-theme-secondary p-2 shadow-theme hover:border-primary-500 transition-all duration-300">
                     <div className="relative w-full aspect-video cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl">
                       <img
                         alt={product.name}
@@ -310,7 +306,7 @@ export function ProductsPageClient() {
                       />
                       {product.popular && (
                         <div className="absolute top-2 left-2">
-                          <Badge className="bg-[#3B82F6] text-white border-0 text-xs">
+                          <Badge className="bg-primary text-white border-0 text-xs">
                             Popular
                           </Badge>
                         </div>
@@ -338,7 +334,7 @@ export function ProductsPageClient() {
                           <span className="text-center sm:text-end text-xs text-theme-secondary">
                             Starting at
                           </span>
-                          <span className="text-2xl sm:text-3xl font-bold text-[#3B82F6]">
+                          <span className="text-2xl sm:text-3xl font-bold text-primary">
                             {formatter.format(product.basePrice)}
                           </span>
                         </div>
@@ -347,7 +343,7 @@ export function ProductsPageClient() {
                   </div>
                 ) : (
                   // List View
-                  <div className="group relative rounded-2xl border border-theme bg-theme-secondary shadow-theme hover:border-[#3B82F6]/30 transition-all duration-300 p-4">
+                  <div className="group relative rounded-2xl border border-theme bg-theme-secondary shadow-theme hover:border-primary-500 transition-all duration-300 p-4 mb-4">
                     <div className="flex items-center gap-4">
                       <div className="relative w-24 h-16 flex-shrink-0 overflow-hidden rounded-lg">
                         <img
@@ -362,11 +358,8 @@ export function ProductsPageClient() {
                           <h3 className="text-lg font-semibold text-theme-primary truncate">
                             {product.name}
                           </h3>
-                          <Badge className="bg-theme-tertiary text-theme-secondary border-0 text-xs">
-                            {getGameAbbreviation(product.game)}
-                          </Badge>
                           {product.popular && (
-                            <Badge className="bg-[#3B82F6] text-white border-0 text-xs">
+                            <Badge className="bg-primary text-white border-0 text-xs">
                               Popular
                             </Badge>
                           )}
@@ -389,7 +382,7 @@ export function ProductsPageClient() {
                                   key={i}
                                   className={`w-3 h-3 ${
                                     i < Math.floor(product.rating)
-                                      ? "text-[#3B82F6] fill-[#3B82F6]"
+                                      ? "text-primary fill-primary"
                                       : "text-gray-600"
                                   }`}
                                 />
@@ -402,12 +395,12 @@ export function ProductsPageClient() {
                               ({product.reviews})
                             </span>
                           </div>
-                          <div className="text-lg font-bold text-[#3B82F6]">
+                          <div className="text-lg font-bold text-primary">
                             €{product.basePrice.toFixed(2)}
                           </div>
                         </div>
                       </div>
-                      <Button className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-4 text-sm flex-shrink-0">
+                      <Button className="bg-primary text-white hover:bg-primary-600 h-8 px-4 text-sm flex-shrink-0">
                         <ShoppingCart className="w-4 h-4 mr-2" />
                         Buy Now
                       </Button>
@@ -418,7 +411,6 @@ export function ProductsPageClient() {
             ))}
           </div>
         ) : null}
-
 
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 mt-8">
@@ -438,7 +430,7 @@ export function ProductsPageClient() {
                     onClick={() => setCurrentPage(page)}
                     className={`h-8 w-8 p-0 text-sm ${
                       currentPage === page
-                        ? "bg-[#3B82F6] text-white"
+                        ? "bg-primary text-white"
                         : "bg-transparent border border-theme text-theme-primary hover:bg-theme-secondary"
                     }`}
                   >
@@ -460,7 +452,6 @@ export function ProductsPageClient() {
           </div>
         )}
 
-
         {currentProducts.length === 0 && (
           <div className="text-center py-12">
             <div className="bg-theme-secondary border border-theme rounded-2xl p-8 max-w-md mx-auto">
@@ -478,7 +469,7 @@ export function ProductsPageClient() {
                   setSelectedPriceRange("all");
                   setCurrentPage(1);
                 }}
-                className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-8 px-4 text-sm"
+                className="bg-primary text-white hover:bg-primary-600 h-8 px-4 text-sm"
               >
                 Clear All Filters
               </Button>
@@ -486,8 +477,6 @@ export function ProductsPageClient() {
           </div>
         )}
       </div>
-
-
 
       <div
         className={`
@@ -498,14 +487,12 @@ export function ProductsPageClient() {
         }
       `}
       >
-
         {showFilters && (
           <div
             className="absolute inset-0 lg:hidden"
             onClick={() => setShowFilters(false)}
           />
         )}
-
 
         <div
           className={`
@@ -517,7 +504,6 @@ export function ProductsPageClient() {
           }
         `}
         >
-
           {showFilters && (
             <div className="flex items-center justify-between lg:hidden mb-4">
               <h2 className="text-theme-primary text-lg font-semibold">
@@ -532,7 +518,6 @@ export function ProductsPageClient() {
             </div>
           )}
 
-
           <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
             <h3 className="text-theme-primary font-medium mb-4">
               Search Products
@@ -544,11 +529,10 @@ export function ProductsPageClient() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products..."
-                className="w-full pl-10 pr-3 py-2 bg-theme-primary border border-theme rounded-lg text-theme-primary placeholder:text-theme-secondary h-10 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/20 focus:border-[#3B82F6]/50 transition-colors duration-200"
+                className="w-full pl-10 pr-3 py-2 bg-theme-primary border border-theme rounded-lg text-theme-primary placeholder:text-theme-secondary h-10 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-100 transition-colors duration-200"
               />
             </div>
           </div>
-
 
           <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
             <h3 className="text-theme-primary font-medium mb-4">
@@ -559,7 +543,7 @@ export function ProductsPageClient() {
                 onClick={() => setViewMode("grid")}
                 className={`flex-1 h-10 p-0 ${
                   viewMode === "grid"
-                    ? "bg-[#3B82F6] text-white"
+                    ? "bg-primary text-white"
                     : "bg-transparent border border-theme text-theme-primary hover:bg-theme-tertiary"
                 }`}
               >
@@ -570,7 +554,7 @@ export function ProductsPageClient() {
                 onClick={() => setViewMode("list")}
                 className={`flex-1 h-10 p-0 ${
                   viewMode === "list"
-                    ? "bg-[#3B82F6] text-white"
+                    ? "bg-primary text-white"
                     : "bg-transparent border border-theme text-theme-primary hover:bg-theme-tertiary"
                 }`}
               >
@@ -580,11 +564,9 @@ export function ProductsPageClient() {
             </div>
           </div>
 
-
           <div className="bg-theme-secondary border border-theme rounded-2xl p-4 shadow-theme">
             <h3 className="text-theme-primary font-medium mb-4">Filters</h3>
             <div className="space-y-4">
-
               <div>
                 <label className="block text-theme-primary text-sm font-medium mb-2">
                   Category
@@ -596,7 +578,6 @@ export function ProductsPageClient() {
                   placeholder="Select category"
                 />
               </div>
-
 
               <div>
                 <label className="block text-theme-primary text-sm font-medium mb-2">
@@ -610,7 +591,6 @@ export function ProductsPageClient() {
                 />
               </div>
 
-
               <div>
                 <label className="block text-theme-primary text-sm font-medium mb-2">
                   Sort By
@@ -623,7 +603,6 @@ export function ProductsPageClient() {
                 />
               </div>
 
-
               {(searchQuery ||
                 selectedCategory !== "all" ||
                 selectedPriceRange !== "all") && (
@@ -634,7 +613,7 @@ export function ProductsPageClient() {
                     setSelectedPriceRange("all");
                     setCurrentPage(1);
                   }}
-                  className="w-full bg-transparent text-[#3B82F6] hover:bg-[#3B82F6]/10 h-8 px-3 text-sm border border-[#3B82F6]/30"
+                  className="w-full bg-transparent text-primary hover:bg-primary/10 h-8 px-3 text-sm border border-primary-200"
                 >
                   Clear All Filters
                 </Button>

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Link } from "react-router-dom"
-import { ProductImageGallery } from "@/components/product-image-gallery"
-import { ProductActionsWrapper } from "@/components/product-actions-wrapper"
-import { ProductDescriptionTabs } from "@/components/product-description-tabs"
+import { Link } from "react-router-dom";
+import { ProductImageGallery } from "@/components/product-image-gallery";
+import { ProductActionsWrapper } from "@/components/product-actions-wrapper";
+import { ProductDescriptionTabs } from "@/components/product-description-tabs";
 
 interface Variant {
   id: string;
@@ -50,7 +50,7 @@ export function ProductPageClient() {
     <Suspense
       fallback={
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-theme-secondary">Loading product...</p>
         </div>
       }
@@ -228,7 +228,7 @@ function ProductPageContent() {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-4"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
         <p className="text-theme-secondary">Loading product...</p>
       </div>
     );
@@ -246,7 +246,7 @@ function ProductPageContent() {
         </p>
         <Link
           to="/products"
-          className="bg-[#3B82F6] hover:bg-[#2563EB] text-white px-6 py-2 rounded-md transition-colors"
+          className="bg-primary hover:bg-primary-600 text-white px-6 py-2 rounded-md transition-colors"
         >
           Browse All Products
         </Link>
@@ -357,15 +357,9 @@ function ProductPageContent() {
       <div className="space-y-6">
         <ProductActionsWrapper product={actionProduct} />
       </div>
-      <div className="lg:col-span-2 mt-16">
+      <div className="lg:col-span-2 mt-16 mb-8">
         <ProductDescriptionTabs product={tabsProduct} />
-      </div>
-      <div className="lg:col-span-2 mt-8">
-        <Link to="/products" className="text-sm text-theme-secondary underline">
-          Back to Products
-        </Link>
       </div>
     </div>
   );
 }
-

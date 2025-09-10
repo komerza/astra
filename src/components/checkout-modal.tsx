@@ -61,7 +61,7 @@ export function CheckoutModal({
         couponCode = undefined;
       }
 
-      const result = await(globalThis as any).komerza.checkout(
+      const result = await (globalThis as any).komerza.checkout(
         email.trim(),
         couponCode?.trim()
       );
@@ -109,7 +109,7 @@ export function CheckoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={handleClose}
@@ -133,7 +133,7 @@ export function CheckoutModal({
           {isRedirecting ? (
             // Redirecting State
             <div className="text-center py-8">
-              <div className="w-16 h-16 border-4 border-[#3B82F6] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
               <h4 className="text-theme-primary text-lg font-medium mb-2">
                 Redirecting to Payment
               </h4>
@@ -143,7 +143,7 @@ export function CheckoutModal({
               {checkoutUrl && (
                 <Button
                   onClick={handleManualRedirect}
-                  className="bg-[#3B82F6] text-white hover:bg-[#2563EB] h-12 px-6 rounded-md transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-[#60A5FA]"
+                  className="bg-primary text-white hover:bg-primary-600 h-12 px-6 rounded-md transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-primary-200"
                 >
                   Continue Manually
                 </Button>
@@ -153,21 +153,22 @@ export function CheckoutModal({
             // Email Input State
             <>
               <div>
-                <label className="block text-theme-primary text-sm font-medium mb-2">
+                <label className="block text-theme-primary text-sm font-medium mb-3">
                   Email Address
                 </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-secondary w-4 h-4" />
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-theme-secondary w-5 h-5 transition-colors duration-200 group-focus-within:text-primary" />
                   <Input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="pl-10 bg-theme-secondary border-theme text-theme-primary placeholder:text-theme-secondary h-12 rounded-md focus:ring-2 focus:ring-[#3B82F6] focus:border-[#3B82F6] outline-none focus:outline-none border-0"
+                    className="pl-12 pr-4 bg-theme-secondary border-2 border-gray-700 text-theme-primary placeholder:text-gray-400 h-14 rounded-xl focus:border-primary transition-all duration-200 outline-none focus:outline-none text-base font-medium shadow-sm hover:border-gray-600 focus:ring-0 ring-0"
                     onKeyDown={(e) => e.key === "Enter" && processCheckout()}
                     autoFocus
                     disabled={isCheckingOut}
                   />
+                  <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-700/50 pointer-events-none group-focus-within:ring-primary/30 transition-all duration-200"></div>
                 </div>
               </div>
 
@@ -182,7 +183,7 @@ export function CheckoutModal({
                 <Button
                   onClick={processCheckout}
                   disabled={isCheckingOut || !email.trim()}
-                  className="flex-1 bg-[#3B82F6] text-white hover:bg-[#2563EB] h-12 px-4 rounded-md flex items-center justify-center gap-2 text-sm transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-[#60A5FA] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-primary text-white hover:bg-primary-600 h-12 px-4 rounded-md flex items-center justify-center gap-2 text-sm transition-all duration-300 outline-none focus:outline-none focus:ring-2 focus:ring-primary-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isCheckingOut ? (
                     <>

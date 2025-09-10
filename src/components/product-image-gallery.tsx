@@ -1,136 +1,137 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Play } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ProductImageGalleryProps {
-  images: string[]
-  productName: string
+  images: string[];
+  productName: string;
 }
 
-export function ProductImageGallery({ images, productName }: ProductImageGalleryProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
-  const [isHoveringFirstImage, setIsHoveringFirstImage] = useState(false)
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
-  const touchStartX = useRef<number>(0)
-  const touchEndX = useRef<number>(0)
-  const containerRef = useRef<HTMLDivElement>(null)
+export function ProductImageGallery({
+  images,
+  productName,
+}: ProductImageGalleryProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isHoveringFirstImage, setIsHoveringFirstImage] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const goToSlide = (index: number) => {
-    if (isTransitioning) return
-    setIsTransitioning(true)
-    setCurrentIndex(index)
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex(index);
     // Reset video state when changing slides
     if (index !== 0) {
-      setIsVideoPlaying(false)
+      setIsVideoPlaying(false);
     }
-    setTimeout(() => setIsTransitioning(false), 300)
-  }
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
 
   const goToPrevious = () => {
-    const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1
-    goToSlide(newIndex)
-  }
+    const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    goToSlide(newIndex);
+  };
 
   const goToNext = () => {
-    const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1
-    goToSlide(newIndex)
-  }
+    const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+    goToSlide(newIndex);
+  };
 
   // Handle hover on first image
   const handleFirstImageHover = () => {
     if (currentIndex === 0 && !isVideoPlaying) {
-      setIsHoveringFirstImage(true)
+      setIsHoveringFirstImage(true);
     }
-  }
+  };
 
   const handleFirstImageLeave = () => {
-    setIsHoveringFirstImage(false)
-  }
+    setIsHoveringFirstImage(false);
+  };
 
   // Handle play button click
   const handlePlayButtonClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsVideoPlaying(true)
-    setIsHoveringFirstImage(false)
-  }
+    e.stopPropagation();
+    setIsVideoPlaying(true);
+    setIsHoveringFirstImage(false);
+  };
 
   // Handle video close
   const handleVideoClose = () => {
-    setIsVideoPlaying(false)
-  }
+    setIsVideoPlaying(false);
+  };
 
   // Touch handlers for swipe gestures
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.targetTouches[0].clientX
-  }
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.targetTouches[0].clientX
-  }
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
 
   const handleTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) return
+    if (!touchStartX.current || !touchEndX.current) return;
 
-    const distance = touchStartX.current - touchEndX.current
-    const isLeftSwipe = distance > 50
-    const isRightSwipe = distance < -50
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
 
     if (isLeftSwipe) {
-      goToNext()
+      goToNext();
     } else if (isRightSwipe) {
-      goToPrevious()
+      goToPrevious();
     }
 
-    touchStartX.current = 0
-    touchEndX.current = 0
-  }
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isVideoPlaying && e.key === "Escape") {
-        handleVideoClose()
-        return
+        handleVideoClose();
+        return;
       }
 
       if (e.key === "ArrowLeft") {
-        goToPrevious()
+        goToPrevious();
       } else if (e.key === "ArrowRight") {
-        goToNext()
+        goToNext();
       }
-    }
+    };
 
-    document.addEventListener("keydown", handleKeyDown)
-    return () => document.removeEventListener("keydown", handleKeyDown)
-  }, [currentIndex, isVideoPlaying])
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [currentIndex, isVideoPlaying]);
 
   // Auto-play functionality (optional) - pause when video is playing
   useEffect(() => {
-    if (isVideoPlaying) return
+    if (isVideoPlaying) return;
 
     const interval = setInterval(() => {
-      goToNext()
-    }, 5000) // Change slide every 5 seconds
+      goToNext();
+    }, 5000); // Change slide every 5 seconds
 
-    return () => clearInterval(interval)
-  }, [currentIndex, isVideoPlaying])
+    return () => clearInterval(interval);
+  }, [currentIndex, isVideoPlaying]);
 
   return (
     <div className="relative group">
-
       <div
         ref={containerRef}
-        className="relative w-full rounded-2xl sm:rounded-3xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-3 sm:p-4 shadow-lg backdrop-blur-md overflow-hidden"
+        className="relative w-full rounded-2xl sm:rounded-3xl border border-white/10 bg-white/5 p-3 sm:p-4 shadow-lg backdrop-blur-md overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-
         <div className="relative w-full aspect-video overflow-hidden rounded-2xl sm:rounded-3xl">
           <div
             className="flex transition-transform duration-300 ease-out h-full"
@@ -150,7 +151,6 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
 
-
                 {index === 0 && currentIndex === 0 && !isVideoPlaying && (
                   <div
                     className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out ${
@@ -161,7 +161,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                   >
                     <button
                       onClick={handlePlayButtonClick}
-                      className={`playpause-button group/play relative w-20 h-20 bg-[#1e3a8a] hover:bg-[#1d4ed8] rounded-full flex items-center justify-center shadow-2xl border-4 border-[#3b82f6] transition-all duration-500 ease-out hover:scale-110 hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] ${
+                      className={`playpause-button group/play relative w-20 h-20 bg-primary-800 hover:bg-primary-600 rounded-full flex items-center justify-center shadow-2xl border-4 border-primary transition-all duration-500 ease-out hover:scale-110 hover:shadow-primary/20 ${
                         isHoveringFirstImage
                           ? "scale-100 opacity-100 translate-y-0"
                           : "scale-75 opacity-0 translate-y-4"
@@ -172,9 +172,8 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                         fill="currentColor"
                       />
 
-
                       <div
-                        className={`absolute inset-0 rounded-full border-2 border-[#3b82f6] transition-opacity duration-300 ${
+                        className={`absolute inset-0 rounded-full border-2 border-primary transition-opacity duration-300 ${
                           isHoveringFirstImage
                             ? "animate-ping opacity-30"
                             : "opacity-0"
@@ -187,10 +186,8 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             ))}
           </div>
 
-
           {currentIndex === 0 && isVideoPlaying && (
             <div className="absolute inset-0 z-20 bg-black rounded-2xl sm:rounded-3xl overflow-hidden animate-in fade-in duration-300">
-
               <button
                 onClick={handleVideoClose}
                 className="absolute top-4 right-4 z-30 w-8 h-8 bg-black/70 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
@@ -220,7 +217,6 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             </div>
           )}
 
-
           {!isVideoPlaying && (
             <>
               <Button
@@ -241,7 +237,6 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             </>
           )}
 
-
           {!isVideoPlaying && (
             <div
               className={`absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm z-10 transition-all duration-300 ${
@@ -255,7 +250,6 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           )}
         </div>
 
-
         <div className="flex items-center justify-center gap-2 mt-4">
           {images.map((_, index) => (
             <button
@@ -263,7 +257,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
               onClick={() => goToSlide(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? "bg-[#3B82F6] w-6"
+                  ? "bg-primary w-6"
                   : "bg-white/30 hover:bg-white/50"
               }`}
               disabled={isTransitioning}
@@ -272,7 +266,6 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
         </div>
       </div>
 
-
       <div className="hidden lg:flex gap-2 mt-4 overflow-x-auto">
         {images.map((image, index) => (
           <button
@@ -280,7 +273,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             onClick={() => goToSlide(index)}
             className={`relative w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all duration-300 ${
               index === currentIndex
-                ? "border-[#3B82F6] opacity-100"
+                ? "border-primary opacity-100"
                 : "border-white/20 opacity-60 hover:opacity-80"
             }`}
             disabled={isTransitioning}
@@ -301,9 +294,8 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
         ))}
       </div>
 
-
       <div className="lg:hidden text-center mt-2">
-        <p className="text-xs text-[#808080]">
+        <p className="text-xs text-gray-500">
           Swipe left or right to view more images • Hover first image to play
           video
         </p>
