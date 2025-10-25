@@ -274,7 +274,7 @@ export function SearchButton() {
       <>
         <Button
           onClick={toggleSearch}
-          className="bg-transparent border border-gray-700 text-gray-50 hover:bg-gray-800 h-8 w-8 p-0 rounded-md transition-all duration-300"
+          className="bg-transparent border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 h-8 w-8 md:w-auto md:px-3 p-0 md:py-2 rounded-md flex items-center justify-center md:gap-2 text-sm tracking-20-smaller transition-all duration-300 relative"
         >
           <Search className="w-4 h-4" />
         </Button>

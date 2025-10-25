@@ -295,7 +295,7 @@ export function ProductImageGallery({
       </div>
 
       <div className="lg:hidden text-center mt-2">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-400">
           Swipe left or right to view more images • Hover first image to play
           video
         </p>

@@ -90,22 +90,13 @@ export function UnifiedNavbar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <SearchButton />
-          <div className="hidden md:flex items-center gap-4">
-            <CartButton />
-            <Link to="/dashboard">
-              <Button className="bg-primary text-white hover:bg-primary-600 h-8 px-4 py-2 rounded-md flex items-center gap-2 text-sm tracking-20-smaller transition-all duration-300 font-normal">
-                <span>Client Area</span>
-                <ArrowRight className="w-[18px] h-[18px]" />
-              </Button>
-            </Link>
-          </div>
-
+          <CartButton />
           <Button
             variant="ghost"
             size="sm"
-            className="md:hidden p-2 h-auto text-theme-secondary hover:text-primary hover:bg-primary/10"
+            className="md:hidden flex bg-transparent border border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 h-8 w-8 md:w-auto md:px-3 p-0 md:py-2 rounded-md items-center justify-center md:gap-2 text-sm tracking-20-smaller transition-all duration-300 relative"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
@@ -114,6 +105,12 @@ export function UnifiedNavbar() {
               <Menu className="w-5 h-5" />
             )}
           </Button>
+          <Link to="/dashboard">
+            <Button className="bg-primary text-white hover:bg-primary-600 h-8 px-4 py-2 rounded-md flex items-center gap-2 text-sm tracking-20-smaller transition-all duration-300 font-normal">
+              <span>Client Area</span>
+              <ArrowRight className="w-[18px] h-[18px]" />
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -154,9 +151,6 @@ export function UnifiedNavbar() {
             </Link>
 
             <div className="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-4">
-              <div className="flex justify-center">
-                <CartButton />
-              </div>
               <Link
                 to="/dashboard"
                 className="block"

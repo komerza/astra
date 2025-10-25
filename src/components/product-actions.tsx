@@ -191,7 +191,7 @@ export function ProductActions({
                     ? "border-primary bg-primary/10"
                     : isVariantInStock(variant)
                     ? "border-white/10 bg-white/5 hover:border-white/20"
-                    : "border-red-200 bg-red-50 opacity-60 cursor-not-allowed"
+                    : "border-white/10 bg-white/5 hover:border-white/20 opacity-60 cursor-not-allowed"
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -225,7 +225,7 @@ export function ProductActions({
           <Button
             onClick={handleBuyNow}
             disabled={isOutOfStock}
-            className={`flex-[0.7] h-8 px-4 py-2 rounded-md flex items-center justify-center gap-2 text-sm tracking-20-smaller transition-all duration-300 whitespace-nowrap ${
+            className={`flex-1 md:flex-[0.7] h-8 px-4 py-2 rounded-md flex items-center justify-center gap-2 text-sm tracking-20-smaller transition-all duration-300 whitespace-nowrap ${
               isOutOfStock
                 ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                 : "bg-primary text-white hover:bg-primary-600"
@@ -238,14 +238,14 @@ export function ProductActions({
           <Button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className={`flex-[0.3] h-8 px-4 py-2 rounded-md border border-white/20 shadow-lg flex items-center justify-center gap-2 text-sm tracking-20-smaller transition-all duration-300 whitespace-nowrap ${
+            className={`flex-1 md:flex-[0.3] h-8 px-4 py-2 rounded-md border border-white/20 shadow-lg flex items-center justify-center gap-2 text-sm tracking-20-smaller transition-all duration-300 whitespace-nowrap ${
               isOutOfStock
                 ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                 : "bg-black hover:bg-gray-900 text-white"
             }`}
           >
             <ShoppingCart className="w-4 h-4" />
-            <span className="hidden sm:inline">
+            <span className="inline">
               {isOutOfStock ? "Out of Stock" : "Add to Cart"}
             </span>
           </Button>

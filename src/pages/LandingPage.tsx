@@ -40,7 +40,7 @@ export default function LandingPage() {
 
       <UnifiedNavbar />
 
-      <main className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16">
+      <main className="relative z-10 min-h-[60vh] md:min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16">
         <div className="absolute inset-0 z-0">
           <img
             src="/hero.webp"
